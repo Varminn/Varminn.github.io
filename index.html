@@ -14,10 +14,18 @@
         body {
             font-family: 'Fira Code', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
-            background: linear-gradient(135deg, #232323 0%, #0a192f 100%);
+            background: linear-gradient(135deg, #ff7e5f, #feb47b, #6a11cb, #2575fc);
             color: #e6e6e6;
             min-height: 100vh;
             overflow-x: hidden;
+            background-size: 300% 300%;
+            animation: gradientAnimation 10s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
@@ -38,8 +46,8 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 2rem;
-            border: 4px solid #64ffda;
-            box-shadow: 0 0 25px rgba(100, 255, 218, 0.3);
+            border: 4px solid #ff7e5f;
+            box-shadow: 0 0 25px rgba(255, 126, 95, 0.6);
             transition: transform 0.3s ease;
         }
 
@@ -51,24 +59,28 @@
             color: #64ffda;
             font-size: 3rem;
             margin-bottom: 1rem;
-            text-shadow: 0 0 15px rgba(100, 255, 218, 0.4);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
         }
 
         .title {
-            color: #8892b0;
-            font-size: 1.5rem;
+            color: #ffd700;
+            font-size: 1.7rem;
             margin-bottom: 2rem;
-            font-weight: 300;
+            font-weight: 500;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
         }
 
         .bio {
-            color: #8892b0;
+            color: #ffcccb;
             margin-bottom: 3rem;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
             font-size: 1.2rem;
             line-height: 1.8;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
         }
 
         .links {
@@ -81,20 +93,22 @@
         .button {
             display: inline-block;
             padding: 1rem 2rem;
-            background-color: transparent;
-            color: #64ffda;
+            background-color: #ff7e5f;
+            color: #ffffff;
             text-decoration: none;
-            border: 2px solid #64ffda;
+            border: 2px solid transparent;
             border-radius: 50px;
             transition: all 0.3s ease;
             font-weight: 600;
             letter-spacing: 1.2px;
+            box-shadow: 0 4px 15px rgba(255, 126, 95, 0.4);
         }
 
         .button:hover {
-            background-color: rgba(100, 255, 218, 0.2);
+            background-color: #feb47b;
+            color: #232323;
             transform: translateY(-4px);
-            box-shadow: 0 6px 16px rgba(100, 255, 218, 0.3);
+            box-shadow: 0 6px 20px rgba(254, 180, 123, 0.6);
         }
 
         @keyframes fadeIn {
@@ -109,17 +123,18 @@
         }
 
         .skills {
-            background-color: rgba(10, 25, 47, 0.7);
+            background-color: rgba(0, 191, 255, 0.7);
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
             margin-top: 4rem;
         }
 
         .skills h2 {
-            color: #64ffda;
+            color: #ffd700;
             margin-bottom: 1rem;
-            font-size: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
         }
 
         .skills ul {
@@ -130,17 +145,18 @@
         }
 
         .skills li {
-            color: #e6e6e6;
+            color: #ffffff;
             font-size: 1.1rem;
-            background: #112240;
+            background: #ff6b6b;
             padding: 0.8rem;
             border-radius: 8px;
             transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(255, 107, 107, 0.4);
         }
 
         .skills li:hover {
-            background: #0a192f;
-            box-shadow: 0 3px 10px rgba(100, 255, 218, 0.2);
+            background: #ffcc5c;
+            box-shadow: 0 3px 15px rgba(255, 204, 92, 0.6);
         }
 
         @media (max-width: 600px) {
