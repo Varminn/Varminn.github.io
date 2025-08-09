@@ -7,12 +7,12 @@
 <style>
   /* Color Scheme */
   :root {
-    --primary-bg: #0b1c26;      /* deep navy greenish */
-    --secondary-bg: #122e3d;    /* lighter navy */
-    --accent: #ff9f1c;           /* warm orange */
+    --primary-bg: #0f2027;   /* deep blue-green */
+    --secondary-bg: #203a43; /* dark teal */
+    --tertiary-bg: #2c5364;  /* lighter teal */
+    --accent: #4fd1c5;       /* minty teal */
     --text-light: #f0f4f8;
     --text-dark: #1a1a1a;
-    --link-hover: #ffbf69;
   }
 
   html {
@@ -30,12 +30,22 @@
   /* Sidebar */
   .sidebar {
     width: 250px;
-    background-color: var(--primary-bg);
+    background: linear-gradient(to bottom, var(--primary-bg), var(--secondary-bg));
     color: var(--text-light);
     position: fixed;
     height: 100%;
     padding: 20px;
     box-sizing: border-box;
+    text-align: center;
+  }
+  .sidebar img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
   }
   .sidebar h1 {
     font-size: 1.6rem;
@@ -67,34 +77,31 @@
   /* Main content */
   .main {
     margin-left: 250px;
-    padding: 20px;
-    max-width: 900px;
+    padding: 0;
+    max-width: 100%;
   }
   section {
-    margin-bottom: 40px;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    padding: 40px 20px;
+    transition: opacity 0.8s ease, transform 0.8s ease;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
   }
   section.visible {
     opacity: 1;
     transform: translateY(0);
   }
+  section:nth-child(even) {
+    background-color: #eef4f7;
+  }
+  section:nth-child(odd) {
+    background-color: #ffffff;
+  }
   section h2 {
-    color: var(--primary-bg);
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 5px;
-    margin-bottom: 15px;
-  }
-  h3 {
     color: var(--secondary-bg);
-  }
-  h4 {
-    color: #556b84;
+    border-bottom: 3px solid var(--accent);
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
   }
   ul {
     padding-left: 20px;
@@ -102,16 +109,11 @@
   a {
     color: var(--accent);
   }
-  a:hover {
-    color: var(--link-hover);
-  }
   footer {
     text-align: center;
     padding: 15px;
-    background-color: var(--primary-bg);
+    background: var(--primary-bg);
     color: var(--text-light);
-    margin-top: 40px;
-    border-radius: 8px;
   }
 
   /* Responsive */
@@ -132,8 +134,9 @@
 <body>
 
 <div class="sidebar">
+  <img src="IMG_4007.JPG" alt="Varmin Singh">
   <h1>Varmin Singh</h1>
-  <p>Data Scientist | Machine Learning | Data Engineering</p>
+  <p>Data Scientist | ML | Data Engineering</p>
   <a href="#about">About Me</a>
   <a href="#education">Education</a>
   <a href="#experience">Experience</a>
@@ -150,94 +153,60 @@
 
   <section id="education">
     <h2>Education</h2>
-    <h3>University of California, Berkeley</h3>
-    <p><strong>BA in Data Science</strong> (Aug 2022 – May 2026)</p>
-    <p><strong>MA in Statistics</strong> (Aug 2026 – May 2027)</p>
-    <p>Relevant Coursework: Applied Machine Learning (Graduate), Data Engineering, Probability for Data Science, Artificial Intelligence, Computer Architecture, Deep Neural Networks.</p>
+    <p><strong>University of California, Berkeley</strong></p>
+    <ul>
+      <li>BA in Data Science (2022 – 2026)</li>
+      <li>MA in Statistics (2026 – 2027)</li>
+      <li>Relevant Coursework: Applied Machine Learning (Graduate), Data Engineering, Probability for Data Science, AI, Computer Architecture, Deep Neural Networks</li>
+    </ul>
   </section>
 
   <section id="experience">
     <h2>Experience</h2>
-    <h3>Boeing</h3>
-    <p><em>Data Science Intern</em> | May 2025 – Present</p>
+    <h3>Boeing – Data Science Intern</h3>
     <ul>
-      <li>Built automated ETL pipelines with Python and Smartsheet integrations, reducing data cleaning time by 65%.</li>
+      <li>Built automated ETL pipelines reducing data cleaning time by 65%.</li>
       <li>Created workflow automations supporting multiple engineering teams.</li>
-      <li>Developed reusable data standardization tools for cross-departmental datasets.</li>
     </ul>
-
-    <h3>Penserra</h3>
-    <p><em>Data Engineer Intern</em> | Jun 2024 – May 2025</p>
+    <h3>Penserra – Data Engineer Intern</h3>
     <ul>
-      <li>Developed cloud-based NLP pipeline on Azure for real-time trade compliance checks.</li>
-      <li>Transformed large unstructured compliance logs into structured formats, improving efficiency by 35%.</li>
-      <li>Implemented Supabase-based activity logging for operational efficiency.</li>
-    </ul>
-
-    <h3>UC Berkeley</h3>
-    <p><em>Academic Intern</em> | Aug 2024 – Dec 2024</p>
-    <ul>
-      <li>Supported 100+ students in C++ and RISC-V assembly topics.</li>
-    </ul>
-
-    <p><em>Research Assistant</em> | Jan 2024 – May 2024</p>
-    <ul>
-      <li>Conducted AWS component research for real-time anomaly detection, improving accuracy by 30%.</li>
+      <li>Developed cloud-based NLP pipeline on Azure for real-time compliance checks.</li>
+      <li>Improved data processing efficiency by 35%.</li>
     </ul>
   </section>
 
   <section id="projects">
     <h2>Projects</h2>
-    <h3>Panorama - News Across the Political Spectrum</h3>
     <ul>
-      <li>Full-stack news search engine with Python (FastAPI), React, MongoDB.</li>
-      <li>Integrated Perplexity API for live aggregation and OpenAI API for summaries/Q&A.</li>
-    </ul>
-
-    <h3>Tops Formatter</h3>
-    <ul>
-      <li>Automated end-of-day trade recaps with Python, Supabase, Azure.</li>
-    </ul>
-
-    <h3>Automated Fault Detection in GitHub Commits</h3>
-    <ul>
-      <li>Airflow + Redis pipeline processing 100K+ daily commits, cutting processing time by 75%.</li>
-    </ul>
-
-    <h3>AI Skin Disease Detection</h3>
-    <ul>
-      <li>CNN model for skin disease classification with Flask-based web interface.</li>
+      <li><strong>Panorama:</strong> Full-stack news search engine with Python, React, MongoDB.</li>
+      <li><strong>AI Skin Disease Detection:</strong> CNN model with Flask web interface.</li>
     </ul>
   </section>
 
   <section id="research">
     <h2>Research</h2>
-    <p>Real-time anomaly detection in cloud computing environments, improving efficiency by 30% and developing predictive maintenance solutions.</p>
+    <p>Real-time anomaly detection in cloud computing, improving efficiency by 30% and enabling predictive maintenance.</p>
   </section>
 
   <section id="skills">
-    <h2>Skills & Interests</h2>
-    <p><strong>Languages:</strong> Python, SQL, R, Java, C, C++, HTML</p>
-    <p><strong>Tools:</strong> Pandas, AWS, Docker, Node.js, PostgreSQL, Scikit-Learn, PyTorch</p>
-    <p><strong>Interests:</strong> Machine Learning, Data Engineering, NLP, Performance Analytics</p>
+    <h2>Skills</h2>
+    <p><strong>Languages:</strong> Python, SQL, R, Java, C, C++</p>
+    <p><strong>Tools:</strong> AWS, Docker, PostgreSQL, Scikit-Learn, PyTorch</p>
   </section>
 
   <footer>
-    <p>© 2025 Varmin Singh. All rights reserved.</p>
+    <p>© 2025 Varmin Singh</p>
   </footer>
 </div>
 
 <script>
-  // Intersection Observer for section animations
+  // Fade-in animation
   const sections = document.querySelectorAll("section");
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
+      if (entry.isIntersecting) entry.target.classList.add("visible");
     });
   }, { threshold: 0.1 });
-
   sections.forEach(sec => observer.observe(sec));
 </script>
 
