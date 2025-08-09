@@ -1,235 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VS Portfolio</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varmin Singh - Portfolio</title>
+<style>
+  /* Color Scheme */
+  :root {
+    --primary-bg: #0b1c26;      /* deep navy greenish */
+    --secondary-bg: #122e3d;    /* lighter navy */
+    --accent: #ff9f1c;           /* warm orange */
+    --text-light: #f0f4f8;
+    --text-dark: #1a1a1a;
+    --link-hover: #ffbf69;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #f8fafc;
+    color: var(--text-dark);
+    display: flex;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 250px;
+    background-color: var(--primary-bg);
+    color: var(--text-light);
+    position: fixed;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .sidebar h1 {
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+    color: var(--accent);
+  }
+  .sidebar p {
+    font-size: 0.9rem;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #b0c4d4;
+  }
+  .sidebar a {
+    display: block;
+    padding: 10px;
+    color: var(--text-light);
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .sidebar a:hover {
+    background-color: var(--accent);
+    color: var(--primary-bg);
+    transform: translateX(5px);
+  }
+
+  /* Main content */
+  .main {
+    margin-left: 250px;
+    padding: 20px;
+    max-width: 900px;
+  }
+  section {
+    margin-bottom: 40px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  section h2 {
+    color: var(--primary-bg);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+  }
+  h3 {
+    color: var(--secondary-bg);
+  }
+  h4 {
+    color: #556b84;
+  }
+  ul {
+    padding-left: 20px;
+  }
+  a {
+    color: var(--accent);
+  }
+  a:hover {
+    color: var(--link-hover);
+  }
+  footer {
+    text-align: center;
+    padding: 15px;
+    background-color: var(--primary-bg);
+    color: var(--text-light);
+    margin-top: 40px;
+    border-radius: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
     body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f7f9fc;
-      color: #333;
-      line-height: 1.6;
+      flex-direction: column;
     }
-    header {
-      background: #4a6fa5;
-      color: #fff;
-      padding: 1.5rem 0;
-      text-align: center;
+    .sidebar {
+      width: 100%;
+      position: relative;
     }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
+    .main {
+      margin-left: 0;
     }
-    header p {
-      margin: 0.5rem 0 0;
-      font-size: 1.2rem;
-    }
-    nav {
-      display: flex;
-      justify-content: center;
-      background: #3a5683;
-      padding: 0.5rem 0;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      margin: 0 0.5rem;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-    nav a:hover {
-      background: #4a6fa5;
-    }
-    section {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 20px;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-    }
-    section h2 {
-      color: #3a5683;
-      border-bottom: 2px solid #4a6fa5;
-      padding-bottom: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    section h3 {
-      color: #4a6fa5;
-      margin-top: 1.5rem;
-    }
-    section h4 {
-      color: #3a5683;
-      margin-top: 1rem;
-    }
-    ul, .timeline {
-      list-style: none;
-      padding: 0;
-    }
-    ul li, .timeline-item {
-      background: #f7f9fc;
-      margin: 10px 0;
-      padding: 10px;
-      border-left: 4px solid #4a6fa5;
-      border-radius: 5px;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem 0;
-      background: #3a5683;
-      color: #fff;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Varmin Singh - Portfolio</h1>
-    <p>Data Scientist | Machine Learning | Data Engineering</p>
-  </header>
-  <nav>
-    <a href="#about-me">About Me</a>
-    <a href="#resume">Resume</a>
-    <a href="#timeline">Timeline</a>
-    <a href="#projects">Projects</a>
-    <a href="#research">Research</a>
-  </nav>
-  <section id="about-me">
+
+<div class="sidebar">
+  <h1>Varmin Singh</h1>
+  <p>Data Scientist | Machine Learning | Data Engineering</p>
+  <a href="#about">About Me</a>
+  <a href="#education">Education</a>
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#research">Research</a>
+  <a href="#skills">Skills</a>
+</div>
+
+<div class="main">
+  <section id="about">
     <h2>About Me</h2>
-    <p>Hi! I’m Varmin Singh, an undergraduate student at UC Berkeley studying Data Science. I’m passionate about using machine learning, artificial intelligence, cloud computing, and automation to solve real-world challenges. Whether in academia or industry, I’m eager to learn, grow, and contribute to impactful projects. Outside of work, I enjoy basketball, hiking, and weightlifting.</p>
+    <p>Hi! I’m Varmin Singh, a UC Berkeley Data Science student with a passion for leveraging machine learning, data engineering, and automation to solve real-world problems. I’m currently interning at Boeing as a Data Science Intern, building automated pipelines and scalable workflow systems. Outside of work, I enjoy basketball, hiking, and weightlifting.</p>
   </section>
-  <section id="resume">
-    <h2>Resume</h2>
-    <p>
-      <strong>Contact:</strong> singh.varmindip@gmail.com ❖ (559) 903-2599 ❖ Berkeley, CA<br>
-      <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/varmin" target="_blank">linkedin.com/in/varmin</a> ❖ 
-      <strong>GitHub:</strong> <a href="https://github.com/Varminn" target="_blank">github.com/Varminn</a><br>
-      <a href="varmin_singh_cv.pdf" download="varmin_singh_cv.pdf">Download Resume</a>
-    </p>
-    <h3>Education</h3>
-    <p>
-      <strong>University of California, Berkeley</strong> <br>
-      BA in Data Science (GPA: 3.7) <br>
-      <em>Aug 2022 – May 2026 | Berkeley, CA</em><br>
-      Relevant Coursework: Applied Machine Learning (Graduate), Data Engineering/Databases, Data Mining & Analytics, Computer Architecture, Probability for Data Science, Data Structures, Artificial Intelligence, Data Science for Econ, Designing and Understanding Deep Neural Networks, Principles and Techniques of Data Science<br>
-      Extracurriculars: Berkeley Institute for Data Science, Data Science Discovery Program, Undergraduate Research, Data Honors, Cal Bhangra
-    </p>
-    <h3>Experience</h3>
-    <h4>Boeing</h4>
-    <p>
-      <em>IT Program Manager Intern</em> <br>
-      <em>May 2025 – Present | BGS Commercial Modifications Team</em><br>
-      - Collaborating with cross-functional stakeholders to coordinate program deliverables and timelines.<br>
-      - Assisting in the development of project plans and performing risk assessments to ensure project objectives are met.<br>
-      - Facilitating communication between engineering, operations, and management teams to drive program success.
-    </p>
-    <h4>Penserra</h4>
-    <p>
-      <em>Data Engineer Intern</em> <br>
-      <em>Jun 2024 – May 2025 | Orinda, CA</em><br>
-      - Designed and implemented an enterprise-grade ETL pipeline using AWS Lambda and the Gemini API to ensure robust, distributed processing of financial data.<br>
-      - Developed and tested backend services and automation scripts with Python and SQL, following industry best practices.<br>
-      - Led the secure migration of complex financial data from legacy systems to PostgreSQL on Azure, ensuring high data integrity.<br>
-      - Created user-friendly reporting tools integrated with Microsoft Office for actionable analytics.
-    </p>
-    <p>
-      <em>Additional Context:</em> During my time at Penserra, I collaborated with cross-functional teams to integrate the ETL pipeline with emerging microservices, further enhancing system resilience. I also contributed to designing dynamic dashboards that provided real-time insights, significantly improving decision-making processes for business stakeholders.
-    </p>
-    
-    <h4>University of California, Berkeley</h4>
-    <p>
-      <em>Academic Intern</em> <br>
-      <em>Aug 2024 – Dec 2024 | Berkeley, CA</em><br>
-      - Supported 100+ students during office hours by explaining complex technical concepts and C++ in an engaging manner.<br>
-      - Led technical workshops on RISC-V assembly, pipelining, parallel processing, threading, and CPU design.
-    </p>
-    <p>
-      <em>Additional Context:</em> I also contributed to the development of a course-specific online portal, streamlining communications between students and professors. This initiative enhanced engagement and feedback collection, and my ability to simplify advanced topics was frequently highlighted by both peers and faculty.
-    </p>
-    <h4>University of California, Berkeley</h4>
-    <p>
-      <em>Research Assistant</em> <br>
-      <em>Jan 2024 – May 2024 | Berkeley, CA</em><br>
-      - Designed and implemented scalable data pipelines in Linux for real-time anomaly detection in Kubernetes cloud computing environments, achieving a 30% improvement in system efficiency.<br>
-      - Assisted in presenting technical findings to academic peers, reinforcing a data-driven approach to complex problems.
-    </p>
-    <p>
-      <em>Additional Context:</em> In parallel, I initiated a side project focusing on predictive maintenance for cloud infrastructures using machine learning models. This work not only deepened my understanding of large-scale distributed datasets but also led to the development of innovative visualization methods for tracking system performance.
-    </p>
-    <h4>Stealth Startup (E-commerce)</h4>
-    <p>
-      <em>Data Analyst Intern</em> <br>
-      <em>Nov 2022 – Aug 2023 | Berkeley, CA</em><br>
-      - Developed algorithms in Python and C++ to dynamically prioritize product displays based on real-time trends.<br>
-      - Extracted valuable signals from large, noisy datasets to enhance decision-making processes.
-    </p>
-    <p>
-      <em>Additional Context:</em> Beyond algorithm development, I helped design and implement an A/B testing framework to evaluate the impact of various strategies on user engagement. This role allowed me to combine technical analytics with market trend insights to drive product improvements and elevate customer satisfaction.
-    </p>
-    <h3>Projects</h3>
-    <p>
-      <strong>Automated Fault Detection in GitHub Commits</strong> <br>
-      - Automated fault detection for 100,000+ daily GitHub commits using Airflow and Redis, reducing processing time by 75% and enhancing quality control by 45% across 5TB+ of repository data.
-    </p>
-    <p>
-      <em>Additional Context:</em> I extended this project by integrating real-time alerting systems and developing a custom dashboard to monitor codebase health. Experimenting with several machine learning models further refined the detection capabilities, making this tool a critical component of our continuous integration pipeline.
-    </p>
-    <p>
-      <strong>AI Skin Disease Detection (Berkeley AI Hackathon)</strong> <br>
-      - Developed a CNN model for skin disease classification using 25,000 labeled medical images and designed a user-friendly web interface with Flask for real-time analysis.
-    </p>
-    <p>
-      <em>Additional Context:</em> To further enhance the system, I explored transfer learning techniques with pre-trained models, boosting classification accuracy. I also revamped the web interface to be mobile-responsive, enabling on-the-go access for medical professionals during clinical evaluations.
-    </p>
-    <h3>Skills & Interests</h3>
-    <p>
-      <strong>Languages:</strong> Python, SQL, R, Java, C, C++, HTML<br>
-      <strong>Tools:</strong> Pandas, AWS, Docker, React.js, NumPy, Selenium, PostgreSQL, Scikit-Learn, PyTorch, OpenCV<br>
-      <strong>Interests:</strong> Machine Learning, Data Engineering, Performance Analytics, Back-end Deep Learning, NLP
-    </p>
+
+  <section id="education">
+    <h2>Education</h2>
+    <h3>University of California, Berkeley</h3>
+    <p><strong>BA in Data Science</strong> (Aug 2022 – May 2026)</p>
+    <p><strong>MA in Statistics</strong> (Aug 2026 – May 2027)</p>
+    <p>Relevant Coursework: Applied Machine Learning (Graduate), Data Engineering, Probability for Data Science, Artificial Intelligence, Computer Architecture, Deep Neural Networks.</p>
   </section>
-  <section id="timeline">
-    <h2>Timeline</h2>
-    <ul class="timeline">
-      <li class="timeline-item"><strong>Jun 2024 – May 2025:</strong> Data Engineer Intern at Penserra, Orinda, CA.</li>
-      <li class="timeline-item"><strong>May 2025 – Present:</strong> IT Program Manager Intern at Boeing, BGS Commercial Modifications Team.</li>
-      <li class="timeline-item"><strong>Aug 2024 – Dec 2024:</strong> Academic Intern at UC Berkeley, Berkeley, CA.</li>
-      <li class="timeline-item"><strong>Jan 2024 – May 2024:</strong> Research Assistant at UC Berkeley, Berkeley, CA.</li>
-      <li class="timeline-item"><strong>Nov 2022 – Aug 2023:</strong> Data Analyst Intern at Stealth Startup (E-commerce), Berkeley, CA.</li>
-      <li class="timeline-item"><strong>Aug 2022 – May 2026:</strong> Began undergraduate studies at UC Berkeley, pursuing a BA in Data Science.</li>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <h3>Boeing</h3>
+    <p><em>Data Science Intern</em> | May 2025 – Present</p>
+    <ul>
+      <li>Built automated ETL pipelines with Python and Smartsheet integrations, reducing data cleaning time by 65%.</li>
+      <li>Created workflow automations supporting multiple engineering teams.</li>
+      <li>Developed reusable data standardization tools for cross-departmental datasets.</li>
+    </ul>
+
+    <h3>Penserra</h3>
+    <p><em>Data Engineer Intern</em> | Jun 2024 – May 2025</p>
+    <ul>
+      <li>Developed cloud-based NLP pipeline on Azure for real-time trade compliance checks.</li>
+      <li>Transformed large unstructured compliance logs into structured formats, improving efficiency by 35%.</li>
+      <li>Implemented Supabase-based activity logging for operational efficiency.</li>
+    </ul>
+
+    <h3>UC Berkeley</h3>
+    <p><em>Academic Intern</em> | Aug 2024 – Dec 2024</p>
+    <ul>
+      <li>Supported 100+ students in C++ and RISC-V assembly topics.</li>
+    </ul>
+
+    <p><em>Research Assistant</em> | Jan 2024 – May 2024</p>
+    <ul>
+      <li>Conducted AWS component research for real-time anomaly detection, improving accuracy by 30%.</li>
     </ul>
   </section>
+
   <section id="projects">
     <h2>Projects</h2>
+    <h3>Panorama - News Across the Political Spectrum</h3>
     <ul>
-      <li>
-        <strong>Automated Fault Detection in GitHub Commits:</strong> Automated fault detection for 100,000+ daily GitHub commits using Airflow and Redis, reducing processing time by 75% and enhancing quality control by 45% across 5TB+ of repository data.
-        <br>
-        <em>Additional Context:</em> Integrated real-time alerting systems and developed a custom monitoring dashboard. Experimented with multiple machine learning models to optimize fault detection thresholds, making the pipeline indispensable in our CI/CD process.
-        <a href="#">Learn more</a>
-      </li>
-      <li>
-        <strong>AI Skin Disease Detection (Berkeley AI Hackathon):</strong> Developed a CNN model for skin disease classification with 25,000 labeled images and designed a Flask-based web interface for real-time predictions.
-        <br>
-        <em>Additional Context:</em> Explored transfer learning with pre-trained models to further boost accuracy and revamped the interface to be mobile-responsive, enabling on-the-go diagnostic support for healthcare professionals.
-        <a href="#">Learn more</a>
-      </li>
+      <li>Full-stack news search engine with Python (FastAPI), React, MongoDB.</li>
+      <li>Integrated Perplexity API for live aggregation and OpenAI API for summaries/Q&A.</li>
+    </ul>
+
+    <h3>Tops Formatter</h3>
+    <ul>
+      <li>Automated end-of-day trade recaps with Python, Supabase, Azure.</li>
+    </ul>
+
+    <h3>Automated Fault Detection in GitHub Commits</h3>
+    <ul>
+      <li>Airflow + Redis pipeline processing 100K+ daily commits, cutting processing time by 75%.</li>
+    </ul>
+
+    <h3>AI Skin Disease Detection</h3>
+    <ul>
+      <li>CNN model for skin disease classification with Flask-based web interface.</li>
     </ul>
   </section>
+
   <section id="research">
     <h2>Research</h2>
-    <p>
-      <strong>Real-time Anomaly Detection in Cloud Computing:</strong> As a Research Assistant at UC Berkeley, I designed scalable data pipelines for anomaly detection in distributed cloud environments, improving system efficiency by 30%.
-    </p>
-    <p>
-      <em>Additional Context:</em> This project evolved into a broader initiative on predictive maintenance for cloud infrastructures. I experimented with advanced visualization techniques to better represent system health metrics, providing actionable insights for academic and industry stakeholders.
-    </p>
+    <p>Real-time anomaly detection in cloud computing environments, improving efficiency by 30% and developing predictive maintenance solutions.</p>
   </section>
+
+  <section id="skills">
+    <h2>Skills & Interests</h2>
+    <p><strong>Languages:</strong> Python, SQL, R, Java, C, C++, HTML</p>
+    <p><strong>Tools:</strong> Pandas, AWS, Docker, Node.js, PostgreSQL, Scikit-Learn, PyTorch</p>
+    <p><strong>Interests:</strong> Machine Learning, Data Engineering, NLP, Performance Analytics</p>
+  </section>
+
   <footer>
-    <p>© 2024 Varmin Singh. All rights reserved.</p>
+    <p>© 2025 Varmin Singh. All rights reserved.</p>
   </footer>
+</div>
+
+<script>
+  // Intersection Observer for section animations
+  const sections = document.querySelectorAll("section");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  sections.forEach(sec => observer.observe(sec));
+</script>
+
 </body>
 </html>
