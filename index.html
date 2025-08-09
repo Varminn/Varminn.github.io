@@ -1,214 +1,616 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Varmin Singh - Portfolio</title>
-<style>
-  /* Color Scheme */
-  :root {
-    --primary-bg: #0f2027;   /* deep blue-green */
-    --secondary-bg: #203a43; /* dark teal */
-    --tertiary-bg: #2c5364;  /* lighter teal */
-    --accent: #4fd1c5;       /* minty teal */
-    --text-light: #f0f4f8;
-    --text-dark: #1a1a1a;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background-color: #f8fafc;
-    color: var(--text-dark);
-    display: flex;
-  }
-
-  /* Sidebar */
-  .sidebar {
-    width: 250px;
-    background: linear-gradient(to bottom, var(--primary-bg), var(--secondary-bg));
-    color: var(--text-light);
-    position: fixed;
-    height: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    text-align: center;
-  }
-  .sidebar img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid var(--accent);
-    margin-bottom: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-  }
-  .sidebar h1 {
-    font-size: 1.6rem;
-    margin-bottom: 5px;
-    color: var(--accent);
-  }
-  .sidebar p {
-    font-size: 0.9rem;
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #b0c4d4;
-  }
-  .sidebar a {
-    display: block;
-    padding: 10px;
-    color: var(--text-light);
-    text-decoration: none;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    font-weight: bold;
-    transition: background 0.3s, transform 0.2s;
-  }
-  .sidebar a:hover {
-    background-color: var(--accent);
-    color: var(--primary-bg);
-    transform: translateX(5px);
-  }
-
-  /* Main content */
-  .main {
-    margin-left: 250px;
-    padding: 0;
-    max-width: 100%;
-  }
-  section {
-    padding: 40px 20px;
-    transition: opacity 0.8s ease, transform 0.8s ease;
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  section.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  section:nth-child(even) {
-    background-color: #eef4f7;
-  }
-  section:nth-child(odd) {
-    background-color: #ffffff;
-  }
-  section h2 {
-    color: var(--secondary-bg);
-    border-bottom: 3px solid var(--accent);
-    display: inline-block;
-    padding-bottom: 5px;
-    margin-bottom: 20px;
-  }
-  ul {
-    padding-left: 20px;
-  }
-  a {
-    color: var(--accent);
-  }
-  footer {
-    text-align: center;
-    padding: 15px;
-    background: var(--primary-bg);
-    color: var(--text-light);
-  }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    body {
-      flex-direction: column;
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Varmin Singh — Portfolio</title>
+  <meta name="description" content="Varmin Singh — Data Science / Machine Learning / Data Engineering portfolio. Full resume, projects, research and contact."/>
+  <style>
+    :root{
+      --bg:#f6f8fa;
+      --card:#ffffff;
+      --nav:#0f3b44;        /* deep teal */
+      --nav-2:#145b66;      /* lighter teal */
+      --accent:#29a6a6;     /* minty teal */
+      --muted:#64707a;
+      --text:#0f1720;
+      --glass: rgba(255,255,255,0.6);
+      --shadow: 0 6px 20px rgba(16,24,32,0.08);
+      --radius:12px;
+      --max-width:1100px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
-    .sidebar {
-      width: 100%;
-      position: relative;
+
+    /* Reset + layout */
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+    a{color:var(--accent); text-decoration:none;}
+    a:hover{text-decoration:underline}
+    main{display:flex; min-height:100vh; gap:28px; align-items:flex-start; justify-content:center; padding:28px;}
+
+    /* Sidebar (left) */
+    nav.sidebar{
+      position:sticky; top:28px;
+      width:260px;
+      align-self:flex-start;
+      background:linear-gradient(180deg,var(--nav),var(--nav-2));
+      color:#fff;
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow:var(--shadow);
+      flex-shrink:0;
+      height:fit-content;
     }
-    .main {
-      margin-left: 0;
+    .brand{
+      margin-bottom:14px;
     }
-  }
-</style>
+    .brand h1{font-size:20px; margin:0; color:#eafffb; letter-spacing:0.2px}
+    .brand p{margin:6px 0 0; color:rgba(230,250,250,0.85); font-size:13px}
+    .contact{
+      margin-top:14px;
+      font-size:13px;
+      line-height:1.4;
+      color:rgba(230,250,250,0.9);
+    }
+    .contact a{color: #e8fffb}
+    .navlinks{margin-top:18px; display:flex; flex-direction:column; gap:6px}
+    .navlinks a{
+      display:block; padding:9px 12px; border-radius:10px; color:rgba(240,255,255,0.98); font-weight:600; background:transparent;
+      transition: all .22s ease;
+      font-size:14px;
+    }
+    .navlinks a:hover{transform:translateX(6px); background: rgba(255,255,255,0.06); color:#fff}
+
+    /* Content column */
+    .content{
+      width:100%;
+      max-width:var(--max-width);
+      margin:0 auto;
+    }
+
+    /* Hero / About */
+    .about{
+      display:grid;
+      grid-template-columns: 160px 1fr;
+      gap:22px;
+      align-items:center;
+      background:linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.95));
+      padding:22px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      margin-bottom:20px;
+    }
+    .profile-photo{
+      width:160px; height:160px; border-radius:18px; overflow:hidden; flex:0 0 160px;
+      box-shadow:0 10px 30px rgba(16,24,32,0.12);
+      border:4px solid rgba(41,166,166,0.12);
+      background: linear-gradient(135deg, rgba(41,166,166,0.06), rgba(20,91,102,0.04));
+      display:flex; align-items:center; justify-content:center;
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .profile-photo img{width:100%; height:100%; object-fit:cover; display:block}
+    .profile-hidden{opacity:0; transform: translateY(-12px) scale(.98); pointer-events:none}
+
+    .about .intro h2{margin:0; font-size:22px; color:var(--nav); letter-spacing:-0.3px}
+    .about .intro p.lead{margin:8px 0 14px; color:var(--muted); line-height:1.5}
+    .about .meta{font-size:13px; color:var(--muted)}
+
+    /* Sections */
+    section.card{
+      background:var(--card); padding:22px; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:18px;
+      opacity:0; transform:translateY(18px); transition: all .65s cubic-bezier(.16,.84,.35,1);
+    }
+    section.card.visible{opacity:1; transform:none}
+
+    section.card h3{margin:0 0 10px; color:var(--nav)}
+    section.card h4{margin:10px 0 8px; color:var(--muted); font-size:15px}
+    .muted{color:var(--muted); font-size:14px}
+
+    /* Experience items */
+    .experience-item{margin-bottom:14px; padding-bottom:10px; border-bottom:1px dashed rgba(16,24,32,0.06)}
+    .experience-item:last-child{border-bottom:none}
+    .role-title{display:flex; gap:12px; align-items:center; justify-content:space-between}
+    .role-title .left{display:flex; gap:12px; align-items:flex-start}
+    .role-title h4{margin:0; font-size:15px}
+    .role-meta{font-size:13px; color:var(--muted)}
+
+    .bullets{margin:10px 0 0; padding-left:18px}
+    .bullets li{margin:8px 0; line-height:1.5; color:#21303a; font-size:14px}
+
+    /* Projects */
+    .project{margin-bottom:14px}
+    .project .tech{font-size:13px; color:var(--muted); margin-top:6px}
+
+    /* Grid columns for sections */
+    .two-col{
+      display:grid; grid-template-columns:1fr 1fr; gap:14px;
+    }
+
+    /* Skills list */
+    .skill-group{margin-bottom:12px}
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+    .chip{background:#eef6f6; padding:8px 10px; border-radius:999px; font-weight:600; color:#0b3940; font-size:13px; box-shadow:inset 0 -1px 0 rgba(0,0,0,0.02)}
+
+    /* Timeline / footer */
+    .timeline{display:flex; flex-direction:column; gap:8px; font-size:14px; color:var(--muted)}
+
+    footer{margin-top:16px; text-align:center; color:var(--muted); font-size:13px}
+
+    /* Small screens */
+    @media (max-width:960px){
+      main{padding:18px}
+      nav.sidebar{position:relative; width:100%; display:flex; gap:14px; padding:14px; flex-direction:row; align-items:center; justify-content:space-between; border-radius:10px}
+      .navlinks{flex-direction:row; gap:10px; overflow:auto}
+      .content{max-width:900px}
+      .about{grid-template-columns:120px 1fr}
+      .profile-photo{width:120px; height:120px; border-radius:14px}
+      .two-col{grid-template-columns:1fr}
+    }
+    @media (max-width:640px){
+      .about{grid-template-columns:1fr; gap:12px}
+      .profile-photo{order:1; margin:0 auto}
+    }
+
+    /* Smooth anchor offset (for sticky nav) */
+    :target:before{
+      content:""; display:block; height:84px; margin:-84px 0 0;
+    }
+
+    /* subtle hover */
+    .card-hover:hover{transform:translateY(-4px); transition:transform .18s ease}
+  </style>
 </head>
 <body>
+<main>
+  <!-- LEFT NAV -->
+  <nav class="sidebar" aria-label="Primary">
+    <div class="brand">
+      <h1>Varmin Singh</h1>
+      <p>Data Scientist • Machine Learning • Data Engineering</p>
+    </div>
 
-<div class="sidebar">
-  <img src="IMG_4007.JPG" alt="Varmin Singh">
-  <h1>Varmin Singh</h1>
-  <p>Data Scientist | ML | Data Engineering</p>
-  <a href="#about">About Me</a>
-  <a href="#education">Education</a>
-  <a href="#experience">Experience</a>
-  <a href="#projects">Projects</a>
-  <a href="#research">Research</a>
-  <a href="#skills">Skills</a>
-</div>
+    <div class="navlinks" role="navigation" aria-label="Page Sections">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#research">Research</a>
+      <a href="#education">Education</a>
+      <a href="#skills">Skills</a>
+      <a href="#leadership">Leadership</a>
+      <a href="#contact">Contact</a>
+    </div>
 
-<div class="main">
-  <section id="about">
-    <h2>About Me</h2>
-    <p>Hi! I’m Varmin Singh, a UC Berkeley Data Science student with a passion for leveraging machine learning, data engineering, and automation to solve real-world problems. I’m currently interning at Boeing as a Data Science Intern, building automated pipelines and scalable workflow systems. Outside of work, I enjoy basketball, hiking, and weightlifting.</p>
-  </section>
+    <div class="contact" style="margin-top:14px">
+      <div style="font-weight:700">singh.varmindip@gmail.com</div>
+      <div style="margin-top:6px">📞 (559) 903-2599</div>
+      <div style="margin-top:6px"><a href="https://linkedin.com/in/varmin" target="_blank">linkedin.com/in/varmin</a></div>
+      <div style="margin-top:6px"><a href="https://github.com/Varminn" target="_blank">github.com/Varminn</a></div>
+    </div>
+  </nav>
 
-  <section id="education">
-    <h2>Education</h2>
-    <p><strong>University of California, Berkeley</strong></p>
-    <ul>
-      <li>BA in Data Science (2022 – 2026)</li>
-      <li>MA in Statistics (2026 – 2027)</li>
-      <li>Relevant Coursework: Applied Machine Learning (Graduate), Data Engineering, Probability for Data Science, AI, Computer Architecture, Deep Neural Networks</li>
-    </ul>
-  </section>
+  <!-- RIGHT CONTENT -->
+  <div class="content" id="content">
 
-  <section id="experience">
-    <h2>Experience</h2>
-    <h3>Boeing – Data Science Intern</h3>
-    <ul>
-      <li>Built automated ETL pipelines reducing data cleaning time by 65%.</li>
-      <li>Created workflow automations supporting multiple engineering teams.</li>
-    </ul>
-    <h3>Penserra – Data Engineer Intern</h3>
-    <ul>
-      <li>Developed cloud-based NLP pipeline on Azure for real-time compliance checks.</li>
-      <li>Improved data processing efficiency by 35%.</li>
-    </ul>
-  </section>
+    <!-- ABOUT -->
+    <section id="about" class="about card card-hover">
+      <div class="profile-photo" id="profilePhoto">
+        <!-- Image file (should exist at same path: IMG_4007.JPG) -->
+        <img src="IMG_4007.JPG" alt="Headshot — Varmin Singh" />
+      </div>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <ul>
-      <li><strong>Panorama:</strong> Full-stack news search engine with Python, React, MongoDB.</li>
-      <li><strong>AI Skin Disease Detection:</strong> CNN model with Flask web interface.</li>
-    </ul>
-  </section>
+      <div class="intro">
+        <h2>Hi — I'm Varmin Singh.</h2>
+        <p class="lead">I’m a Data Scientist and Data Engineer studying at UC Berkeley (BA Data Science, MA Statistics forthcoming). I build production-ready data pipelines, ML systems, and automation tooling that help teams extract value from complex datasets — especially in finance, cloud reliability, and applied ML domains. I enjoy taking noisy, real-world data and turning it into reproducible, scalable systems that support decisions.</p>
 
-  <section id="research">
-    <h2>Research</h2>
-    <p>Real-time anomaly detection in cloud computing, improving efficiency by 30% and enabling predictive maintenance.</p>
-  </section>
+        <div class="meta">
+          Berkeley, CA • Available for internships & full-time • Open to data/ML engineering roles
+        </div>
+      </div>
+    </section>
 
-  <section id="skills">
-    <h2>Skills</h2>
-    <p><strong>Languages:</strong> Python, SQL, R, Java, C, C++</p>
-    <p><strong>Tools:</strong> AWS, Docker, PostgreSQL, Scikit-Learn, PyTorch</p>
-  </section>
+    <!-- EXPERIENCE (complete history) -->
+    <section id="experience" class="card">
+      <h3>Experience</h3>
 
-  <footer>
-    <p>© 2025 Varmin Singh</p>
-  </footer>
-</div>
+      <!-- Boeing -->
+      <div class="experience-item">
+        <div class="role-title">
+          <div class="left">
+            <div>
+              <h4>Boeing — Data Science Intern</h4>
+              <div class="role-meta">May 2025 – Present • BGS Commercial Modifications Team • Long Beach, CA</div>
+            </div>
+          </div>
+          <div class="right muted">Program Management • Engineering & Analytics</div>
+        </div>
+
+        <ul class="bullets">
+          <li>
+            Led the development of automated ETL pipelines and integrated Smartsheet-based workflows to standardize incoming engineering and sensor data. Pipelines processed millions of rows daily and reduced manual data extraction and cleaning time by ~65%, enabling near real-time dashboarding for analytics teams.
+          </li>
+          <li>
+            Built scalable workflow automations and reusable data-standardization libraries that supported four engineering managers and cross-functional teams. These tools enforced consistent schemas across dashboards and analysis tools, improving downstream model reliability and reducing onboarding time for new datasets.
+          </li>
+          <li>
+            Implemented monitoring and alerting around data quality using lightweight orchestration and logging, enabling proactive identification of data drift and missing feeds — which reduced troubleshooting time for engineers by an estimated 30%.
+          </li>
+          <li class="muted">Technologies: Python, Pandas, SQL, Smartsheet integrations, internal Boeing tooling, lightweight orchestration, Docker.</li>
+        </ul>
+      </div>
+
+      <!-- Penserra -->
+      <div class="experience-item">
+        <div class="role-title">
+          <div class="left">
+            <div>
+              <h4>Penserra — Data Engineer Intern</h4>
+              <div class="role-meta">Jun 2024 – May 2025 • Orinda, CA</div>
+            </div>
+          </div>
+          <div class="right muted">Part-time • 12B AUM</div>
+        </div>
+
+        <ul class="bullets">
+          <li>
+            Engineered a cloud-based NLP ingestion pipeline leveraging Microsoft Azure and the Gemini API to ingest streaming transaction and trade documentation into PostgreSQL, enabling near real-time compliance checks against trading rules. The pipeline reached ~99% compliance-check accuracy on structured test sets.
+          </li>
+          <li>
+            Designed robust data cleansing and transformation workflows using Python (Pandas, PySpark) to convert large volumes of unstructured compliance logs, OCR-scanned PDFs, and text logs into structured tabular formats—improving processing throughput by ~35% and significantly lowering manual review time.
+          </li>
+          <li>
+            Built a real-time user activity logging system using Supabase triggers/functions and centralized storage automations to surface operational metrics for the ops team. The system facilitated root-cause analysis and saved the team 15+ hours per week by automating routine report generation.
+          </li>
+          <li>
+            Contributed to backend services and secure data migration to cloud databases (PostgreSQL on Azure), ensuring strong data integrity and audit trails. Helped implement role-based access and encryption-at-rest to meet compliance requirements.
+          </li>
+          <li class="muted">Technologies: Python, Pandas, PySpark, Azure, Gemini API, Supabase, PostgreSQL, Docker, SQL, OCR libraries.</li>
+        </ul>
+      </div>
+
+      <!-- UC Berkeley — Academic Intern -->
+      <div class="experience-item">
+        <div class="role-title">
+          <div class="left">
+            <div>
+              <h4>University of California, Berkeley — Academic Intern</h4>
+              <div class="role-meta">Aug 2024 – Dec 2024 • Berkeley, CA</div>
+            </div>
+          </div>
+          <div class="right muted">Course Support • 61C Machine Structures</div>
+        </div>
+
+        <ul class="bullets">
+          <li>
+            Supported over 100 students in office hours and discussion sections, clarifying complex concepts in C++, RISC-V assembly, pipelining, threading, and CPU design. Developed approachable explanations and problem breakdowns that boosted in-class performance and helped students complete challenging assignments.
+          </li>
+          <li>
+            Organized and delivered technical workshops on RISC-V assembly and pipelining, created sample problems, and curated lab materials used by TAs across discussion sessions.
+          </li>
+          <li class="muted">Technologies / Topics: C, C++ pedagogy, RISC-V assembly, CPU pipelining, concurrency concepts.</li>
+        </ul>
+      </div>
+
+      <!-- UC Berkeley — Research Assistant -->
+      <div class="experience-item">
+        <div class="role-title">
+          <div class="left">
+            <div>
+              <h4>University of California, Berkeley — Research Assistant</h4>
+              <div class="role-meta">Jan 2024 – May 2024 • Berkeley, CA</div>
+            </div>
+          </div>
+          <div class="right muted">Cloud Disaster Detection • Remote</div>
+        </div>
+
+        <ul class="bullets">
+          <li>
+            Designed and implemented scalable data pipelines on Linux for real-time anomaly detection in Kubernetes and AWS environments. Architected streaming ingestion and feature extraction that supported near real-time model scoring.
+          </li>
+          <li>
+            Built models and tooling that increased detection accuracy by ~30% over baseline heuristics and helped the research team identify early indicators of cloud outages. Results were used to inform follow-up research and dashboard visualizations for operations.
+          </li>
+          <li>
+            Automated reporting and visualization components that accelerated analysis turnaround for the research team and made insights more accessible to non-technical stakeholders.
+          </li>
+          <li class="muted">Technologies: Python, AWS, Kubernetes, feature engineering, XGBoost, Docker, Linux tooling, visualization libs.</li>
+        </ul>
+      </div>
+
+      <!-- Stealth Startup -->
+      <div class="experience-item">
+        <div class="role-title">
+          <div class="left">
+            <div>
+              <h4>Stealth E-commerce Startup — Data Analyst Intern</h4>
+              <div class="role-meta">Nov 2022 – Aug 2023 • Berkeley, CA</div>
+            </div>
+          </div>
+          <div class="right muted">Product & Growth Analytics</div>
+        </div>
+
+        <ul class="bullets">
+          <li>
+            Built algorithms in Python and C++ to dynamically prioritize product displays based on real-time trend signals and user interactions. The ranking logic increased click-through and conversion metrics in early A/B tests.
+          </li>
+          <li>
+            Implemented an A/B testing framework and built dashboards that allowed product and growth teams to test hypotheses, measure feature impact, and iterate quickly.
+          </li>
+          <li class="muted">Technologies: Python, C++, A/B testing frameworks, analytics dashboards, SQL.</li>
+        </ul>
+      </div>
+
+      <!-- Diesel Mechanic -->
+      <div class="experience-item">
+        <div class="role-title">
+          <div class="left">
+            <div>
+              <h4>R & R Truck & Trailer Repair — Diesel Mechanic</h4>
+              <div class="role-meta">May 2023 – Aug 2023 • Fowler, CA</div>
+            </div>
+          </div>
+          <div class="right muted">Hands-on technical role</div>
+        </div>
+
+        <ul class="bullets">
+          <li>Performed maintenance and diagnostic work on diesel trucks and trailers, learning structured troubleshooting, mechanical systems, and attention to safety procedures.</li>
+        </ul>
+      </div>
+
+      <!-- Customer Service -->
+      <div class="experience-item">
+        <div class="role-title">
+          <div class="left">
+            <div>
+              <h4>JS Truck Insurance Agency Inc. — Customer Service Representative</h4>
+              <div class="role-meta">Jun 2021 – Aug 2022 • Fresno, CA</div>
+            </div>
+          </div>
+          <div class="right muted">Customer-facing operations</div>
+        </div>
+
+        <ul class="bullets">
+          <li>Handled customer service, data entry, and claims intake; developed communication and data accuracy skills while supporting insurance operations.</li>
+        </ul>
+      </div>
+
+      <!-- Volunteer -->
+      <div class="experience-item">
+        <div class="role-title">
+          <div class="left">
+            <div>
+              <h4>Saint Agnes Medical Center — Volunteer</h4>
+              <div class="role-meta">Jun 2018 – Apr 2020 • Fresno, CA</div>
+            </div>
+          </div>
+          <div class="right muted">Postpartum Department</div>
+        </div>
+
+        <ul class="bullets">
+          <li>Supported hospital staff in the postpartum unit with non-clinical tasks and patient support activities, building early teamwork and responsibility.</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="card">
+      <h3>Projects</h3>
+
+      <div class="project">
+        <h4>Panorama — News Across the Political Spectrum (SF Hacks 2025)</h4>
+        <div class="project-desc muted">
+          A full-stack, multi-partisan news search engine designed to surface balanced news coverage across ideological spectra. Built to help researchers and readers explore how different outlets report the same events.
+        </div>
+        <p>
+          Backend: FastAPI (Python) + custom scrapers. I integrated multiple news sources and rate-limited aggregation layers so the system can refresh news in near real-time. The search/ranking stack combines TF-IDF and semantic embeddings (sentence transformers) to produce relevance-aware results with cross-source deduplication.
+        </p>
+        <p>
+          Frontend: React with client-side filters for political leaning (left/center/right), keyword highlighting, and bookmarking. MongoDB stores indexed articles and user bookmarks. I integrated the Perplexity API for external context enrichment and OpenAI for summarization/Q&A features.
+        </p>
+        <div class="tech">Technologies: Python, FastAPI, React, MongoDB, sentence-transformers, OpenAI API, Perplexity API, Docker.</div>
+      </div>
+
+      <div class="project">
+        <h4>Tops Formatter (Penserra)</h4>
+        <div class="project-desc muted">
+          A production tool used internally to automate end-of-day trade recaps and settlement reporting for broker partners.
+        </div>
+        <p>
+          I built a full-stack application that automates the extraction and transformation of trading records from TOPS SEQ, calculates partner broker commissions, and generates reconciled end-of-day reports. The pipeline securely ingests sequencing data, reconciles trades, and persists auditable records to Azure SQL Server.
+        </p>
+        <p>
+          This system removed a manual reconciliation step, saving operations 15+ hours weekly and ensuring 100% compliance with internal audit standards by preserving computation provenance and versioned outputs.
+        </p>
+        <div class="tech">Technologies: Python, Node.js, Supabase, Azure SQL Server, Docker, CI/CD.</div>
+      </div>
+
+      <div class="project">
+        <h4>Automated Fault Detection in GitHub Commits</h4>
+        <div class="project-desc muted">
+          A large-scale pipeline that automatically analyzes repository commits to detect likely faults and regressions.
+        </div>
+        <p>
+          The pipeline uses Airflow to orchestrate tasks and Redis for fast state and cache management. It processes 100k+ commits per day across multiple repos, extracting metadata, running static analyses, and scoring commits via a combination of heuristics and trained classifiers. The system reduced processing time by ~75% compared to earlier batch pipelines and improved quality control metrics by ~45% across 5TB+ of repository data.
+        </p>
+        <div class="tech">Technologies: Airflow, Redis, Python, Docker, machine learning models for classification, custom dashboards.</div>
+      </div>
+
+      <div class="project">
+        <h4>AI Skin Disease Detection (Berkeley AI Hackathon)</h4>
+        <div class="project-desc muted">
+          Deep learning model and web interface for classifying skin conditions from images.
+        </div>
+        <p>
+          Trained a CNN on a dataset of ~25,000 labeled dermatology images. Implemented transfer learning and augmentations to achieve strong validation accuracy. The model shipped as an API endpoint behind a Flask web app where users can upload an image, receive classifications with confidence scores, and view references for further reading.
+        </p>
+        <div class="tech">Technologies: PyTorch, transfer learning, Flask, image preprocessing, Docker.</div>
+      </div>
+
+    </section>
+
+    <!-- RESEARCH -->
+    <section id="research" class="card">
+      <h3>Research</h3>
+
+      <div>
+        <h4>Real-time Anomaly Detection in Cloud Computing</h4>
+        <p class="muted">Research Assistant — UC Berkeley (Jan 2024 – May 2024)</p>
+        <p>
+          Objective: detect early warning signals in cloud service telemetry to proactively identify outages and degradations.
+        </p>
+        <p>
+          I implemented a streaming data pipeline to ingest infrastructure telemetry (Kubernetes events, AWS metrics, logs), performed feature extraction in near real-time, and evaluated a set of models (including tree-based ensembles and gradient boosting) for anomaly scoring. The solution improved detection accuracy by ~30% vs baseline heuristics and fed into dashboards for incident response teams.
+        </p>
+        <p>
+          Contributions included producing reproducible experiments, writing automation for model retraining, and developing alerting rules that balanced precision and recall for operational use.
+        </p>
+        <div class="tech">Technologies: Python, AWS, Kubernetes, XGBoost, feature engineering, monitoring & visualization tools.</div>
+      </div>
+
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="card two-col">
+      <div>
+        <h3>Education</h3>
+        <h4>University of California, Berkeley</h4>
+        <div class="muted">BA — Data Science (Aug 2022 – May 2026)</div>
+        <p>
+          Relevant coursework: Applied Machine Learning (Graduate), Data Engineering/Databases, Computer Architecture, Probability for Data Science, Data Structures, Artificial Intelligence, Data Science for Economics, Designing and Understanding Deep Neural Networks, Principles and Techniques of Data Science.
+        </p>
+
+        <h4 style="margin-top:12px">University of California, Berkeley</h4>
+        <div class="muted">MA — Statistics (Aug 2026 – May 2027)</div>
+        <p>
+          Graduate-level coursework in statistical inference, probabilistic modeling, and applied machine learning.
+        </p>
+      </div>
+
+      <div>
+        <h3>Additional Academic Activities</h3>
+        <ul class="timeline">
+          <li>BIDS (Berkeley Institute for Data Science) — participant</li>
+          <li>Data Science Discovery Program — participant</li>
+          <li>Course staff and workshop lead for 61C Machine Structures</li>
+          <li>Cal Bhangra — extracurricular</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="card">
+      <h3>Skills & Interests</h3>
+
+      <div class="skill-group">
+        <div class="muted">Languages</div>
+        <div class="chips">
+          <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">R</span><span class="chip">C</span>
+          <span class="chip">C++</span><span class="chip">HTML/CSS</span><span class="chip">Java</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="muted">Machine Learning & Data</div>
+        <div class="chips">
+          <span class="chip">PyTorch</span><span class="chip">Scikit-learn</span><span class="chip">XGBoost</span>
+          <span class="chip">Transfer Learning</span><span class="chip">Feature Engineering</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="muted">Tools & Cloud</div>
+        <div class="chips">
+          <span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">Docker</span>
+          <span class="chip">Kubernetes</span><span class="chip">PostgreSQL</span><span class="chip">Supabase</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="muted">Engineering & Infra</div>
+        <div class="chips">
+          <span class="chip">Airflow</span><span class="chip">Redis</span><span class="chip">CI/CD</span>
+          <span class="chip">ETL</span><span class="chip">OCR</span>
+        </div>
+      </div>
+
+      <p style="margin-top:10px" class="muted"><strong>Interests:</strong> Machine Learning, Data Engineering, NLP, Performance Analytics, Back-end Deep Learning.</p>
+    </section>
+
+    <!-- LEADERSHIP & ACTIVITIES -->
+    <section id="leadership" class="card">
+      <h3>Leadership & Activities</h3>
+      <p>
+        <strong>Course Staff & Teaching Support:</strong> Organized workshops, created lab materials, and supported students for computer architecture and systems courses (61C).<br>
+        <strong>Club & Extracurriculars:</strong> Active participant in BIDS and the Data Science Discovery Program. Member of Cal Bhangra — balancing technical work with cultural and team activities helped strengthen leadership and collaboration skills.
+      </p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="card">
+      <h3>Contact</h3>
+      <p class="muted">Want to work together or chat about data, research, or product ideas? Reach out — I typically respond within a few business days.</p>
+
+      <p style="margin-top:10px"><strong>Email:</strong> <a href="mailto:singh.varmindip@gmail.com">singh.varmindip@gmail.com</a></p>
+      <p><strong>Phone:</strong> (559) 903-2599</p>
+      <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/varmin" target="_blank">linkedin.com/in/varmin</a></p>
+      <p><strong>GitHub:</strong> <a href="https://github.com/Varminn" target="_blank">github.com/Varminn</a></p>
+    </section>
+
+    <footer>
+      © 2025 Varmin Singh • Built with care — drop me an email if you spot anything.
+    </footer>
+
+  </div>
+</main>
 
 <script>
-  // Fade-in animation
-  const sections = document.querySelectorAll("section");
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add("visible");
-    });
-  }, { threshold: 0.1 });
-  sections.forEach(sec => observer.observe(sec));
-</script>
+  // intersection observer to reveal sections as they come into view
+  (function(){
+    const cards = Array.from(document.querySelectorAll('section.card'));
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('visible');
+        }
+      });
+    }, {threshold: 0.12});
+    cards.forEach(c => observer.observe(c));
+  })();
 
+  // headshot fade-out when scrolling down past the about section
+  (function(){
+    const photo = document.getElementById('profilePhoto');
+    const about = document.getElementById('about');
+
+    // When about section is no longer fully visible, hide the photo
+    const photoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(!entry.isIntersecting){
+          photo.classList.add('profile-hidden');
+        } else {
+          photo.classList.remove('profile-hidden');
+        }
+      });
+    }, {threshold: 0.6});
+    photoObserver.observe(about);
+  })();
+
+  // Smooth scroll polyfill-ish: ensure offset when clicking anchors (so top of section not hidden)
+  (function(){
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(a=>{
+      a.addEventListener('click', (ev)=>{
+        const href = a.getAttribute('href');
+        if(!href || href.length<2) return;
+        const el = document.querySelector(href);
+        if(!el) return;
+        ev.preventDefault();
+        // compute offset to account for sticky nav height (approx)
+        const top = el.getBoundingClientRect().top + window.pageYOffset - 16;
+        window.scrollTo({top, behavior:'smooth'});
+      });
+    });
+  })();
+</script>
 </body>
 </html>
