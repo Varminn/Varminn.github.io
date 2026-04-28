@@ -6,19 +6,20 @@
   <title>Late-Interaction on turbopuffer</title>
   <style>
     :root {
-      --bg: #f5f7f8;
-      --panel: #ffffff;
-      --panel-soft: #f8fafb;
-      --text: #162126;
-      --muted: #57666f;
-      --border: #d7e1e6;
-      --rule: #e7edf0;
-      --accent: #0e7c86;
-      --accent-soft: #dff3f1;
-      --shadow: 0 16px 40px rgba(16, 29, 35, 0.06);
-      --code-bg: #0f1720;
-      --code-text: #eef7fb;
-      --max: 1180px;
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface-soft: #f6f8fb;
+      --surface-subtle: #fafbfd;
+      --text: #111827;
+      --muted: #5b6472;
+      --line: #e5eaf1;
+      --line-strong: #d8e0ea;
+      --accent: #0f766e;
+      --accent-soft: #ebfffb;
+      --code-bg: #0f172a;
+      --code-text: #e5eef8;
+      --sidebar-width: 276px;
+      --content-width: 860px;
     }
 
     * {
@@ -31,11 +32,8 @@
 
     body {
       margin: 0;
-      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", "Helvetica Neue", sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(14, 124, 134, 0.08), transparent 32%),
-        linear-gradient(180deg, #f8fbfc 0%, var(--bg) 55%, #eef4f6 100%);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: var(--bg);
       color: var(--text);
       line-height: 1.65;
     }
@@ -49,137 +47,260 @@
       text-decoration: underline;
     }
 
-    .shell {
-      width: min(calc(100% - 32px), var(--max));
-      margin: 32px auto 56px;
-      display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
-      gap: 24px;
-      align-items: start;
+    .announce {
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #f8fbff;
+      color: #1f2937;
+      font-size: 0.93rem;
+      text-align: center;
     }
 
-    .nav,
-    .content {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
+    .announce a {
+      color: inherit;
+      font-weight: 600;
     }
 
-    .nav {
+    .topbar {
       position: sticky;
-      top: 20px;
-      padding: 24px 22px;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
     }
 
-    .eyebrow {
-      margin: 0 0 8px;
-      font-size: 0.74rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text);
       font-weight: 700;
+      letter-spacing: -0.02em;
     }
 
-    .nav h1 {
-      margin: 0 0 10px;
-      font-size: 1.35rem;
-      line-height: 1.2;
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #22c55e 0%, #14b8a6 100%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.82rem;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
     }
 
-    .nav p {
-      margin: 0 0 18px;
+    .top-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 0.93rem;
+    }
+
+    .top-links a {
       color: var(--muted);
-      font-size: 0.95rem;
     }
 
-    .toc {
+    .layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      min-height: calc(100vh - 100px);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 61px;
+      height: calc(100vh - 61px);
+      overflow: auto;
+      padding: 24px 18px 32px 24px;
+      border-right: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--surface-subtle);
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 22px;
+    }
+
+    .search-box span:last-child {
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: white;
+      font-size: 0.78rem;
+    }
+
+    .nav-group {
+      margin-bottom: 20px;
+    }
+
+    .nav-label {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-list {
       margin: 0;
       padding: 0;
       list-style: none;
-      display: grid;
-      gap: 8px;
     }
 
-    .toc a {
+    .nav-list li + li {
+      margin-top: 2px;
+    }
+
+    .nav-list a {
       display: block;
-      padding: 9px 11px;
-      border-radius: 12px;
-      color: var(--text);
+      padding: 7px 10px;
+      border-radius: 9px;
+      color: var(--muted);
       font-size: 0.94rem;
     }
 
-    .toc a:hover {
-      background: var(--panel-soft);
+    .nav-list a:hover {
+      background: var(--surface-soft);
       text-decoration: none;
     }
 
-    .entrypoints {
-      margin-top: 20px;
-      padding-top: 18px;
-      border-top: 1px solid var(--rule);
-      display: grid;
-      gap: 8px;
-      font-size: 0.92rem;
+    .nav-list a.active {
+      color: var(--text);
+      background: #f0f6ff;
+      font-weight: 600;
     }
 
-    .content {
-      padding: 40px 48px 52px;
+    .content-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 28px 32px 96px;
+      background: var(--surface);
     }
 
-    header {
-      padding-bottom: 26px;
-      border-bottom: 1px solid var(--rule);
-      margin-bottom: 30px;
+    article {
+      width: min(100%, var(--content-width));
     }
 
-    header h2 {
+    .page-meta {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .page-kicker {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    h1 {
       margin: 0 0 14px;
-      font-size: clamp(2rem, 3.3vw, 3rem);
-      line-height: 1.05;
-      letter-spacing: -0.04em;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      line-height: 1.04;
+      letter-spacing: -0.045em;
     }
 
-    header p {
+    .lede {
       margin: 0;
-      color: var(--muted);
       max-width: 68ch;
-      font-size: 1.04rem;
+      color: #2f3a48;
+      font-size: 1.05rem;
+    }
+
+    .page-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      min-width: 220px;
+    }
+
+    .action {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: white;
+      color: var(--muted);
+      font-size: 0.88rem;
+      white-space: nowrap;
+    }
+
+    .action:hover {
+      background: var(--surface-soft);
+      text-decoration: none;
     }
 
     .callout {
-      margin: 22px 0 0;
-      padding: 16px 18px;
-      border: 1px solid #bfe3df;
+      margin: 22px 0 28px;
+      padding: 14px 16px;
+      border: 1px solid #cfe5e2;
+      border-radius: 12px;
       background: var(--accent-soft);
-      border-radius: 16px;
-      font-size: 0.97rem;
+      color: #154642;
+      font-size: 0.95rem;
+    }
+
+    .rule {
+      height: 1px;
+      background: var(--line);
+      margin: 30px 0;
     }
 
     section {
       margin-top: 34px;
-      scroll-margin-top: 28px;
+      scroll-margin-top: 82px;
     }
 
-    section h3 {
-      margin: 0 0 14px;
-      font-size: 1.55rem;
-      line-height: 1.15;
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.6rem;
+      line-height: 1.12;
       letter-spacing: -0.03em;
     }
 
-    h4 {
-      margin: 26px 0 10px;
-      font-size: 1.1rem;
-      line-height: 1.25;
+    h3 {
+      margin: 28px 0 10px;
+      font-size: 1.15rem;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
     }
 
     p,
     ul,
     ol,
     table,
+    pre,
     .figure,
-    pre {
+    blockquote {
       margin: 0 0 16px;
     }
 
@@ -199,44 +320,46 @@
 
     pre {
       padding: 18px 20px;
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid #1e293b;
       background: var(--code-bg);
       color: var(--code-text);
-      border-radius: 18px;
-      overflow-x: auto;
-      font-size: 0.89rem;
+      font-size: 0.9rem;
       line-height: 1.55;
     }
 
     p code,
     li code,
-    td code {
-      padding: 0.18em 0.42em;
-      border-radius: 8px;
-      background: #eef4f7;
-      color: #15333a;
+    td code,
+    th code {
+      padding: 0.16em 0.38em;
+      border-radius: 7px;
+      background: #f3f6fa;
+      border: 1px solid #e5ebf2;
+      color: #1f2937;
       font-size: 0.92em;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
       font-size: 0.94rem;
-      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     th,
     td {
-      padding: 12px 14px;
+      padding: 11px 12px;
       text-align: left;
       vertical-align: top;
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid var(--line);
     }
 
     th {
-      background: var(--panel-soft);
+      background: var(--surface-soft);
       font-weight: 700;
     }
 
@@ -245,23 +368,24 @@
     }
 
     .figure {
-      border: 1px solid var(--border);
-      background: var(--panel-soft);
-      border-radius: 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
       overflow: hidden;
+      background: white;
     }
 
     .figure img {
       display: block;
       width: 100%;
       height: auto;
+      background: white;
     }
 
     .figure figcaption {
-      padding: 12px 14px 14px;
+      padding: 10px 12px 12px;
+      border-top: 1px solid var(--line);
       color: var(--muted);
       font-size: 0.9rem;
-      border-top: 1px solid var(--border);
     }
 
     .grid-2 {
@@ -270,482 +394,575 @@
       gap: 16px;
     }
 
-    .rule {
-      margin: 28px 0;
-      height: 1px;
-      background: var(--rule);
+    blockquote {
+      padding: 0 0 0 14px;
+      border-left: 3px solid var(--line-strong);
+      color: #374151;
     }
 
     .mini-note {
       color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .footer-links {
+      margin-top: 34px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 10px;
+      color: var(--muted);
       font-size: 0.94rem;
     }
 
-    @media (max-width: 980px) {
-      .shell {
+    @media (max-width: 1040px) {
+      .layout {
         grid-template-columns: 1fr;
       }
 
-      .nav {
+      .sidebar {
         position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 20px;
       }
 
-      .content {
-        padding: 28px 22px 38px;
+      .content-wrap {
+        padding-top: 22px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner,
+      .page-meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .page-actions {
+        justify-content: flex-start;
+        min-width: 0;
+      }
+
+      .content-wrap {
+        padding: 22px 18px 72px;
       }
 
       .grid-2 {
         grid-template-columns: 1fr;
       }
+
+      th,
+      td {
+        padding: 10px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <aside class="nav">
-      <p class="eyebrow">Reviewer Presentation</p>
-      <h1>Late-Interaction on turbopuffer</h1>
-      <p>A docs-style walkthrough of the take-home: problem framing, implementation patterns, benchmark evidence, live demo plan, and roadmap.</p>
-      <ul class="toc">
-        <li><a href="#story">The Story in One Page</a></li>
-        <li><a href="#what-is-it">What Late Interaction Is</a></li>
-        <li><a href="#patterns">Three Patterns Today</a></li>
-        <li><a href="#benchmark">What the Benchmark Shows</a></li>
-        <li><a href="#recommendation">Recommendation</a></li>
-        <li><a href="#live-demo">What I Would Show Live</a></li>
-        <li><a href="#roadmap">Roadmap</a></li>
-        <li><a href="#appendix">Appendix</a></li>
-      </ul>
-      <div class="entrypoints">
-        <a href="PRESENTATION.md">Open canonical markdown</a>
-        <a href="DEMO.md">Open exact demo script</a>
-        <a href="guide/LATE-INTERACTION.md">Open full guide</a>
-        <a href="guide/ROADMAP.md">Open internal roadmap</a>
+  <div class="announce">
+    <a href="https://turbopuffer.com/pricing">Query prices reduced by up to 94%</a>
+  </div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="https://turbopuffer.com/docs/hybrid">
+        <span class="brand-mark">tp</span>
+        <span>turbopuffer</span>
+      </a>
+      <nav class="top-links" aria-label="Top navigation">
+        <a href="https://turbopuffer.com/docs">Docs</a>
+        <a href="https://turbopuffer.com/pricing">Pricing</a>
+        <a href="https://turbopuffer.com/customers">Customers</a>
+        <a href="https://turbopuffer.com/blog">Blog</a>
+        <a href="https://turbopuffer.com/">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="search-box">
+        <span>Docs search...</span>
+        <span>esc</span>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-label">Introduction</p>
+        <ul class="nav-list">
+          <li><a href="https://turbopuffer.com/docs/index">Introduction</a></li>
+          <li><a href="https://turbopuffer.com/docs/concepts">Concepts</a></li>
+          <li><a href="https://turbopuffer.com/docs/performance">Performance</a></li>
+          <li><a href="https://turbopuffer.com/docs/regions">Regions</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-label">Guides</p>
+        <ul class="nav-list">
+          <li><a href="docs/QUICKSTART.md">Quickstart</a></li>
+          <li><a href="docs/VECTOR-SEARCH.md">Vector Search</a></li>
+          <li><a href="docs/FULL-SEARCH.md">Full-Text Search</a></li>
+          <li><a href="https://turbopuffer.com/docs/hybrid">Hybrid Search</a></li>
+          <li><a class="active" href="#top">Late Interaction</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-group">
+        <p class="nav-label">Sections</p>
+        <ul class="nav-list">
+          <li><a href="#what-is-it">What late interaction is</a></li>
+          <li><a href="#why-now">Why it matters today</a></li>
+          <li><a href="#patterns">Three patterns</a></li>
+          <li><a href="#benchmark">Benchmark evidence</a></li>
+          <li><a href="#cost">Cost / latency / storage</a></li>
+          <li><a href="#guidance">Recommended guidance</a></li>
+          <li><a href="#live-demo">Live demo plan</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#appendix">Appendix</a></li>
+        </ul>
       </div>
     </aside>
 
-    <main class="content">
-      <header>
-        <p class="eyebrow">Solutions Engineer Take Home</p>
-        <h2>Late-Interaction on turbopuffer</h2>
-        <p>Late interaction is worth shipping on turbopuffer today, even before native engine support lands. The practical takeaway from this project is that <strong>Pattern C, Dense ANN first stage plus ColBERT MaxSim rerank, is the default recipe to recommend</strong>: on this benchmark it beats Dense by <strong>46% R@10 on Amazon</strong> (<code>0.198</code> vs <code>0.135</code>), by <strong>3.9% R@10 on SciFact</strong> (<code>0.807</code> vs <code>0.777</code>), and ties Dense on Quora (<code>0.814</code> vs <code>0.813</code>) while staying at the <strong>same query cost as Dense</strong> and requiring <strong>no extra turbopuffer storage</strong>.</p>
-        <div class="callout">This page is the reviewer-facing summary. For the exact talk track, use <a href="DEMO.md">DEMO.md</a>. For the full user-facing artifact, use <a href="guide/LATE-INTERACTION.md">guide/LATE-INTERACTION.md</a>.</div>
-      </header>
+    <main class="content-wrap">
+      <article id="top">
+        <div class="page-meta">
+          <div>
+            <p class="page-kicker">Solutions Engineer Take Home</p>
+            <h1>Late-Interaction on turbopuffer</h1>
+            <p class="lede">Late interaction is worth shipping on turbopuffer today, even before native engine support lands. The practical takeaway from this project is that <strong>Pattern C, Dense ANN first stage plus ColBERT MaxSim rerank, is the default recipe to recommend</strong>: on this benchmark it beats Dense by <strong>46% R@10 on Amazon</strong> (<code>0.198</code> vs <code>0.135</code>), by <strong>3.9% R@10 on SciFact</strong> (<code>0.807</code> vs <code>0.777</code>), and ties Dense on Quora (<code>0.814</code> vs <code>0.813</code>) while staying at the <strong>same query cost as Dense</strong> and requiring <strong>no extra turbopuffer storage</strong>.</p>
+          </div>
+          <div class="page-actions">
+            <a class="action" href="presentation.md">Open Markdown</a>
+            <a class="action" href="DEMO.md">Open Demo Script</a>
+            <a class="action" href="guide/LATE-INTERACTION.md">Open D1 Guide</a>
+            <a class="action" href="guide/ROADMAP.md">Open D2 Roadmap</a>
+          </div>
+        </div>
 
-      <section>
+        <div class="callout">
+          This page is the reviewer-facing summary and the preferred live interview surface. Use <a href="DEMO.md">DEMO.md</a> for the exact spoken script and <a href="guide/LATE-INTERACTION.md">guide/LATE-INTERACTION.md</a> for the full customer-facing writeup.
+        </div>
+
         <pre>             ┌─{search.py, search.ts}────────────────────────────────────────────────┐
-             │                                                                        │
-             │  ┌─────────────┐  ┌──Pattern C: Dense + MaxSim rerank ★────┐          │
-             │  │ MiniLM      │─▶│  Dense ANN first stage  →  MaxSim      │──┐       │
-             │  │ encoder     │  │  (same query cost as Dense)            │  │       │
-             │  └─────────────┘  └─────────────────────────────────────────┘  │       │
-┌──────────┐ │                                                                        ▼
-│User Query│─┼─▶┌─────────────┐  ┌──Pattern A: ColBERT rerank──────────────┐   ┌────────┐
-└──────────┘ │  │ ColBERT     │─▶│  pooled-ColBERT ANN  →  MaxSim rerank   │──▶│ Top-K  │
-             │  │ encoder     │  └──────────────────────────────────────────┘   └────────┘
-             │  └──────┬──────┘
-             │         │         ┌──Pattern B: token-as-row─────────────────┐
-             │         └────────▶│  multi_query fan-out  →  client MaxSim   │
-             │                   └───────────────────────────────────────────┘
-             └────────────────────────────────────────────────────────────────────────
+             │                                                                       │
+             │  ┌─────────────┐  ┌──Pattern C: Dense + MaxSim rerank ★────┐ ┌──────┐  │
+             │  │ MiniLM      │─▶│  MiniLM ANN  →  MaxSim rerank          │▶│ Top- │  │
+             │  │ encoder     │  │  (existing dense namespace, 1 call)    │ │  K   │  │
+             │  └─────────────┘  └─────────────────────────────────────────┘ └──────┘  │
+┌──────────┐ │                                                                  ▲      │
+│User Query│─┼─▶┌─────────────┐  ┌──Pattern A: ColBERT rerank─────────────┐      │      │
+└──────────┘ │  │ ColBERT     │─▶│ pooled-ColBERT ANN  →  MaxSim rerank   │──────┤      │
+             │  │ encoder     │  └─────────────────────────────────────────┘      │      │
+             │  └──────┬──────┘                                                   │      │
+             │         │         ┌──Pattern B: token-as-row────────────────┐      │      │
+             │         └────────▶│ multi_query fan-out  →  client MaxSim   │──────┘      │
+             │                   └──────────────────────────────────────────┘             │
+             └────────────────────────────────────────────────────────────────────────────┘
                               ★ Pattern C is the production default</pre>
-      </section>
 
-      <section id="story">
-        <h3>The Story in One Page</h3>
-        <ul>
-          <li><strong>Problem:</strong> customers want ColBERT-style quality, but turbopuffer does not yet expose a native multi-vector column type or server-side <code>MaxSim</code>.</li>
-          <li><strong>What I built:</strong> three late-interaction patterns on top of primitives turbopuffer already has today.</li>
-          <li><strong>What the benchmark says:</strong> Pattern C is the production recommendation; Pattern B is the fallback when token matrices cannot live on local disk; Pattern A is the back-pocket option when only one encoder is feasible.</li>
-          <li><strong>What should ship next:</strong> multi-vector storage, a fast approximate surface, and then exact native <code>MaxSim</code>.</li>
-        </ul>
-      </section>
+        <div class="rule"></div>
 
-      <section id="what-is-it">
-        <h3>What Late Interaction Is</h3>
-        <p>Dense retrieval stores one vector per document and compares one query vector to one document vector. It is fast and robust, but a pooled vector can blur together multiple concepts or rare terms.</p>
-        <p>Cross-encoder reranking lets the model compare the whole query and the whole document jointly, which is usually stronger, but it is too expensive to use as a first-stage retriever.</p>
-        <p><strong>Late interaction is the middle ground.</strong> Documents are encoded offline into many vectors, usually one per token. Queries are also encoded into many vectors. At search time, the score is computed by letting each query token find its best-matching document token and then summing those best matches.</p>
-        <pre>                  M
+        <section id="what-is-it">
+          <h2>What late interaction is</h2>
+          <p>Dense retrieval stores one vector per document and compares one query vector to one document vector. It is fast and robust, but a pooled vector can blur together multiple concepts or rare terms.</p>
+          <p>Cross-encoder reranking lets the model compare the whole query and the whole document jointly, which is usually stronger, but it is too expensive to use as a first-stage retriever.</p>
+          <p><strong>Late interaction is the middle ground.</strong> Documents are encoded offline into many vectors, usually one per token. Queries are also encoded into many vectors. At search time, the score is computed by letting each query token find its best-matching document token and then summing those best matches.</p>
+          <pre>                  M
 S(Q, D) =         Σ   max  q_i · d_j
                  i=1   j</pre>
-        <p>That scoring function is <strong>MaxSim</strong>. It is the core primitive behind ColBERT-style retrieval.</p>
-      </section>
+          <p>That scoring function is <strong>MaxSim</strong>. It is the core primitive behind ColBERT-style retrieval.</p>
+        </section>
 
-      <section id="patterns">
-        <h3>Three Patterns on turbopuffer Today</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Pattern</th>
-              <th>Query path</th>
-              <th>Why you would use it</th>
-              <th>Main tradeoff</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Pattern A — ColBERT rerank</strong></td>
-              <td>pooled-ColBERT ANN first stage, local MaxSim rerank</td>
-              <td>Single-encoder setup; reasonable middle ground on long-doc workloads</td>
-              <td>Candidate-set quality is limited by pooled-ColBERT</td>
-            </tr>
-            <tr>
-              <td><strong>Pattern B — token-as-row</strong></td>
-              <td>one ANN lookup per query token through <code>multi_query</code>, then client aggregation</td>
-              <td>When token matrices do not fit on local disk</td>
-              <td>Higher latency, two query calls, row-count blow-up</td>
-            </tr>
-            <tr>
-              <td><strong>Pattern C — Dense + MaxSim rerank</strong></td>
-              <td>existing dense ANN first stage, local MaxSim rerank</td>
-              <td>Recommended default; strongest first-stage retrieval plus token-level precision</td>
-              <td>Requires dense and ColBERT encoders at query time</td>
-            </tr>
-          </tbody>
-        </table>
-        <p><strong>Why Pattern C is the headline:</strong> it composes with an index customers often already have. There is no re-ingest of a new turbopuffer namespace, no extra storage on the turbopuffer side, and the query still uses <strong>one ANN call</strong> before reranking locally.</p>
-      </section>
+        <section id="why-now">
+          <h2>Why it matters on turbopuffer today</h2>
+          <p>turbopuffer does not yet ship a native multi-vector column type or a server-side <code>MaxSim</code> operator. That is the product gap. The customer need already exists, and the current API surface is still enough to ship a credible answer.</p>
+          <ul>
+            <li>ANN vector retrieval gives a strong first-stage candidate set.</li>
+            <li><code>multi_query</code> supports the token fan-out needed for Pattern B.</li>
+            <li>Local reranking lets the client compute exact or approximate MaxSim today.</li>
+            <li>The dense namespace stays cheap enough that Pattern C keeps Dense economics.</li>
+          </ul>
+          <blockquote>
+            The practical question is not whether native support would be cleaner. It would. The practical question is what to recommend to customers before that lands.
+          </blockquote>
+        </section>
 
-      <section id="benchmark">
-        <h3>What the Benchmark Actually Shows</h3>
-        <div class="grid-2">
-          <figure class="figure">
-            <img src="results/charts/quality_by_pipeline.png" alt="Quality by pipeline across all three datasets, f32">
-            <figcaption>Quality by pipeline across all three datasets, f32.</figcaption>
-          </figure>
-          <figure class="figure">
-            <img src="results/charts/cost_quality_pareto.png" alt="Cost vs quality Pareto">
-            <figcaption>Cost vs quality Pareto, with marker area proportional to turbopuffer bytes.</figcaption>
-          </figure>
-        </div>
-        <p>The benchmark covers three workloads with intentionally different retrieval profiles:</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Dataset</th>
-              <th>Why it matters</th>
-              <th>Corpus / queries</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Quora Duplicates</strong></td>
-              <td>Paraphrase-heavy, dense-friendly anchor</td>
-              <td><code>149,596</code> docs / <code>5,000</code> queries</td>
-            </tr>
-            <tr>
-              <td><strong>Amazon Reviews 2023</strong></td>
-              <td>Vocabulary-leaning search with long-tail product language</td>
-              <td><code>25,000</code> docs / <code>2,000</code> queries</td>
-            </tr>
-            <tr>
-              <td><strong>BEIR/SciFact</strong></td>
-              <td>Scientific claim to abstract retrieval with length asymmetry</td>
-              <td><code>5,183</code> docs / <code>300</code> queries</td>
-            </tr>
-          </tbody>
-        </table>
+        <section id="patterns">
+          <h2>Three patterns on turbopuffer today</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Pattern</th>
+                <th>Query path</th>
+                <th>Why you would use it</th>
+                <th>Main tradeoff</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pattern A - ColBERT rerank</strong></td>
+                <td>pooled-ColBERT ANN first stage, local MaxSim rerank</td>
+                <td>Single-encoder setup; useful fallback on long-doc workloads</td>
+                <td>Candidate-set quality is limited by pooled-ColBERT</td>
+              </tr>
+              <tr>
+                <td><strong>Pattern B - token-as-row</strong></td>
+                <td>one ANN lookup per query token through <code>multi_query</code>, then client aggregation</td>
+                <td>When token matrices cannot live on local disk</td>
+                <td>Higher latency, two query calls, row-count blow-up</td>
+              </tr>
+              <tr>
+                <td><strong>Pattern C - Dense + MaxSim rerank</strong></td>
+                <td>existing dense ANN first stage, local MaxSim rerank</td>
+                <td>Recommended default; strongest first-stage retrieval plus token-level precision</td>
+                <td>Requires dense and ColBERT encoders at query time</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>Why Pattern C is the headline.</strong> It composes with an index customers often already have. There is no re-ingest of a new turbopuffer namespace, no extra turbopuffer storage, and the query still uses <strong>one ANN call</strong> before reranking locally.</p>
+        </section>
 
-        <h4>Amazon: Pattern C Is the Breakout Winner</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>Pipeline</th>
-              <th>Recall@10</th>
-              <th>MRR@10</th>
-              <th>nDCG@10</th>
-              <th>p50 latency (ms)</th>
-              <th>$ / M searches</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Dense baseline (MiniLM)</td>
-              <td>0.135</td>
-              <td>0.083</td>
-              <td>0.096</td>
-              <td>60.4</td>
-              <td>4.00</td>
-            </tr>
-            <tr>
-              <td>Pattern A — ColBERT rerank</td>
-              <td>0.046</td>
-              <td>0.039</td>
-              <td>0.041</td>
-              <td>62.1</td>
-              <td>4.00</td>
-            </tr>
-            <tr>
-              <td>Pattern B — token-as-row</td>
-              <td>0.140</td>
-              <td>0.097</td>
-              <td>0.107</td>
-              <td>135.4</td>
-              <td>8.00</td>
-            </tr>
-            <tr>
-              <td><strong>Pattern C — Dense + MaxSim rerank</strong></td>
-              <td><strong>0.198</strong></td>
-              <td><strong>0.149</strong></td>
-              <td><strong>0.161</strong></td>
-              <td><strong>65.2</strong></td>
-              <td><strong>4.00</strong></td>
-            </tr>
-          </tbody>
-        </table>
-        <ul>
-          <li><strong>Headline:</strong> Pattern C beats Dense by <strong>+46% R@10</strong>, <strong>+79% MRR@10</strong>, and <strong>+68% nDCG@10</strong>.</li>
-          <li><strong>Confidence:</strong> paired-delta confidence intervals exclude zero on all three quality metrics.</li>
-          <li><strong>Interpretation:</strong> Pattern A fails here because pooled-ColBERT is the weak link. Pattern C fixes the first stage by inheriting MiniLM recall and then using MaxSim for precision.</li>
-          <li><strong>Important nuance:</strong> Pattern B also beats Dense on Amazon and reaches <strong>0.503 R@10 vs 0.389 Dense</strong> on 10+ token queries. Pattern C is still the stronger operator recommendation.</li>
-        </ul>
-        <p class="mini-note">See <a href="results/amazon-benchmark.md">results/amazon-benchmark.md</a> for the full cell.</p>
+        <section id="benchmark">
+          <h2>Benchmark evidence</h2>
+          <p>The benchmark covers three intentionally different retrieval profiles:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Dataset</th>
+                <th>Why it matters</th>
+                <th>Corpus / queries</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Quora Duplicates</strong></td>
+                <td>Paraphrase-heavy, dense-friendly anchor</td>
+                <td><code>149,596</code> docs / <code>5,000</code> queries</td>
+              </tr>
+              <tr>
+                <td><strong>Amazon Reviews 2023</strong></td>
+                <td>Vocabulary-leaning retrieval with long-tail product language</td>
+                <td><code>25,000</code> docs / <code>2,000</code> queries</td>
+              </tr>
+              <tr>
+                <td><strong>BEIR/SciFact</strong></td>
+                <td>Scientific claim to abstract retrieval with strong length asymmetry</td>
+                <td><code>5,183</code> docs / <code>300</code> queries</td>
+              </tr>
+            </tbody>
+          </table>
 
-        <h4>SciFact: Pattern C Wins on Long-Doc Retrieval Too</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>Pipeline</th>
-              <th>Recall@10</th>
-              <th>MRR@10</th>
-              <th>nDCG@10</th>
-              <th>p50 latency (ms)</th>
-              <th>$ / M searches</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Dense baseline (MiniLM)</td>
-              <td>0.777</td>
-              <td>0.583</td>
-              <td>0.630</td>
-              <td>52.2</td>
-              <td>4.00</td>
-            </tr>
-            <tr>
-              <td>Pattern A — ColBERT rerank</td>
-              <td>0.650</td>
-              <td>0.540</td>
-              <td>0.567</td>
-              <td>60.9</td>
-              <td>4.00</td>
-            </tr>
-            <tr>
-              <td>Pattern B — token-as-row</td>
-              <td>0.717</td>
-              <td>0.549</td>
-              <td>0.590</td>
-              <td>143.5</td>
-              <td>8.00</td>
-            </tr>
-            <tr>
-              <td><strong>Pattern C — Dense + MaxSim rerank</strong></td>
-              <td><strong>0.807</strong></td>
-              <td><strong>0.634</strong></td>
-              <td><strong>0.676</strong></td>
-              <td><strong>62.3</strong></td>
-              <td><strong>4.00</strong></td>
-            </tr>
-          </tbody>
-        </table>
-        <ul>
-          <li><strong>Headline:</strong> Pattern C beats Dense by <strong>+3.9% R@10</strong>, <strong>+8.8% MRR@10</strong>, and <strong>+7.4% nDCG@10</strong>.</li>
-          <li><strong>Operational read:</strong> this is the clearest long-document case for the default recipe.</li>
-          <li><strong>Fallback:</strong> if a customer cannot run two encoders, Pattern A at <code>ann_candidates=200</code> still reaches <strong>0.740 R@10</strong>.</li>
-          <li><strong>Why Pattern B saturates:</strong> top-32 document tokens cover too little of a roughly <code>258</code>-token abstract, so the PLAID-style approximation leaves quality on the table.</li>
-        </ul>
-        <p class="mini-note">See <a href="results/scifact-benchmark.md">results/scifact-benchmark.md</a> for the full cell.</p>
+          <div class="grid-2">
+            <figure class="figure">
+              <img src="results/charts/quality_by_pipeline.png" alt="Quality by pipeline across all three datasets, f32">
+              <figcaption>Quality by pipeline across all three datasets, f32.</figcaption>
+            </figure>
+            <figure class="figure">
+              <img src="results/charts/cost_quality_pareto.png" alt="Cost vs quality Pareto">
+              <figcaption>Cost vs quality Pareto, with marker area proportional to turbopuffer bytes.</figcaption>
+            </figure>
+          </div>
 
-        <h4>Quora: Pattern C Ties Dense, but Adds Complementary Recall</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>Pipeline</th>
-              <th>Recall@10</th>
-              <th>MRR@10</th>
-              <th>nDCG@10</th>
-              <th>p50 latency (ms)</th>
-              <th>$ / M searches</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Dense baseline (MiniLM)</td>
-              <td>0.813</td>
-              <td>0.558</td>
-              <td>0.619</td>
-              <td>50.1</td>
-              <td>4.00</td>
-            </tr>
-            <tr>
-              <td>Pattern A — ColBERT rerank</td>
-              <td>0.806</td>
-              <td>0.557</td>
-              <td>0.617</td>
-              <td>54.6</td>
-              <td>4.00</td>
-            </tr>
-            <tr>
-              <td>Pattern B — token-as-row</td>
-              <td>0.786</td>
-              <td>0.538</td>
-              <td>0.598</td>
-              <td>141.6</td>
-              <td>8.00</td>
-            </tr>
-            <tr>
-              <td><strong>Pattern C — Dense + MaxSim rerank</strong></td>
-              <td><strong>0.814</strong></td>
-              <td><strong>0.561</strong></td>
-              <td><strong>0.621</strong></td>
-              <td><strong>52.2</strong></td>
-              <td><strong>4.00</strong></td>
-            </tr>
-          </tbody>
-        </table>
-        <ul>
-          <li><strong>Headline:</strong> Quora is paraphrase-heavy and already dense-friendly, so the top-line lift is statistically negligible.</li>
-          <li><strong>Important signal:</strong> the <strong>Dense union Pattern C oracle ceiling reaches <code>0.857</code></strong>, versus <code>0.813</code> for Dense alone.</li>
-          <li><strong>Interpretation:</strong> late interaction should not replace Dense on paraphrase-style tasks, but it does recover failures Dense misses, which makes it a meaningful complement.</li>
-        </ul>
-        <div class="grid-2">
-          <figure class="figure">
-            <img src="results/charts/complementarity.png" alt="Late interaction complementary recall ceiling">
-            <figcaption>Complementarity: where late interaction recovers Dense misses.</figcaption>
-          </figure>
-          <figure class="figure">
-            <img src="results/charts/query_length_segments.png" alt="Recall by query length">
-            <figcaption>Recall at 10 by query length.</figcaption>
-          </figure>
-        </div>
-        <p class="mini-note">See <a href="results/benchmark.md">results/benchmark.md</a> for the full Quora cell.</p>
-      </section>
+          <h3>Amazon: Pattern C is the breakout winner</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Pipeline</th>
+                <th>Recall@10</th>
+                <th>MRR@10</th>
+                <th>nDCG@10</th>
+                <th>p50 latency (ms)</th>
+                <th>$ / M searches</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dense baseline (MiniLM)</td>
+                <td>0.135</td>
+                <td>0.083</td>
+                <td>0.096</td>
+                <td>60.4</td>
+                <td>4.00</td>
+              </tr>
+              <tr>
+                <td>Pattern A - ColBERT rerank</td>
+                <td>0.046</td>
+                <td>0.039</td>
+                <td>0.040</td>
+                <td>62.1</td>
+                <td>4.00</td>
+              </tr>
+              <tr>
+                <td>Pattern B - token-as-row</td>
+                <td>0.140</td>
+                <td>0.097</td>
+                <td>0.107</td>
+                <td>135.4</td>
+                <td>8.00</td>
+              </tr>
+              <tr>
+                <td><strong>Pattern C - Dense + MaxSim rerank</strong></td>
+                <td><strong>0.198</strong></td>
+                <td><strong>0.149</strong></td>
+                <td><strong>0.161</strong></td>
+                <td><strong>65.2</strong></td>
+                <td><strong>4.00</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <ul>
+            <li><strong>Headline:</strong> Pattern C beats Dense by <strong>+46% R@10</strong>, <strong>+79% MRR@10</strong>, and <strong>+68% nDCG@10</strong>.</li>
+            <li><strong>Confidence:</strong> paired-delta confidence intervals exclude zero on all three quality metrics.</li>
+            <li><strong>Interpretation:</strong> Pattern A fails here because pooled-ColBERT is the weak link. Pattern C fixes the first stage by inheriting MiniLM recall and then using MaxSim for precision.</li>
+            <li><strong>Important nuance:</strong> Pattern B also beats Dense on Amazon and reaches <strong>0.503 R@10 vs 0.389 Dense</strong> on 10+ token queries. Pattern C is still the stronger operator recommendation.</li>
+          </ul>
+          <p class="mini-note">See <a href="results/amazon-benchmark.md">results/amazon-benchmark.md</a> for the full cell.</p>
 
-      <section id="recommendation">
-        <h3>Recommendation</h3>
-        <p>The operator decision table from <a href="results/cost-analysis.md">results/cost-analysis.md</a> compresses to this:</p>
-        <ol>
-          <li><strong>Default:</strong> recommend <strong>Pattern C</strong> first when the customer can run a dense encoder and a ColBERT encoder.</li>
-          <li><strong>If token matrices cannot live locally:</strong> recommend <strong>Pattern B</strong>, ideally with <code>f16</code>.</li>
-          <li><strong>If only one encoder is feasible at query time:</strong> recommend <strong>Pattern A</strong> with a larger candidate set, especially for long-doc retrieval.</li>
-          <li><strong>If the workload is short-query paraphrase search:</strong> keep Dense as the primary retriever and consider fusion with Pattern C for recall headroom.</li>
-        </ol>
-      </section>
+          <h3>SciFact: Pattern C wins on long-document retrieval too</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Pipeline</th>
+                <th>Recall@10</th>
+                <th>MRR@10</th>
+                <th>nDCG@10</th>
+                <th>p50 latency (ms)</th>
+                <th>$ / M searches</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dense baseline (MiniLM)</td>
+                <td>0.777</td>
+                <td>0.583</td>
+                <td>0.630</td>
+                <td>52.2</td>
+                <td>4.00</td>
+              </tr>
+              <tr>
+                <td>Pattern A - ColBERT rerank</td>
+                <td>0.650</td>
+                <td>0.540</td>
+                <td>0.567</td>
+                <td>60.9</td>
+                <td>4.00</td>
+              </tr>
+              <tr>
+                <td>Pattern B - token-as-row</td>
+                <td>0.717</td>
+                <td>0.549</td>
+                <td>0.590</td>
+                <td>143.5</td>
+                <td>8.00</td>
+              </tr>
+              <tr>
+                <td><strong>Pattern C - Dense + MaxSim rerank</strong></td>
+                <td><strong>0.807</strong></td>
+                <td><strong>0.634</strong></td>
+                <td><strong>0.676</strong></td>
+                <td><strong>62.3</strong></td>
+                <td><strong>4.00</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <ul>
+            <li><strong>Headline:</strong> Pattern C beats Dense by <strong>+3.9% R@10</strong>, <strong>+8.8% MRR@10</strong>, and <strong>+7.4% nDCG@10</strong>.</li>
+            <li><strong>Operational read:</strong> this is the clearest long-document case for the default recipe.</li>
+            <li><strong>Fallback:</strong> if a customer cannot run two encoders, Pattern A at <code>ann_candidates=200</code> still reaches <strong>0.740 R@10</strong>.</li>
+            <li><strong>Why Pattern B saturates:</strong> top-32 document tokens cover too little of a roughly <code>258</code>-token abstract, so the PLAID-style approximation leaves quality on the table.</li>
+          </ul>
+          <p class="mini-note">See <a href="results/scifact-benchmark.md">results/scifact-benchmark.md</a> for the full cell.</p>
 
-      <section id="live-demo">
-        <h3>What I Would Show Live</h3>
-        <p>The live demo should prove mechanics, not claim quality. The safest command is:</p>
-        <pre>make demo Q="why is the sky blue"</pre>
-        <p>That query is stable against the Quora token namespace and shows the full Pattern B flow clearly:</p>
-        <ol>
-          <li>encode the query with <code>jinaai/jina-colbert-v2</code></li>
-          <li>fan out one ANN lookup per query token through <code>multi_query</code></li>
-          <li>aggregate by <code>doc_id</code></li>
-          <li>rank by approximated MaxSim</li>
-        </ol>
-        <p>The exact presenter script lives in <a href="DEMO.md">DEMO.md</a>. The short version is:</p>
-        <ul>
-          <li>use the live query to make the implementation concrete</li>
-          <li>explicitly say Quora is the wrong dataset for headline quality claims</li>
-          <li>pivot immediately back to Amazon and SciFact for the actual business recommendation</li>
-        </ul>
-      </section>
+          <h3>Quora: Pattern C ties Dense, but adds complementary recall</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Pipeline</th>
+                <th>Recall@10</th>
+                <th>MRR@10</th>
+                <th>nDCG@10</th>
+                <th>p50 latency (ms)</th>
+                <th>$ / M searches</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dense baseline (MiniLM)</td>
+                <td>0.813</td>
+                <td>0.558</td>
+                <td>0.619</td>
+                <td>50.1</td>
+                <td>4.00</td>
+              </tr>
+              <tr>
+                <td>Pattern A - ColBERT rerank</td>
+                <td>0.806</td>
+                <td>0.557</td>
+                <td>0.617</td>
+                <td>54.6</td>
+                <td>4.00</td>
+              </tr>
+              <tr>
+                <td>Pattern B - token-as-row</td>
+                <td>0.786</td>
+                <td>0.538</td>
+                <td>0.598</td>
+                <td>141.6</td>
+                <td>8.00</td>
+              </tr>
+              <tr>
+                <td><strong>Pattern C - Dense + MaxSim rerank</strong></td>
+                <td><strong>0.814</strong></td>
+                <td><strong>0.561</strong></td>
+                <td><strong>0.621</strong></td>
+                <td><strong>52.2</strong></td>
+                <td><strong>4.00</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <ul>
+            <li><strong>Headline:</strong> Quora is paraphrase-heavy and already dense-friendly, so the top-line lift is statistically negligible.</li>
+            <li><strong>Important signal:</strong> the <strong>Dense union Pattern C oracle ceiling reaches <code>0.857</code></strong>, versus <code>0.813</code> for Dense alone.</li>
+            <li><strong>Interpretation:</strong> late interaction should not replace Dense on paraphrase-style tasks, but it does recover failures Dense misses, which makes it a meaningful complement.</li>
+          </ul>
+          <div class="grid-2">
+            <figure class="figure">
+              <img src="results/charts/complementarity.png" alt="Late interaction complementary recall ceiling">
+              <figcaption>Complementarity: where late interaction recovers Dense misses.</figcaption>
+            </figure>
+            <figure class="figure">
+              <img src="results/charts/query_length_segments.png" alt="Recall by query length">
+              <figcaption>Recall at 10 by query length.</figcaption>
+            </figure>
+          </div>
+          <p class="mini-note">See <a href="results/benchmark.md">results/benchmark.md</a> for the full Quora cell.</p>
+        </section>
 
-      <section id="roadmap">
-        <h3>Roadmap: What turbopuffer Should Ship</h3>
-        <p>The internal roadmap in <a href="guide/ROADMAP.md">guide/ROADMAP.md</a> argues for a three-step ladder:</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Priority</th>
-              <th>Proposal</th>
-              <th>Why it matters</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>P0</strong></td>
-              <td>Multi-vector attribute type: <code>[K,D]f16</code> / <code>[K,D]f32</code></td>
-              <td>Eliminates Pattern B's row-count explosion and Pattern A/C's external token-matrix store</td>
-            </tr>
-            <tr>
-              <td><strong>P1.5</strong></td>
-              <td>MUVERA-style single-vector summary</td>
-              <td>Fastest path to a customer-facing late-interaction surface using the existing ANN machinery</td>
-            </tr>
-            <tr>
-              <td><strong>P1</strong></td>
-              <td>Native exact <code>MaxSim</code> <code>rank_by</code> operator</td>
-              <td>Collapses client fan-out and local rerank into one server-side path</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>The sequencing matters:</p>
-        <ul>
-          <li><strong>P4 first</strong> can improve ergonomics quickly by hiding Pattern B's fan-out behind one API call.</li>
-          <li><strong>P0 + P1.5 next</strong> land a real customer story in weeks, not a quarter.</li>
-          <li><strong>P1 after that</strong> becomes the exact long-term answer and composes naturally with MUVERA as a rerank stage.</li>
-        </ul>
-      </section>
+        <section id="cost">
+          <h2>Cost, latency, and storage tradeoffs</h2>
+          <p>The operator decision table from <a href="results/cost-analysis.md">results/cost-analysis.md</a> compresses to this:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Mode</th>
+                <th>Query cost</th>
+                <th>Latency profile</th>
+                <th>Storage profile</th>
+                <th>Practical reading</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dense baseline</td>
+                <td><code>$4.00</code> / M</td>
+                <td>Lowest</td>
+                <td>Lowest</td>
+                <td>Keep this on short-query, dense-friendly workloads</td>
+              </tr>
+              <tr>
+                <td>Pattern A</td>
+                <td><code>$4.00</code> / M</td>
+                <td>Moderate</td>
+                <td>Low in turbopuffer, local token store required</td>
+                <td>Use when only one encoder is feasible</td>
+              </tr>
+              <tr>
+                <td>Pattern B</td>
+                <td><code>$8.00</code> / M</td>
+                <td>Highest</td>
+                <td><code>30-100x</code> row count, best with <code>f16</code></td>
+                <td>Use when local token matrices are the bottleneck</td>
+              </tr>
+              <tr>
+                <td><strong>Pattern C</strong></td>
+                <td><strong><code>$4.00</code> / M</strong></td>
+                <td><strong>Near Dense</strong></td>
+                <td><strong>No extra turbopuffer storage</strong></td>
+                <td><strong>Default recommendation</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
 
-      <section>
-        <h3>Why This Deliverable Is Defensible</h3>
-        <ul>
-          <li>It uses only turbopuffer features that exist today.</li>
-          <li>It does not hide the weak cells: Pattern A collapses on Amazon, and Pattern B pays a real storage and latency tax.</li>
-          <li>It distinguishes between <strong>live demo evidence</strong> and <strong>benchmark evidence</strong> instead of pretending a Quora demo query validates the recommendation.</li>
-          <li>It ends with a roadmap that is specific enough to hand to engineering.</li>
-        </ul>
-      </section>
+        <section id="guidance">
+          <h2>Recommended guidance</h2>
+          <ol>
+            <li><strong>Default:</strong> recommend <strong>Pattern C</strong> first when the customer can run a dense encoder and a ColBERT encoder.</li>
+            <li><strong>If token matrices cannot live locally:</strong> recommend <strong>Pattern B</strong>, ideally with <code>f16</code>.</li>
+            <li><strong>If only one encoder is feasible at query time:</strong> recommend <strong>Pattern A</strong> with a larger candidate set, especially for long-document retrieval.</li>
+            <li><strong>If the workload is short-query paraphrase search:</strong> keep Dense as the primary retriever and consider fusion with Pattern C for recall headroom.</li>
+          </ol>
+        </section>
 
-      <section id="appendix">
-        <h3>Appendix: Exact Headline Numbers</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Claim</th>
-              <th>Evidence</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Pattern C is the recommended default</td>
-              <td>Amazon <code>0.198</code> vs Dense <code>0.135</code>; SciFact <code>0.807</code> vs Dense <code>0.777</code>; Quora <code>0.814</code> vs Dense <code>0.813</code></td>
-            </tr>
-            <tr>
-              <td>Pattern C keeps Dense economics</td>
-              <td>one ANN call, <code>$4.00</code> per million searches, no extra turbopuffer storage</td>
-            </tr>
-            <tr>
-              <td>Pattern B is the storage-flexible fallback</td>
-              <td>Amazon <code>0.140</code> R@10 vs Dense <code>0.135</code>, but about <code>135</code> ms p50 and <code>$8.00</code> per million searches</td>
-            </tr>
-            <tr>
-              <td>Pattern A is the single-encoder backup</td>
-              <td>SciFact <code>0.740</code> R@10 at <code>ann_candidates=200</code></td>
-            </tr>
-            <tr>
-              <td>Late interaction is complementary</td>
-              <td>Dense union Pattern C oracle ceilings: Quora <code>0.857</code>, Amazon <code>0.206</code>, SciFact <code>0.847</code></td>
-            </tr>
-          </tbody>
-        </table>
+        <section id="live-demo">
+          <h2>Live demo plan</h2>
+          <p>The live demo should prove mechanics, not claim quality. The safest command is:</p>
+          <pre>make demo Q="why is the sky blue"</pre>
+          <p>That query is stable against the Quora token namespace and shows the full Pattern B flow clearly:</p>
+          <ol>
+            <li>encode the query with <code>jinaai/jina-colbert-v2</code></li>
+            <li>fan out one ANN lookup per query token through <code>multi_query</code></li>
+            <li>aggregate by <code>doc_id</code></li>
+            <li>rank by approximated MaxSim</li>
+          </ol>
+          <p>The exact presenter script lives in <a href="DEMO.md">DEMO.md</a>. The reason to keep the live demo on Pattern B while recommending Pattern C is simple: <strong>Pattern B is the clearest mechanics demo; Pattern C is the strongest production result.</strong></p>
+        </section>
 
-        <h4>Likely Questions</h4>
-        <p><strong>Why not recommend Pattern B first if it is the only fully in-turbopuffer storage shape today?</strong></p>
-        <p>Because Pattern C gives the best benchmarked quality at the same query cost as Dense and avoids the row-count blow-up. Pattern B is the fallback when the local token-matrix store is the real bottleneck.</p>
+        <section id="roadmap">
+          <h2>Roadmap</h2>
+          <p>The internal roadmap in <a href="guide/ROADMAP.md">guide/ROADMAP.md</a> argues for a three-step ladder:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Priority</th>
+                <th>Proposal</th>
+                <th>Why it matters</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>P0</strong></td>
+                <td>Multi-vector attribute type: <code>[K,D]f16</code> / <code>[K,D]f32</code></td>
+                <td>Eliminates Pattern B's row-count explosion and Pattern A/C's external token-matrix store</td>
+              </tr>
+              <tr>
+                <td><strong>P1.5</strong></td>
+                <td>MUVERA-style single-vector summary</td>
+                <td>Fastest path to a customer-facing late-interaction surface using the existing ANN machinery</td>
+              </tr>
+              <tr>
+                <td><strong>P1</strong></td>
+                <td>Native exact <code>MaxSim</code> <code>rank_by</code> operator</td>
+                <td>Collapses client fan-out and local rerank into one server-side path</td>
+              </tr>
+            </tbody>
+          </table>
+          <ul>
+            <li><strong>P0 first</strong> removes the current storage-shape workaround.</li>
+            <li><strong>P1.5 next</strong> lands a credible customer-facing story quickly by reusing the existing ANN machinery.</li>
+            <li><strong>P1 after that</strong> becomes the exact long-term answer and composes naturally with MUVERA as a rerank stage.</li>
+          </ul>
+        </section>
 
-        <p><strong>Why is Quora still in the benchmark if it does not show a big win?</strong></p>
-        <p>Because it is the dense-friendly anchor. It shows that late interaction is not a universal upgrade and helps calibrate when the extra complexity is justified.</p>
-
-        <p><strong>Why is MUVERA ahead of native MaxSim in the roadmap?</strong></p>
-        <p>Because MUVERA reuses the existing single-vector ANN path. It is the fastest credible way to close the "turbopuffer does not do ColBERT" objection before the exact operator is ready.</p>
-
-        <p><strong>What is the one-sentence recommendation to a customer?</strong></p>
-        <p>Start with <strong>Pattern C</strong>, benchmark it on your real query distribution, use <strong>Pattern B</strong> only when token matrices cannot live locally, and ask turbopuffer for native multi-vector plus <code>MaxSim</code>.</p>
-      </section>
+        <section id="appendix">
+          <h2>Appendix</h2>
+          <p><strong>Why this deliverable is defensible.</strong> It uses only turbopuffer features that exist today, it does not hide the weak cells, it distinguishes between live-demo mechanics and benchmark evidence, and it ends with a roadmap that is specific enough to hand to engineering.</p>
+          <div class="footer-links">
+            <a href="presentation.md">Canonical written walkthrough</a>
+            <a href="DEMO.md">Exact presenter script</a>
+            <a href="guide/LATE-INTERACTION.md">D1 user-facing guide</a>
+            <a href="guide/ROADMAP.md">D2 internal roadmap</a>
+            <a href="results/cost-analysis.md">Cost, latency, and storage appendix</a>
+            <a href="results/benchmark.md">Quora benchmark appendix</a>
+            <a href="results/amazon-benchmark.md">Amazon benchmark appendix</a>
+            <a href="results/scifact-benchmark.md">SciFact benchmark appendix</a>
+          </div>
+        </section>
+      </article>
     </main>
   </div>
 </body>
 </html>
+
