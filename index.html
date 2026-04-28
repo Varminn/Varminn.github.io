@@ -1,616 +1,751 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Varmin Singh — Portfolio</title>
-  <meta name="description" content="Varmin Singh — Data Science / Machine Learning / Data Engineering portfolio. Full resume, projects, research and contact."/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Late-Interaction on turbopuffer</title>
   <style>
-    :root{
-      --bg:#f6f8fa;
-      --card:#ffffff;
-      --nav:#0f3b44;        /* deep teal */
-      --nav-2:#145b66;      /* lighter teal */
-      --accent:#29a6a6;     /* minty teal */
-      --muted:#64707a;
-      --text:#0f1720;
-      --glass: rgba(255,255,255,0.6);
-      --shadow: 0 6px 20px rgba(16,24,32,0.08);
-      --radius:12px;
-      --max-width:1100px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    :root {
+      --bg: #f5f7f8;
+      --panel: #ffffff;
+      --panel-soft: #f8fafb;
+      --text: #162126;
+      --muted: #57666f;
+      --border: #d7e1e6;
+      --rule: #e7edf0;
+      --accent: #0e7c86;
+      --accent-soft: #dff3f1;
+      --shadow: 0 16px 40px rgba(16, 29, 35, 0.06);
+      --code-bg: #0f1720;
+      --code-text: #eef7fb;
+      --max: 1180px;
     }
 
-    /* Reset + layout */
-    *{box-sizing:border-box}
-    html,body{height:100%; margin:0; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
-    a{color:var(--accent); text-decoration:none;}
-    a:hover{text-decoration:underline}
-    main{display:flex; min-height:100vh; gap:28px; align-items:flex-start; justify-content:center; padding:28px;}
-
-    /* Sidebar (left) */
-    nav.sidebar{
-      position:sticky; top:28px;
-      width:260px;
-      align-self:flex-start;
-      background:linear-gradient(180deg,var(--nav),var(--nav-2));
-      color:#fff;
-      border-radius:var(--radius);
-      padding:22px;
-      box-shadow:var(--shadow);
-      flex-shrink:0;
-      height:fit-content;
-    }
-    .brand{
-      margin-bottom:14px;
-    }
-    .brand h1{font-size:20px; margin:0; color:#eafffb; letter-spacing:0.2px}
-    .brand p{margin:6px 0 0; color:rgba(230,250,250,0.85); font-size:13px}
-    .contact{
-      margin-top:14px;
-      font-size:13px;
-      line-height:1.4;
-      color:rgba(230,250,250,0.9);
-    }
-    .contact a{color: #e8fffb}
-    .navlinks{margin-top:18px; display:flex; flex-direction:column; gap:6px}
-    .navlinks a{
-      display:block; padding:9px 12px; border-radius:10px; color:rgba(240,255,255,0.98); font-weight:600; background:transparent;
-      transition: all .22s ease;
-      font-size:14px;
-    }
-    .navlinks a:hover{transform:translateX(6px); background: rgba(255,255,255,0.06); color:#fff}
-
-    /* Content column */
-    .content{
-      width:100%;
-      max-width:var(--max-width);
-      margin:0 auto;
+    * {
+      box-sizing: border-box;
     }
 
-    /* Hero / About */
-    .about{
-      display:grid;
-      grid-template-columns: 160px 1fr;
-      gap:22px;
-      align-items:center;
-      background:linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.95));
-      padding:22px;
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      margin-bottom:20px;
-    }
-    .profile-photo{
-      width:160px; height:160px; border-radius:18px; overflow:hidden; flex:0 0 160px;
-      box-shadow:0 10px 30px rgba(16,24,32,0.12);
-      border:4px solid rgba(41,166,166,0.12);
-      background: linear-gradient(135deg, rgba(41,166,166,0.06), rgba(20,91,102,0.04));
-      display:flex; align-items:center; justify-content:center;
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .profile-photo img{width:100%; height:100%; object-fit:cover; display:block}
-    .profile-hidden{opacity:0; transform: translateY(-12px) scale(.98); pointer-events:none}
-
-    .about .intro h2{margin:0; font-size:22px; color:var(--nav); letter-spacing:-0.3px}
-    .about .intro p.lead{margin:8px 0 14px; color:var(--muted); line-height:1.5}
-    .about .meta{font-size:13px; color:var(--muted)}
-
-    /* Sections */
-    section.card{
-      background:var(--card); padding:22px; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:18px;
-      opacity:0; transform:translateY(18px); transition: all .65s cubic-bezier(.16,.84,.35,1);
-    }
-    section.card.visible{opacity:1; transform:none}
-
-    section.card h3{margin:0 0 10px; color:var(--nav)}
-    section.card h4{margin:10px 0 8px; color:var(--muted); font-size:15px}
-    .muted{color:var(--muted); font-size:14px}
-
-    /* Experience items */
-    .experience-item{margin-bottom:14px; padding-bottom:10px; border-bottom:1px dashed rgba(16,24,32,0.06)}
-    .experience-item:last-child{border-bottom:none}
-    .role-title{display:flex; gap:12px; align-items:center; justify-content:space-between}
-    .role-title .left{display:flex; gap:12px; align-items:flex-start}
-    .role-title h4{margin:0; font-size:15px}
-    .role-meta{font-size:13px; color:var(--muted)}
-
-    .bullets{margin:10px 0 0; padding-left:18px}
-    .bullets li{margin:8px 0; line-height:1.5; color:#21303a; font-size:14px}
-
-    /* Projects */
-    .project{margin-bottom:14px}
-    .project .tech{font-size:13px; color:var(--muted); margin-top:6px}
-
-    /* Grid columns for sections */
-    .two-col{
-      display:grid; grid-template-columns:1fr 1fr; gap:14px;
+    html {
+      scroll-behavior: smooth;
     }
 
-    /* Skills list */
-    .skill-group{margin-bottom:12px}
-    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
-    .chip{background:#eef6f6; padding:8px 10px; border-radius:999px; font-weight:600; color:#0b3940; font-size:13px; box-shadow:inset 0 -1px 0 rgba(0,0,0,0.02)}
-
-    /* Timeline / footer */
-    .timeline{display:flex; flex-direction:column; gap:8px; font-size:14px; color:var(--muted)}
-
-    footer{margin-top:16px; text-align:center; color:var(--muted); font-size:13px}
-
-    /* Small screens */
-    @media (max-width:960px){
-      main{padding:18px}
-      nav.sidebar{position:relative; width:100%; display:flex; gap:14px; padding:14px; flex-direction:row; align-items:center; justify-content:space-between; border-radius:10px}
-      .navlinks{flex-direction:row; gap:10px; overflow:auto}
-      .content{max-width:900px}
-      .about{grid-template-columns:120px 1fr}
-      .profile-photo{width:120px; height:120px; border-radius:14px}
-      .two-col{grid-template-columns:1fr}
-    }
-    @media (max-width:640px){
-      .about{grid-template-columns:1fr; gap:12px}
-      .profile-photo{order:1; margin:0 auto}
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", "Helvetica Neue", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(14, 124, 134, 0.08), transparent 32%),
+        linear-gradient(180deg, #f8fbfc 0%, var(--bg) 55%, #eef4f6 100%);
+      color: var(--text);
+      line-height: 1.65;
     }
 
-    /* Smooth anchor offset (for sticky nav) */
-    :target:before{
-      content:""; display:block; height:84px; margin:-84px 0 0;
+    a {
+      color: var(--accent);
+      text-decoration: none;
     }
 
-    /* subtle hover */
-    .card-hover:hover{transform:translateY(-4px); transition:transform .18s ease}
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .shell {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 32px auto 56px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .nav,
+    .content {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .nav {
+      position: sticky;
+      top: 20px;
+      padding: 24px 22px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      font-size: 0.74rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .nav h1 {
+      margin: 0 0 10px;
+      font-size: 1.35rem;
+      line-height: 1.2;
+    }
+
+    .nav p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .toc {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 9px 11px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.94rem;
+    }
+
+    .toc a:hover {
+      background: var(--panel-soft);
+      text-decoration: none;
+    }
+
+    .entrypoints {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--rule);
+      display: grid;
+      gap: 8px;
+      font-size: 0.92rem;
+    }
+
+    .content {
+      padding: 40px 48px 52px;
+    }
+
+    header {
+      padding-bottom: 26px;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 30px;
+    }
+
+    header h2 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 3.3vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 68ch;
+      font-size: 1.04rem;
+    }
+
+    .callout {
+      margin: 22px 0 0;
+      padding: 16px 18px;
+      border: 1px solid #bfe3df;
+      background: var(--accent-soft);
+      border-radius: 16px;
+      font-size: 0.97rem;
+    }
+
+    section {
+      margin-top: 34px;
+      scroll-margin-top: 28px;
+    }
+
+    section h3 {
+      margin: 0 0 14px;
+      font-size: 1.55rem;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+    }
+
+    h4 {
+      margin: 26px 0 10px;
+      font-size: 1.1rem;
+      line-height: 1.25;
+    }
+
+    p,
+    ul,
+    ol,
+    table,
+    .figure,
+    pre {
+      margin: 0 0 16px;
+    }
+
+    ul,
+    ol {
+      padding-left: 22px;
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+
+    pre,
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    pre {
+      padding: 18px 20px;
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 18px;
+      overflow-x: auto;
+      font-size: 0.89rem;
+      line-height: 1.55;
+    }
+
+    p code,
+    li code,
+    td code {
+      padding: 0.18em 0.42em;
+      border-radius: 8px;
+      background: #eef4f7;
+      color: #15333a;
+      font-size: 0.92em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      font-size: 0.94rem;
+      background: var(--panel);
+    }
+
+    th,
+    td {
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    th {
+      background: var(--panel-soft);
+      font-weight: 700;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .figure {
+      border: 1px solid var(--border);
+      background: var(--panel-soft);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .figure figcaption {
+      padding: 12px 14px 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .rule {
+      margin: 28px 0;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .mini-note {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    @media (max-width: 980px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        position: static;
+      }
+
+      .content {
+        padding: 28px 22px 38px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
-<main>
-  <!-- LEFT NAV -->
-  <nav class="sidebar" aria-label="Primary">
-    <div class="brand">
-      <h1>Varmin Singh</h1>
-      <p>Data Scientist • Machine Learning • Data Engineering</p>
-    </div>
-
-    <div class="navlinks" role="navigation" aria-label="Page Sections">
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#research">Research</a>
-      <a href="#education">Education</a>
-      <a href="#skills">Skills</a>
-      <a href="#leadership">Leadership</a>
-      <a href="#contact">Contact</a>
-    </div>
-
-    <div class="contact" style="margin-top:14px">
-      <div style="font-weight:700">singh.varmindip@gmail.com</div>
-      <div style="margin-top:6px">📞 (559) 903-2599</div>
-      <div style="margin-top:6px"><a href="https://linkedin.com/in/varmin" target="_blank">linkedin.com/in/varmin</a></div>
-      <div style="margin-top:6px"><a href="https://github.com/Varminn" target="_blank">github.com/Varminn</a></div>
-    </div>
-  </nav>
-
-  <!-- RIGHT CONTENT -->
-  <div class="content" id="content">
-
-    <!-- ABOUT -->
-    <section id="about" class="about card card-hover">
-      <div class="profile-photo" id="profilePhoto">
-        <!-- Image file (should exist at same path: IMG_4007.JPG) -->
-        <img src="IMG_4007.JPG" alt="Headshot — Varmin Singh" />
+  <div class="shell">
+    <aside class="nav">
+      <p class="eyebrow">Reviewer Presentation</p>
+      <h1>Late-Interaction on turbopuffer</h1>
+      <p>A docs-style walkthrough of the take-home: problem framing, implementation patterns, benchmark evidence, live demo plan, and roadmap.</p>
+      <ul class="toc">
+        <li><a href="#story">The Story in One Page</a></li>
+        <li><a href="#what-is-it">What Late Interaction Is</a></li>
+        <li><a href="#patterns">Three Patterns Today</a></li>
+        <li><a href="#benchmark">What the Benchmark Shows</a></li>
+        <li><a href="#recommendation">Recommendation</a></li>
+        <li><a href="#live-demo">What I Would Show Live</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+        <li><a href="#appendix">Appendix</a></li>
+      </ul>
+      <div class="entrypoints">
+        <a href="PRESENTATION.md">Open canonical markdown</a>
+        <a href="DEMO.md">Open exact demo script</a>
+        <a href="guide/LATE-INTERACTION.md">Open full guide</a>
+        <a href="guide/ROADMAP.md">Open internal roadmap</a>
       </div>
+    </aside>
 
-      <div class="intro">
-        <h2>Hi — I'm Varmin Singh.</h2>
-        <p class="lead">I’m a Data Scientist and Data Engineer studying at UC Berkeley (BA Data Science, MA Statistics forthcoming). I build production-ready data pipelines, ML systems, and automation tooling that help teams extract value from complex datasets — especially in finance, cloud reliability, and applied ML domains. I enjoy taking noisy, real-world data and turning it into reproducible, scalable systems that support decisions.</p>
+    <main class="content">
+      <header>
+        <p class="eyebrow">Solutions Engineer Take Home</p>
+        <h2>Late-Interaction on turbopuffer</h2>
+        <p>Late interaction is worth shipping on turbopuffer today, even before native engine support lands. The practical takeaway from this project is that <strong>Pattern C, Dense ANN first stage plus ColBERT MaxSim rerank, is the default recipe to recommend</strong>: on this benchmark it beats Dense by <strong>46% R@10 on Amazon</strong> (<code>0.198</code> vs <code>0.135</code>), by <strong>3.9% R@10 on SciFact</strong> (<code>0.807</code> vs <code>0.777</code>), and ties Dense on Quora (<code>0.814</code> vs <code>0.813</code>) while staying at the <strong>same query cost as Dense</strong> and requiring <strong>no extra turbopuffer storage</strong>.</p>
+        <div class="callout">This page is the reviewer-facing summary. For the exact talk track, use <a href="DEMO.md">DEMO.md</a>. For the full user-facing artifact, use <a href="guide/LATE-INTERACTION.md">guide/LATE-INTERACTION.md</a>.</div>
+      </header>
 
-        <div class="meta">
-          Berkeley, CA • Available for internships & full-time • Open to data/ML engineering roles
-        </div>
-      </div>
-    </section>
+      <section>
+        <pre>             ┌─{search.py, search.ts}────────────────────────────────────────────────┐
+             │                                                                        │
+             │  ┌─────────────┐  ┌──Pattern C: Dense + MaxSim rerank ★────┐          │
+             │  │ MiniLM      │─▶│  Dense ANN first stage  →  MaxSim      │──┐       │
+             │  │ encoder     │  │  (same query cost as Dense)            │  │       │
+             │  └─────────────┘  └─────────────────────────────────────────┘  │       │
+┌──────────┐ │                                                                        ▼
+│User Query│─┼─▶┌─────────────┐  ┌──Pattern A: ColBERT rerank──────────────┐   ┌────────┐
+└──────────┘ │  │ ColBERT     │─▶│  pooled-ColBERT ANN  →  MaxSim rerank   │──▶│ Top-K  │
+             │  │ encoder     │  └──────────────────────────────────────────┘   └────────┘
+             │  └──────┬──────┘
+             │         │         ┌──Pattern B: token-as-row─────────────────┐
+             │         └────────▶│  multi_query fan-out  →  client MaxSim   │
+             │                   └───────────────────────────────────────────┘
+             └────────────────────────────────────────────────────────────────────────
+                              ★ Pattern C is the production default</pre>
+      </section>
 
-    <!-- EXPERIENCE (complete history) -->
-    <section id="experience" class="card">
-      <h3>Experience</h3>
-
-      <!-- Boeing -->
-      <div class="experience-item">
-        <div class="role-title">
-          <div class="left">
-            <div>
-              <h4>Boeing — Data Science Intern</h4>
-              <div class="role-meta">May 2025 – Present • BGS Commercial Modifications Team • Long Beach, CA</div>
-            </div>
-          </div>
-          <div class="right muted">Program Management • Engineering & Analytics</div>
-        </div>
-
-        <ul class="bullets">
-          <li>
-            Led the development of automated ETL pipelines and integrated Smartsheet-based workflows to standardize incoming engineering and sensor data. Pipelines processed millions of rows daily and reduced manual data extraction and cleaning time by ~65%, enabling near real-time dashboarding for analytics teams.
-          </li>
-          <li>
-            Built scalable workflow automations and reusable data-standardization libraries that supported four engineering managers and cross-functional teams. These tools enforced consistent schemas across dashboards and analysis tools, improving downstream model reliability and reducing onboarding time for new datasets.
-          </li>
-          <li>
-            Implemented monitoring and alerting around data quality using lightweight orchestration and logging, enabling proactive identification of data drift and missing feeds — which reduced troubleshooting time for engineers by an estimated 30%.
-          </li>
-          <li class="muted">Technologies: Python, Pandas, SQL, Smartsheet integrations, internal Boeing tooling, lightweight orchestration, Docker.</li>
+      <section id="story">
+        <h3>The Story in One Page</h3>
+        <ul>
+          <li><strong>Problem:</strong> customers want ColBERT-style quality, but turbopuffer does not yet expose a native multi-vector column type or server-side <code>MaxSim</code>.</li>
+          <li><strong>What I built:</strong> three late-interaction patterns on top of primitives turbopuffer already has today.</li>
+          <li><strong>What the benchmark says:</strong> Pattern C is the production recommendation; Pattern B is the fallback when token matrices cannot live on local disk; Pattern A is the back-pocket option when only one encoder is feasible.</li>
+          <li><strong>What should ship next:</strong> multi-vector storage, a fast approximate surface, and then exact native <code>MaxSim</code>.</li>
         </ul>
-      </div>
+      </section>
 
-      <!-- Penserra -->
-      <div class="experience-item">
-        <div class="role-title">
-          <div class="left">
-            <div>
-              <h4>Penserra — Data Engineer Intern</h4>
-              <div class="role-meta">Jun 2024 – May 2025 • Orinda, CA</div>
-            </div>
-          </div>
-          <div class="right muted">Part-time • 12B AUM</div>
+      <section id="what-is-it">
+        <h3>What Late Interaction Is</h3>
+        <p>Dense retrieval stores one vector per document and compares one query vector to one document vector. It is fast and robust, but a pooled vector can blur together multiple concepts or rare terms.</p>
+        <p>Cross-encoder reranking lets the model compare the whole query and the whole document jointly, which is usually stronger, but it is too expensive to use as a first-stage retriever.</p>
+        <p><strong>Late interaction is the middle ground.</strong> Documents are encoded offline into many vectors, usually one per token. Queries are also encoded into many vectors. At search time, the score is computed by letting each query token find its best-matching document token and then summing those best matches.</p>
+        <pre>                  M
+S(Q, D) =         Σ   max  q_i · d_j
+                 i=1   j</pre>
+        <p>That scoring function is <strong>MaxSim</strong>. It is the core primitive behind ColBERT-style retrieval.</p>
+      </section>
+
+      <section id="patterns">
+        <h3>Three Patterns on turbopuffer Today</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Pattern</th>
+              <th>Query path</th>
+              <th>Why you would use it</th>
+              <th>Main tradeoff</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Pattern A — ColBERT rerank</strong></td>
+              <td>pooled-ColBERT ANN first stage, local MaxSim rerank</td>
+              <td>Single-encoder setup; reasonable middle ground on long-doc workloads</td>
+              <td>Candidate-set quality is limited by pooled-ColBERT</td>
+            </tr>
+            <tr>
+              <td><strong>Pattern B — token-as-row</strong></td>
+              <td>one ANN lookup per query token through <code>multi_query</code>, then client aggregation</td>
+              <td>When token matrices do not fit on local disk</td>
+              <td>Higher latency, two query calls, row-count blow-up</td>
+            </tr>
+            <tr>
+              <td><strong>Pattern C — Dense + MaxSim rerank</strong></td>
+              <td>existing dense ANN first stage, local MaxSim rerank</td>
+              <td>Recommended default; strongest first-stage retrieval plus token-level precision</td>
+              <td>Requires dense and ColBERT encoders at query time</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Why Pattern C is the headline:</strong> it composes with an index customers often already have. There is no re-ingest of a new turbopuffer namespace, no extra storage on the turbopuffer side, and the query still uses <strong>one ANN call</strong> before reranking locally.</p>
+      </section>
+
+      <section id="benchmark">
+        <h3>What the Benchmark Actually Shows</h3>
+        <div class="grid-2">
+          <figure class="figure">
+            <img src="results/charts/quality_by_pipeline.png" alt="Quality by pipeline across all three datasets, f32">
+            <figcaption>Quality by pipeline across all three datasets, f32.</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="results/charts/cost_quality_pareto.png" alt="Cost vs quality Pareto">
+            <figcaption>Cost vs quality Pareto, with marker area proportional to turbopuffer bytes.</figcaption>
+          </figure>
         </div>
+        <p>The benchmark covers three workloads with intentionally different retrieval profiles:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Dataset</th>
+              <th>Why it matters</th>
+              <th>Corpus / queries</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Quora Duplicates</strong></td>
+              <td>Paraphrase-heavy, dense-friendly anchor</td>
+              <td><code>149,596</code> docs / <code>5,000</code> queries</td>
+            </tr>
+            <tr>
+              <td><strong>Amazon Reviews 2023</strong></td>
+              <td>Vocabulary-leaning search with long-tail product language</td>
+              <td><code>25,000</code> docs / <code>2,000</code> queries</td>
+            </tr>
+            <tr>
+              <td><strong>BEIR/SciFact</strong></td>
+              <td>Scientific claim to abstract retrieval with length asymmetry</td>
+              <td><code>5,183</code> docs / <code>300</code> queries</td>
+            </tr>
+          </tbody>
+        </table>
 
-        <ul class="bullets">
-          <li>
-            Engineered a cloud-based NLP ingestion pipeline leveraging Microsoft Azure and the Gemini API to ingest streaming transaction and trade documentation into PostgreSQL, enabling near real-time compliance checks against trading rules. The pipeline reached ~99% compliance-check accuracy on structured test sets.
-          </li>
-          <li>
-            Designed robust data cleansing and transformation workflows using Python (Pandas, PySpark) to convert large volumes of unstructured compliance logs, OCR-scanned PDFs, and text logs into structured tabular formats—improving processing throughput by ~35% and significantly lowering manual review time.
-          </li>
-          <li>
-            Built a real-time user activity logging system using Supabase triggers/functions and centralized storage automations to surface operational metrics for the ops team. The system facilitated root-cause analysis and saved the team 15+ hours per week by automating routine report generation.
-          </li>
-          <li>
-            Contributed to backend services and secure data migration to cloud databases (PostgreSQL on Azure), ensuring strong data integrity and audit trails. Helped implement role-based access and encryption-at-rest to meet compliance requirements.
-          </li>
-          <li class="muted">Technologies: Python, Pandas, PySpark, Azure, Gemini API, Supabase, PostgreSQL, Docker, SQL, OCR libraries.</li>
+        <h4>Amazon: Pattern C Is the Breakout Winner</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Pipeline</th>
+              <th>Recall@10</th>
+              <th>MRR@10</th>
+              <th>nDCG@10</th>
+              <th>p50 latency (ms)</th>
+              <th>$ / M searches</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dense baseline (MiniLM)</td>
+              <td>0.135</td>
+              <td>0.083</td>
+              <td>0.096</td>
+              <td>60.4</td>
+              <td>4.00</td>
+            </tr>
+            <tr>
+              <td>Pattern A — ColBERT rerank</td>
+              <td>0.046</td>
+              <td>0.039</td>
+              <td>0.041</td>
+              <td>62.1</td>
+              <td>4.00</td>
+            </tr>
+            <tr>
+              <td>Pattern B — token-as-row</td>
+              <td>0.140</td>
+              <td>0.097</td>
+              <td>0.107</td>
+              <td>135.4</td>
+              <td>8.00</td>
+            </tr>
+            <tr>
+              <td><strong>Pattern C — Dense + MaxSim rerank</strong></td>
+              <td><strong>0.198</strong></td>
+              <td><strong>0.149</strong></td>
+              <td><strong>0.161</strong></td>
+              <td><strong>65.2</strong></td>
+              <td><strong>4.00</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><strong>Headline:</strong> Pattern C beats Dense by <strong>+46% R@10</strong>, <strong>+79% MRR@10</strong>, and <strong>+68% nDCG@10</strong>.</li>
+          <li><strong>Confidence:</strong> paired-delta confidence intervals exclude zero on all three quality metrics.</li>
+          <li><strong>Interpretation:</strong> Pattern A fails here because pooled-ColBERT is the weak link. Pattern C fixes the first stage by inheriting MiniLM recall and then using MaxSim for precision.</li>
+          <li><strong>Important nuance:</strong> Pattern B also beats Dense on Amazon and reaches <strong>0.503 R@10 vs 0.389 Dense</strong> on 10+ token queries. Pattern C is still the stronger operator recommendation.</li>
         </ul>
-      </div>
+        <p class="mini-note">See <a href="results/amazon-benchmark.md">results/amazon-benchmark.md</a> for the full cell.</p>
 
-      <!-- UC Berkeley — Academic Intern -->
-      <div class="experience-item">
-        <div class="role-title">
-          <div class="left">
-            <div>
-              <h4>University of California, Berkeley — Academic Intern</h4>
-              <div class="role-meta">Aug 2024 – Dec 2024 • Berkeley, CA</div>
-            </div>
-          </div>
-          <div class="right muted">Course Support • 61C Machine Structures</div>
-        </div>
-
-        <ul class="bullets">
-          <li>
-            Supported over 100 students in office hours and discussion sections, clarifying complex concepts in C++, RISC-V assembly, pipelining, threading, and CPU design. Developed approachable explanations and problem breakdowns that boosted in-class performance and helped students complete challenging assignments.
-          </li>
-          <li>
-            Organized and delivered technical workshops on RISC-V assembly and pipelining, created sample problems, and curated lab materials used by TAs across discussion sessions.
-          </li>
-          <li class="muted">Technologies / Topics: C, C++ pedagogy, RISC-V assembly, CPU pipelining, concurrency concepts.</li>
+        <h4>SciFact: Pattern C Wins on Long-Doc Retrieval Too</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Pipeline</th>
+              <th>Recall@10</th>
+              <th>MRR@10</th>
+              <th>nDCG@10</th>
+              <th>p50 latency (ms)</th>
+              <th>$ / M searches</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dense baseline (MiniLM)</td>
+              <td>0.777</td>
+              <td>0.583</td>
+              <td>0.630</td>
+              <td>52.2</td>
+              <td>4.00</td>
+            </tr>
+            <tr>
+              <td>Pattern A — ColBERT rerank</td>
+              <td>0.650</td>
+              <td>0.540</td>
+              <td>0.567</td>
+              <td>60.9</td>
+              <td>4.00</td>
+            </tr>
+            <tr>
+              <td>Pattern B — token-as-row</td>
+              <td>0.717</td>
+              <td>0.549</td>
+              <td>0.590</td>
+              <td>143.5</td>
+              <td>8.00</td>
+            </tr>
+            <tr>
+              <td><strong>Pattern C — Dense + MaxSim rerank</strong></td>
+              <td><strong>0.807</strong></td>
+              <td><strong>0.634</strong></td>
+              <td><strong>0.676</strong></td>
+              <td><strong>62.3</strong></td>
+              <td><strong>4.00</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><strong>Headline:</strong> Pattern C beats Dense by <strong>+3.9% R@10</strong>, <strong>+8.8% MRR@10</strong>, and <strong>+7.4% nDCG@10</strong>.</li>
+          <li><strong>Operational read:</strong> this is the clearest long-document case for the default recipe.</li>
+          <li><strong>Fallback:</strong> if a customer cannot run two encoders, Pattern A at <code>ann_candidates=200</code> still reaches <strong>0.740 R@10</strong>.</li>
+          <li><strong>Why Pattern B saturates:</strong> top-32 document tokens cover too little of a roughly <code>258</code>-token abstract, so the PLAID-style approximation leaves quality on the table.</li>
         </ul>
-      </div>
+        <p class="mini-note">See <a href="results/scifact-benchmark.md">results/scifact-benchmark.md</a> for the full cell.</p>
 
-      <!-- UC Berkeley — Research Assistant -->
-      <div class="experience-item">
-        <div class="role-title">
-          <div class="left">
-            <div>
-              <h4>University of California, Berkeley — Research Assistant</h4>
-              <div class="role-meta">Jan 2024 – May 2024 • Berkeley, CA</div>
-            </div>
-          </div>
-          <div class="right muted">Cloud Disaster Detection • Remote</div>
-        </div>
-
-        <ul class="bullets">
-          <li>
-            Designed and implemented scalable data pipelines on Linux for real-time anomaly detection in Kubernetes and AWS environments. Architected streaming ingestion and feature extraction that supported near real-time model scoring.
-          </li>
-          <li>
-            Built models and tooling that increased detection accuracy by ~30% over baseline heuristics and helped the research team identify early indicators of cloud outages. Results were used to inform follow-up research and dashboard visualizations for operations.
-          </li>
-          <li>
-            Automated reporting and visualization components that accelerated analysis turnaround for the research team and made insights more accessible to non-technical stakeholders.
-          </li>
-          <li class="muted">Technologies: Python, AWS, Kubernetes, feature engineering, XGBoost, Docker, Linux tooling, visualization libs.</li>
+        <h4>Quora: Pattern C Ties Dense, but Adds Complementary Recall</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Pipeline</th>
+              <th>Recall@10</th>
+              <th>MRR@10</th>
+              <th>nDCG@10</th>
+              <th>p50 latency (ms)</th>
+              <th>$ / M searches</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dense baseline (MiniLM)</td>
+              <td>0.813</td>
+              <td>0.558</td>
+              <td>0.619</td>
+              <td>50.1</td>
+              <td>4.00</td>
+            </tr>
+            <tr>
+              <td>Pattern A — ColBERT rerank</td>
+              <td>0.806</td>
+              <td>0.557</td>
+              <td>0.617</td>
+              <td>54.6</td>
+              <td>4.00</td>
+            </tr>
+            <tr>
+              <td>Pattern B — token-as-row</td>
+              <td>0.786</td>
+              <td>0.538</td>
+              <td>0.598</td>
+              <td>141.6</td>
+              <td>8.00</td>
+            </tr>
+            <tr>
+              <td><strong>Pattern C — Dense + MaxSim rerank</strong></td>
+              <td><strong>0.814</strong></td>
+              <td><strong>0.561</strong></td>
+              <td><strong>0.621</strong></td>
+              <td><strong>52.2</strong></td>
+              <td><strong>4.00</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <ul>
+          <li><strong>Headline:</strong> Quora is paraphrase-heavy and already dense-friendly, so the top-line lift is statistically negligible.</li>
+          <li><strong>Important signal:</strong> the <strong>Dense union Pattern C oracle ceiling reaches <code>0.857</code></strong>, versus <code>0.813</code> for Dense alone.</li>
+          <li><strong>Interpretation:</strong> late interaction should not replace Dense on paraphrase-style tasks, but it does recover failures Dense misses, which makes it a meaningful complement.</li>
         </ul>
-      </div>
-
-      <!-- Stealth Startup -->
-      <div class="experience-item">
-        <div class="role-title">
-          <div class="left">
-            <div>
-              <h4>Stealth E-commerce Startup — Data Analyst Intern</h4>
-              <div class="role-meta">Nov 2022 – Aug 2023 • Berkeley, CA</div>
-            </div>
-          </div>
-          <div class="right muted">Product & Growth Analytics</div>
+        <div class="grid-2">
+          <figure class="figure">
+            <img src="results/charts/complementarity.png" alt="Late interaction complementary recall ceiling">
+            <figcaption>Complementarity: where late interaction recovers Dense misses.</figcaption>
+          </figure>
+          <figure class="figure">
+            <img src="results/charts/query_length_segments.png" alt="Recall by query length">
+            <figcaption>Recall at 10 by query length.</figcaption>
+          </figure>
         </div>
+        <p class="mini-note">See <a href="results/benchmark.md">results/benchmark.md</a> for the full Quora cell.</p>
+      </section>
 
-        <ul class="bullets">
-          <li>
-            Built algorithms in Python and C++ to dynamically prioritize product displays based on real-time trend signals and user interactions. The ranking logic increased click-through and conversion metrics in early A/B tests.
-          </li>
-          <li>
-            Implemented an A/B testing framework and built dashboards that allowed product and growth teams to test hypotheses, measure feature impact, and iterate quickly.
-          </li>
-          <li class="muted">Technologies: Python, C++, A/B testing frameworks, analytics dashboards, SQL.</li>
+      <section id="recommendation">
+        <h3>Recommendation</h3>
+        <p>The operator decision table from <a href="results/cost-analysis.md">results/cost-analysis.md</a> compresses to this:</p>
+        <ol>
+          <li><strong>Default:</strong> recommend <strong>Pattern C</strong> first when the customer can run a dense encoder and a ColBERT encoder.</li>
+          <li><strong>If token matrices cannot live locally:</strong> recommend <strong>Pattern B</strong>, ideally with <code>f16</code>.</li>
+          <li><strong>If only one encoder is feasible at query time:</strong> recommend <strong>Pattern A</strong> with a larger candidate set, especially for long-doc retrieval.</li>
+          <li><strong>If the workload is short-query paraphrase search:</strong> keep Dense as the primary retriever and consider fusion with Pattern C for recall headroom.</li>
+        </ol>
+      </section>
+
+      <section id="live-demo">
+        <h3>What I Would Show Live</h3>
+        <p>The live demo should prove mechanics, not claim quality. The safest command is:</p>
+        <pre>make demo Q="why is the sky blue"</pre>
+        <p>That query is stable against the Quora token namespace and shows the full Pattern B flow clearly:</p>
+        <ol>
+          <li>encode the query with <code>jinaai/jina-colbert-v2</code></li>
+          <li>fan out one ANN lookup per query token through <code>multi_query</code></li>
+          <li>aggregate by <code>doc_id</code></li>
+          <li>rank by approximated MaxSim</li>
+        </ol>
+        <p>The exact presenter script lives in <a href="DEMO.md">DEMO.md</a>. The short version is:</p>
+        <ul>
+          <li>use the live query to make the implementation concrete</li>
+          <li>explicitly say Quora is the wrong dataset for headline quality claims</li>
+          <li>pivot immediately back to Amazon and SciFact for the actual business recommendation</li>
         </ul>
-      </div>
+      </section>
 
-      <!-- Diesel Mechanic -->
-      <div class="experience-item">
-        <div class="role-title">
-          <div class="left">
-            <div>
-              <h4>R & R Truck & Trailer Repair — Diesel Mechanic</h4>
-              <div class="role-meta">May 2023 – Aug 2023 • Fowler, CA</div>
-            </div>
-          </div>
-          <div class="right muted">Hands-on technical role</div>
-        </div>
-
-        <ul class="bullets">
-          <li>Performed maintenance and diagnostic work on diesel trucks and trailers, learning structured troubleshooting, mechanical systems, and attention to safety procedures.</li>
+      <section id="roadmap">
+        <h3>Roadmap: What turbopuffer Should Ship</h3>
+        <p>The internal roadmap in <a href="guide/ROADMAP.md">guide/ROADMAP.md</a> argues for a three-step ladder:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Priority</th>
+              <th>Proposal</th>
+              <th>Why it matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>P0</strong></td>
+              <td>Multi-vector attribute type: <code>[K,D]f16</code> / <code>[K,D]f32</code></td>
+              <td>Eliminates Pattern B's row-count explosion and Pattern A/C's external token-matrix store</td>
+            </tr>
+            <tr>
+              <td><strong>P1.5</strong></td>
+              <td>MUVERA-style single-vector summary</td>
+              <td>Fastest path to a customer-facing late-interaction surface using the existing ANN machinery</td>
+            </tr>
+            <tr>
+              <td><strong>P1</strong></td>
+              <td>Native exact <code>MaxSim</code> <code>rank_by</code> operator</td>
+              <td>Collapses client fan-out and local rerank into one server-side path</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The sequencing matters:</p>
+        <ul>
+          <li><strong>P4 first</strong> can improve ergonomics quickly by hiding Pattern B's fan-out behind one API call.</li>
+          <li><strong>P0 + P1.5 next</strong> land a real customer story in weeks, not a quarter.</li>
+          <li><strong>P1 after that</strong> becomes the exact long-term answer and composes naturally with MUVERA as a rerank stage.</li>
         </ul>
-      </div>
+      </section>
 
-      <!-- Customer Service -->
-      <div class="experience-item">
-        <div class="role-title">
-          <div class="left">
-            <div>
-              <h4>JS Truck Insurance Agency Inc. — Customer Service Representative</h4>
-              <div class="role-meta">Jun 2021 – Aug 2022 • Fresno, CA</div>
-            </div>
-          </div>
-          <div class="right muted">Customer-facing operations</div>
-        </div>
-
-        <ul class="bullets">
-          <li>Handled customer service, data entry, and claims intake; developed communication and data accuracy skills while supporting insurance operations.</li>
+      <section>
+        <h3>Why This Deliverable Is Defensible</h3>
+        <ul>
+          <li>It uses only turbopuffer features that exist today.</li>
+          <li>It does not hide the weak cells: Pattern A collapses on Amazon, and Pattern B pays a real storage and latency tax.</li>
+          <li>It distinguishes between <strong>live demo evidence</strong> and <strong>benchmark evidence</strong> instead of pretending a Quora demo query validates the recommendation.</li>
+          <li>It ends with a roadmap that is specific enough to hand to engineering.</li>
         </ul>
-      </div>
+      </section>
 
-      <!-- Volunteer -->
-      <div class="experience-item">
-        <div class="role-title">
-          <div class="left">
-            <div>
-              <h4>Saint Agnes Medical Center — Volunteer</h4>
-              <div class="role-meta">Jun 2018 – Apr 2020 • Fresno, CA</div>
-            </div>
-          </div>
-          <div class="right muted">Postpartum Department</div>
-        </div>
+      <section id="appendix">
+        <h3>Appendix: Exact Headline Numbers</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Claim</th>
+              <th>Evidence</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pattern C is the recommended default</td>
+              <td>Amazon <code>0.198</code> vs Dense <code>0.135</code>; SciFact <code>0.807</code> vs Dense <code>0.777</code>; Quora <code>0.814</code> vs Dense <code>0.813</code></td>
+            </tr>
+            <tr>
+              <td>Pattern C keeps Dense economics</td>
+              <td>one ANN call, <code>$4.00</code> per million searches, no extra turbopuffer storage</td>
+            </tr>
+            <tr>
+              <td>Pattern B is the storage-flexible fallback</td>
+              <td>Amazon <code>0.140</code> R@10 vs Dense <code>0.135</code>, but about <code>135</code> ms p50 and <code>$8.00</code> per million searches</td>
+            </tr>
+            <tr>
+              <td>Pattern A is the single-encoder backup</td>
+              <td>SciFact <code>0.740</code> R@10 at <code>ann_candidates=200</code></td>
+            </tr>
+            <tr>
+              <td>Late interaction is complementary</td>
+              <td>Dense union Pattern C oracle ceilings: Quora <code>0.857</code>, Amazon <code>0.206</code>, SciFact <code>0.847</code></td>
+            </tr>
+          </tbody>
+        </table>
 
-        <ul class="bullets">
-          <li>Supported hospital staff in the postpartum unit with non-clinical tasks and patient support activities, building early teamwork and responsibility.</li>
-        </ul>
-      </div>
+        <h4>Likely Questions</h4>
+        <p><strong>Why not recommend Pattern B first if it is the only fully in-turbopuffer storage shape today?</strong></p>
+        <p>Because Pattern C gives the best benchmarked quality at the same query cost as Dense and avoids the row-count blow-up. Pattern B is the fallback when the local token-matrix store is the real bottleneck.</p>
 
-    </section>
+        <p><strong>Why is Quora still in the benchmark if it does not show a big win?</strong></p>
+        <p>Because it is the dense-friendly anchor. It shows that late interaction is not a universal upgrade and helps calibrate when the extra complexity is justified.</p>
 
-    <!-- PROJECTS -->
-    <section id="projects" class="card">
-      <h3>Projects</h3>
+        <p><strong>Why is MUVERA ahead of native MaxSim in the roadmap?</strong></p>
+        <p>Because MUVERA reuses the existing single-vector ANN path. It is the fastest credible way to close the "turbopuffer does not do ColBERT" objection before the exact operator is ready.</p>
 
-      <div class="project">
-        <h4>Panorama — News Across the Political Spectrum (SF Hacks 2025)</h4>
-        <div class="project-desc muted">
-          A full-stack, multi-partisan news search engine designed to surface balanced news coverage across ideological spectra. Built to help researchers and readers explore how different outlets report the same events.
-        </div>
-        <p>
-          Backend: FastAPI (Python) + custom scrapers. I integrated multiple news sources and rate-limited aggregation layers so the system can refresh news in near real-time. The search/ranking stack combines TF-IDF and semantic embeddings (sentence transformers) to produce relevance-aware results with cross-source deduplication.
-        </p>
-        <p>
-          Frontend: React with client-side filters for political leaning (left/center/right), keyword highlighting, and bookmarking. MongoDB stores indexed articles and user bookmarks. I integrated the Perplexity API for external context enrichment and OpenAI for summarization/Q&A features.
-        </p>
-        <div class="tech">Technologies: Python, FastAPI, React, MongoDB, sentence-transformers, OpenAI API, Perplexity API, Docker.</div>
-      </div>
-
-      <div class="project">
-        <h4>Tops Formatter (Penserra)</h4>
-        <div class="project-desc muted">
-          A production tool used internally to automate end-of-day trade recaps and settlement reporting for broker partners.
-        </div>
-        <p>
-          I built a full-stack application that automates the extraction and transformation of trading records from TOPS SEQ, calculates partner broker commissions, and generates reconciled end-of-day reports. The pipeline securely ingests sequencing data, reconciles trades, and persists auditable records to Azure SQL Server.
-        </p>
-        <p>
-          This system removed a manual reconciliation step, saving operations 15+ hours weekly and ensuring 100% compliance with internal audit standards by preserving computation provenance and versioned outputs.
-        </p>
-        <div class="tech">Technologies: Python, Node.js, Supabase, Azure SQL Server, Docker, CI/CD.</div>
-      </div>
-
-      <div class="project">
-        <h4>Automated Fault Detection in GitHub Commits</h4>
-        <div class="project-desc muted">
-          A large-scale pipeline that automatically analyzes repository commits to detect likely faults and regressions.
-        </div>
-        <p>
-          The pipeline uses Airflow to orchestrate tasks and Redis for fast state and cache management. It processes 100k+ commits per day across multiple repos, extracting metadata, running static analyses, and scoring commits via a combination of heuristics and trained classifiers. The system reduced processing time by ~75% compared to earlier batch pipelines and improved quality control metrics by ~45% across 5TB+ of repository data.
-        </p>
-        <div class="tech">Technologies: Airflow, Redis, Python, Docker, machine learning models for classification, custom dashboards.</div>
-      </div>
-
-      <div class="project">
-        <h4>AI Skin Disease Detection (Berkeley AI Hackathon)</h4>
-        <div class="project-desc muted">
-          Deep learning model and web interface for classifying skin conditions from images.
-        </div>
-        <p>
-          Trained a CNN on a dataset of ~25,000 labeled dermatology images. Implemented transfer learning and augmentations to achieve strong validation accuracy. The model shipped as an API endpoint behind a Flask web app where users can upload an image, receive classifications with confidence scores, and view references for further reading.
-        </p>
-        <div class="tech">Technologies: PyTorch, transfer learning, Flask, image preprocessing, Docker.</div>
-      </div>
-
-    </section>
-
-    <!-- RESEARCH -->
-    <section id="research" class="card">
-      <h3>Research</h3>
-
-      <div>
-        <h4>Real-time Anomaly Detection in Cloud Computing</h4>
-        <p class="muted">Research Assistant — UC Berkeley (Jan 2024 – May 2024)</p>
-        <p>
-          Objective: detect early warning signals in cloud service telemetry to proactively identify outages and degradations.
-        </p>
-        <p>
-          I implemented a streaming data pipeline to ingest infrastructure telemetry (Kubernetes events, AWS metrics, logs), performed feature extraction in near real-time, and evaluated a set of models (including tree-based ensembles and gradient boosting) for anomaly scoring. The solution improved detection accuracy by ~30% vs baseline heuristics and fed into dashboards for incident response teams.
-        </p>
-        <p>
-          Contributions included producing reproducible experiments, writing automation for model retraining, and developing alerting rules that balanced precision and recall for operational use.
-        </p>
-        <div class="tech">Technologies: Python, AWS, Kubernetes, XGBoost, feature engineering, monitoring & visualization tools.</div>
-      </div>
-
-    </section>
-
-    <!-- EDUCATION -->
-    <section id="education" class="card two-col">
-      <div>
-        <h3>Education</h3>
-        <h4>University of California, Berkeley</h4>
-        <div class="muted">BA — Data Science (Aug 2022 – May 2026)</div>
-        <p>
-          Relevant coursework: Applied Machine Learning (Graduate), Data Engineering/Databases, Computer Architecture, Probability for Data Science, Data Structures, Artificial Intelligence, Data Science for Economics, Designing and Understanding Deep Neural Networks, Principles and Techniques of Data Science.
-        </p>
-
-        <h4 style="margin-top:12px">University of California, Berkeley</h4>
-        <div class="muted">MA — Statistics (Aug 2026 – May 2027)</div>
-        <p>
-          Graduate-level coursework in statistical inference, probabilistic modeling, and applied machine learning.
-        </p>
-      </div>
-
-      <div>
-        <h3>Additional Academic Activities</h3>
-        <ul class="timeline">
-          <li>BIDS (Berkeley Institute for Data Science) — participant</li>
-          <li>Data Science Discovery Program — participant</li>
-          <li>Course staff and workshop lead for 61C Machine Structures</li>
-          <li>Cal Bhangra — extracurricular</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- SKILLS -->
-    <section id="skills" class="card">
-      <h3>Skills & Interests</h3>
-
-      <div class="skill-group">
-        <div class="muted">Languages</div>
-        <div class="chips">
-          <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">R</span><span class="chip">C</span>
-          <span class="chip">C++</span><span class="chip">HTML/CSS</span><span class="chip">Java</span>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="muted">Machine Learning & Data</div>
-        <div class="chips">
-          <span class="chip">PyTorch</span><span class="chip">Scikit-learn</span><span class="chip">XGBoost</span>
-          <span class="chip">Transfer Learning</span><span class="chip">Feature Engineering</span>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="muted">Tools & Cloud</div>
-        <div class="chips">
-          <span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">Docker</span>
-          <span class="chip">Kubernetes</span><span class="chip">PostgreSQL</span><span class="chip">Supabase</span>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="muted">Engineering & Infra</div>
-        <div class="chips">
-          <span class="chip">Airflow</span><span class="chip">Redis</span><span class="chip">CI/CD</span>
-          <span class="chip">ETL</span><span class="chip">OCR</span>
-        </div>
-      </div>
-
-      <p style="margin-top:10px" class="muted"><strong>Interests:</strong> Machine Learning, Data Engineering, NLP, Performance Analytics, Back-end Deep Learning.</p>
-    </section>
-
-    <!-- LEADERSHIP & ACTIVITIES -->
-    <section id="leadership" class="card">
-      <h3>Leadership & Activities</h3>
-      <p>
-        <strong>Course Staff & Teaching Support:</strong> Organized workshops, created lab materials, and supported students for computer architecture and systems courses (61C).<br>
-        <strong>Club & Extracurriculars:</strong> Active participant in BIDS and the Data Science Discovery Program. Member of Cal Bhangra — balancing technical work with cultural and team activities helped strengthen leadership and collaboration skills.
-      </p>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="card">
-      <h3>Contact</h3>
-      <p class="muted">Want to work together or chat about data, research, or product ideas? Reach out — I typically respond within a few business days.</p>
-
-      <p style="margin-top:10px"><strong>Email:</strong> <a href="mailto:singh.varmindip@gmail.com">singh.varmindip@gmail.com</a></p>
-      <p><strong>Phone:</strong> (559) 903-2599</p>
-      <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/varmin" target="_blank">linkedin.com/in/varmin</a></p>
-      <p><strong>GitHub:</strong> <a href="https://github.com/Varminn" target="_blank">github.com/Varminn</a></p>
-    </section>
-
-    <footer>
-      © 2025 Varmin Singh • Built with care — drop me an email if you spot anything.
-    </footer>
-
+        <p><strong>What is the one-sentence recommendation to a customer?</strong></p>
+        <p>Start with <strong>Pattern C</strong>, benchmark it on your real query distribution, use <strong>Pattern B</strong> only when token matrices cannot live locally, and ask turbopuffer for native multi-vector plus <code>MaxSim</code>.</p>
+      </section>
+    </main>
   </div>
-</main>
-
-<script>
-  // intersection observer to reveal sections as they come into view
-  (function(){
-    const cards = Array.from(document.querySelectorAll('section.card'));
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e=>{
-        if(e.isIntersecting){
-          e.target.classList.add('visible');
-        }
-      });
-    }, {threshold: 0.12});
-    cards.forEach(c => observer.observe(c));
-  })();
-
-  // headshot fade-out when scrolling down past the about section
-  (function(){
-    const photo = document.getElementById('profilePhoto');
-    const about = document.getElementById('about');
-
-    // When about section is no longer fully visible, hide the photo
-    const photoObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(!entry.isIntersecting){
-          photo.classList.add('profile-hidden');
-        } else {
-          photo.classList.remove('profile-hidden');
-        }
-      });
-    }, {threshold: 0.6});
-    photoObserver.observe(about);
-  })();
-
-  // Smooth scroll polyfill-ish: ensure offset when clicking anchors (so top of section not hidden)
-  (function(){
-    const links = document.querySelectorAll('a[href^="#"]');
-    links.forEach(a=>{
-      a.addEventListener('click', (ev)=>{
-        const href = a.getAttribute('href');
-        if(!href || href.length<2) return;
-        const el = document.querySelector(href);
-        if(!el) return;
-        ev.preventDefault();
-        // compute offset to account for sticky nav height (approx)
-        const top = el.getBoundingClientRect().top + window.pageYOffset - 16;
-        window.scrollTo({top, behavior:'smooth'});
-      });
-    });
-  })();
-</script>
 </body>
 </html>
