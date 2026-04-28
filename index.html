@@ -1,968 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Late-Interaction on turbopuffer</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Varmin Singh — Portfolio</title>
+  <meta name="description" content="Varmin Singh — Data Science / Machine Learning / Data Engineering portfolio."/>
   <style>
     :root {
-      --bg: #ffffff;
-      --surface: #ffffff;
-      --surface-soft: #f6f8fb;
-      --surface-subtle: #fafbfd;
-      --text: #111827;
-      --muted: #5b6472;
-      --line: #e5eaf1;
-      --line-strong: #d8e0ea;
-      --accent: #0f766e;
-      --accent-soft: #ebfffb;
-      --code-bg: #0f172a;
-      --code-text: #e5eef8;
-      --sidebar-width: 276px;
-      --content-width: 860px;
+      --bg: #f5f7f8;
+      --card: #ffffff;
+      --nav-bg: #0f3b44;
+      --nav-accent: #145b66;
+      --accent: #29a6a6;
+      --muted: #57666f;
+      --text: #0f1720;
+      --border: #e7edf0;
+      --shadow: 0 6px 20px rgba(16,24,32,0.06);
+      --radius: 16px;
+      --max-width: 1100px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.65;
+      line-height: 1.6;
     }
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
+    main {
+      display: flex;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 40px 20px;
+      gap: 32px;
     }
 
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .announce {
-      padding: 10px 18px;
-      border-bottom: 1px solid var(--line);
-      background: #f8fbff;
-      color: #1f2937;
-      font-size: 0.93rem;
-      text-align: center;
-    }
-
-    .announce a {
-      color: inherit;
-      font-weight: 600;
-    }
-
-    .topbar {
+    /* Sidebar */
+    nav.sidebar {
       position: sticky;
-      top: 0;
-      z-index: 40;
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--line);
+      top: 40px;
+      width: 280px;
+      height: fit-content;
+      background: linear-gradient(180deg, var(--nav-bg), var(--nav-accent));
+      color: #fff;
+      padding: 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      flex-shrink: 0;
     }
 
-    .topbar-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 14px 24px;
-    }
+    .brand h1 { font-size: 22px; margin: 0; color: #eafffb; }
+    .brand p { font-size: 13px; color: rgba(230,250,250,0.8); margin: 8px 0 20px; }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--text);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-
-    .brand-mark {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, #22c55e 0%, #14b8a6 100%);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 0.82rem;
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
-    }
-
-    .top-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: wrap;
-      font-size: 0.93rem;
-    }
-
-    .top-links a {
-      color: var(--muted);
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
-      min-height: calc(100vh - 100px);
-    }
-
-    .sidebar {
-      position: sticky;
-      top: 61px;
-      height: calc(100vh - 61px);
-      overflow: auto;
-      padding: 24px 18px 32px 24px;
-      border-right: 1px solid var(--line);
-      background: var(--surface);
-    }
-
-    .search-box {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+    .navlinks a {
+      display: block;
       padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: 11px;
-      background: var(--surface-subtle);
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-bottom: 22px;
-    }
-
-    .search-box span:last-child {
-      padding: 2px 6px;
-      border-radius: 6px;
-      border: 1px solid var(--line);
-      background: white;
-      font-size: 0.78rem;
-    }
-
-    .nav-group {
-      margin-bottom: 20px;
-    }
-
-    .nav-label {
-      margin: 0 0 8px;
-      color: var(--muted);
-      font-size: 0.76rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .nav-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .nav-list li + li {
-      margin-top: 2px;
-    }
-
-    .nav-list a {
-      display: block;
-      padding: 7px 10px;
-      border-radius: 9px;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .nav-list a:hover {
-      background: var(--surface-soft);
+      color: #fff;
       text-decoration: none;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: 0.2s;
+      font-size: 14px;
+    }
+    .navlinks a:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); }
+
+    .sidebar-contact { margin-top: 30px; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+    .sidebar-contact div { margin-bottom: 8px; }
+    .sidebar-contact a { color: #accent; color: #eafffb; text-decoration: underline; }
+
+    /* Content Area */
+    .content { flex-grow: 1; }
+
+    section.card {
+      background: var(--card);
+      padding: 32px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
     }
 
-    .nav-list a.active {
-      color: var(--text);
-      background: #f0f6ff;
-      font-weight: 600;
-    }
+    h2, h3 { color: var(--nav-bg); margin-top: 0; }
+    h4 { margin: 20px 0 8px; color: var(--nav-bg); font-size: 1.1rem; }
 
-    .content-wrap {
-      display: flex;
-      justify-content: center;
-      padding: 28px 32px 96px;
-      background: var(--surface);
-    }
+    .intro-grid { display: flex; gap: 24px; align-items: center; }
+    .profile-photo { width: 140px; height: 140px; border-radius: 20px; object-fit: cover; border: 4px solid var(--border); }
 
-    article {
-      width: min(100%, var(--content-width));
-    }
+    .experience-item { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .experience-item:last-child { border-bottom: none; }
+    .role-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .role-meta { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
 
-    .page-meta {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 22px;
-    }
+    .bullets { padding-left: 20px; margin: 12px 0; }
+    .bullets li { margin-bottom: 8px; font-size: 14.5px; }
 
-    .page-kicker {
-      margin: 0 0 8px;
-      color: var(--accent);
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
+    .tech-stack { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
-    h1 {
-      margin: 0 0 14px;
-      font-size: clamp(2.2rem, 4vw, 3.5rem);
-      line-height: 1.04;
-      letter-spacing: -0.045em;
-    }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .chip { background: #eef6f6; padding: 6px 12px; border-radius: 20px; font-size: 13px; color: var(--nav-bg); font-weight: 600; }
 
-    .lede {
-      margin: 0;
-      max-width: 68ch;
-      color: #2f3a48;
-      font-size: 1.05rem;
-    }
+    footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 40px; }
 
-    .page-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: flex-end;
-      min-width: 220px;
-    }
-
-    .action {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 11px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: white;
-      color: var(--muted);
-      font-size: 0.88rem;
-      white-space: nowrap;
-    }
-
-    .action:hover {
-      background: var(--surface-soft);
-      text-decoration: none;
-    }
-
-    .callout {
-      margin: 22px 0 28px;
-      padding: 14px 16px;
-      border: 1px solid #cfe5e2;
-      border-radius: 12px;
-      background: var(--accent-soft);
-      color: #154642;
-      font-size: 0.95rem;
-    }
-
-    .rule {
-      height: 1px;
-      background: var(--line);
-      margin: 30px 0;
-    }
-
-    section {
-      margin-top: 34px;
-      scroll-margin-top: 82px;
-    }
-
-    h2 {
-      margin: 0 0 12px;
-      font-size: 1.6rem;
-      line-height: 1.12;
-      letter-spacing: -0.03em;
-    }
-
-    h3 {
-      margin: 28px 0 10px;
-      font-size: 1.15rem;
-      line-height: 1.3;
-      letter-spacing: -0.02em;
-    }
-
-    p,
-    ul,
-    ol,
-    table,
-    pre,
-    .figure,
-    blockquote {
-      margin: 0 0 16px;
-    }
-
-    ul,
-    ol {
-      padding-left: 22px;
-    }
-
-    li + li {
-      margin-top: 8px;
-    }
-
-    pre,
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
-
-    pre {
-      padding: 18px 20px;
-      overflow-x: auto;
-      border-radius: 14px;
-      border: 1px solid #1e293b;
-      background: var(--code-bg);
-      color: var(--code-text);
-      font-size: 0.9rem;
-      line-height: 1.55;
-    }
-
-    p code,
-    li code,
-    td code,
-    th code {
-      padding: 0.16em 0.38em;
-      border-radius: 7px;
-      background: #f3f6fa;
-      border: 1px solid #e5ebf2;
-      color: #1f2937;
-      font-size: 0.92em;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.94rem;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    th,
-    td {
-      padding: 11px 12px;
-      text-align: left;
-      vertical-align: top;
-      border-bottom: 1px solid var(--line);
-    }
-
-    th {
-      background: var(--surface-soft);
-      font-weight: 700;
-    }
-
-    tr:last-child td {
-      border-bottom: 0;
-    }
-
-    .figure {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      overflow: hidden;
-      background: white;
-    }
-
-    .figure img {
-      display: block;
-      width: 100%;
-      height: auto;
-      background: white;
-    }
-
-    .figure figcaption {
-      padding: 10px 12px 12px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    blockquote {
-      padding: 0 0 0 14px;
-      border-left: 3px solid var(--line-strong);
-      color: #374151;
-    }
-
-    .mini-note {
-      color: var(--muted);
-      font-size: 0.93rem;
-    }
-
-    .footer-links {
-      margin-top: 34px;
-      padding-top: 18px;
-      border-top: 1px solid var(--line);
-      display: grid;
-      gap: 10px;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    @media (max-width: 1040px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: static;
-        height: auto;
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-        padding-bottom: 20px;
-      }
-
-      .content-wrap {
-        padding-top: 22px;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .topbar-inner,
-      .page-meta {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .page-actions {
-        justify-content: flex-start;
-        min-width: 0;
-      }
-
-      .content-wrap {
-        padding: 22px 18px 72px;
-      }
-
-      .grid-2 {
-        grid-template-columns: 1fr;
-      }
-
-      th,
-      td {
-        padding: 10px;
-      }
+    @media (max-width: 900px) {
+      main { flex-direction: column; }
+      nav.sidebar { position: static; width: 100%; }
+      .intro-grid { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
-  <div class="announce">
-    <a href="https://turbopuffer.com/pricing">Query prices reduced by up to 94%</a>
-  </div>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="https://turbopuffer.com/docs/hybrid">
-        <span class="brand-mark">tp</span>
-        <span>turbopuffer</span>
-      </a>
-      <nav class="top-links" aria-label="Top navigation">
-        <a href="https://turbopuffer.com/docs">Docs</a>
-        <a href="https://turbopuffer.com/pricing">Pricing</a>
-        <a href="https://turbopuffer.com/customers">Customers</a>
-        <a href="https://turbopuffer.com/blog">Blog</a>
-        <a href="https://turbopuffer.com/">Home</a>
-      </nav>
+<main>
+  <nav class="sidebar">
+    <div class="brand">
+      <h1>Varmin Singh</h1>
+      <p>Data Scientist • ML Engineer</p>
     </div>
-  </header>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#research">Research</a>
+      <a href="#education">Education</a>
+      <a href="#skills">Skills</a>
+    </div>
+    <div class="sidebar-contact">
+      <div>singh.varmindip@gmail.com</div>
+      <div>📞 (559) 903-2599</div>
+      <div><a href="https://linkedin.com/in/varmin">LinkedIn</a></div>
+      <div><a href="https://github.com/Varminn">GitHub</a></div>
+    </div>
+  </nav>
 
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="search-box">
-        <span>Docs search...</span>
-        <span>esc</span>
-      </div>
-
-      <div class="nav-group">
-        <p class="nav-label">Introduction</p>
-        <ul class="nav-list">
-          <li><a href="https://turbopuffer.com/docs/index">Introduction</a></li>
-          <li><a href="https://turbopuffer.com/docs/concepts">Concepts</a></li>
-          <li><a href="https://turbopuffer.com/docs/performance">Performance</a></li>
-          <li><a href="https://turbopuffer.com/docs/regions">Regions</a></li>
-        </ul>
-      </div>
-
-      <div class="nav-group">
-        <p class="nav-label">Guides</p>
-        <ul class="nav-list">
-          <li><a href="docs/QUICKSTART.md">Quickstart</a></li>
-          <li><a href="docs/VECTOR-SEARCH.md">Vector Search</a></li>
-          <li><a href="docs/FULL-SEARCH.md">Full-Text Search</a></li>
-          <li><a href="https://turbopuffer.com/docs/hybrid">Hybrid Search</a></li>
-          <li><a class="active" href="#top">Late Interaction</a></li>
-        </ul>
-      </div>
-
-      <div class="nav-group">
-        <p class="nav-label">Sections</p>
-        <ul class="nav-list">
-          <li><a href="#what-is-it">What late interaction is</a></li>
-          <li><a href="#why-now">Why it matters today</a></li>
-          <li><a href="#patterns">Three patterns</a></li>
-          <li><a href="#benchmark">Benchmark evidence</a></li>
-          <li><a href="#cost">Cost / latency / storage</a></li>
-          <li><a href="#guidance">Recommended guidance</a></li>
-          <li><a href="#live-demo">Live demo plan</a></li>
-          <li><a href="#roadmap">Roadmap</a></li>
-          <li><a href="#appendix">Appendix</a></li>
-        </ul>
-      </div>
-    </aside>
-
-    <main class="content-wrap">
-      <article id="top">
-        <div class="page-meta">
-          <div>
-            <p class="page-kicker">Solutions Engineer Take Home</p>
-            <h1>Late-Interaction on turbopuffer</h1>
-            <p class="lede">Late interaction is worth shipping on turbopuffer today, even before native engine support lands. The practical takeaway from this project is that <strong>Pattern C, Dense ANN first stage plus ColBERT MaxSim rerank, is the default recipe to recommend</strong>: on this benchmark it beats Dense by <strong>46% R@10 on Amazon</strong> (<code>0.198</code> vs <code>0.135</code>), by <strong>3.9% R@10 on SciFact</strong> (<code>0.807</code> vs <code>0.777</code>), and ties Dense on Quora (<code>0.814</code> vs <code>0.813</code>) while staying at the <strong>same query cost as Dense</strong> and requiring <strong>no extra turbopuffer storage</strong>.</p>
-          </div>
-          <div class="page-actions">
-            <a class="action" href="presentation.md">Open Markdown</a>
-            <a class="action" href="DEMO.md">Open Demo Script</a>
-            <a class="action" href="guide/LATE-INTERACTION.md">Open D1 Guide</a>
-            <a class="action" href="guide/ROADMAP.md">Open D2 Roadmap</a>
-          </div>
+  <div class="content">
+    <section id="about" class="card">
+      <div class="intro-grid">
+        <img src="IMG_4007.JPG" alt="Varmin Singh" class="profile-photo">
+        <div>
+          <h2>Hi — I'm Varmin.</h2>
+          <p>I’m a Data Scientist and Engineer at UC Berkeley. I specialize in building production-ready pipelines and ML systems that turn messy, real-world data into scalable solutions—particularly in finance and cloud reliability.</p>
+          <div style="font-size: 13px; color: var(--muted);">Berkeley, CA • Open to Data/ML Engineering Roles</div>
         </div>
+      </div>
+    </section>
 
-        <div class="callout">
-          This page is the reviewer-facing summary and the preferred live interview surface. Use <a href="DEMO.md">DEMO.md</a> for the exact spoken script and <a href="guide/LATE-INTERACTION.md">guide/LATE-INTERACTION.md</a> for the full customer-facing writeup.
+    <section id="experience" class="card">
+      <h3>Experience</h3>
+      
+      <div class="experience-item">
+        <div class="role-header">
+          <h4>Boeing — Data Science Intern</h4>
+          <span class="role-meta">May 2025 – Present</span>
         </div>
+        <div class="role-meta">BGS Commercial Modifications • Long Beach, CA</div>
+        <ul class="bullets">
+          <li>Led development of automated ETL pipelines processing millions of rows daily, reducing manual extraction time by 65%.</li>
+          <li>Built reusable data-standardization libraries to enforce consistent schemas across cross-functional dashboards.</li>
+          <li>Implemented data quality monitoring to proactively identify drift, reducing troubleshooting time by 30%.</li>
+        </ul>
+        <div class="tech-stack">Python, Pandas, SQL, Docker, Smartsheet API</div>
+      </div>
 
-        <pre>             ┌─{search.py, search.ts}────────────────────────────────────────────────┐
-             │                                                                       │
-             │  ┌─────────────┐  ┌──Pattern C: Dense + MaxSim rerank ★────┐ ┌──────┐  │
-             │  │ MiniLM      │─▶│  MiniLM ANN  →  MaxSim rerank          │▶│ Top- │  │
-             │  │ encoder     │  │  (existing dense namespace, 1 call)    │ │  K   │  │
-             │  └─────────────┘  └─────────────────────────────────────────┘ └──────┘  │
-┌──────────┐ │                                                                  ▲      │
-│User Query│─┼─▶┌─────────────┐  ┌──Pattern A: ColBERT rerank─────────────┐      │      │
-└──────────┘ │  │ ColBERT     │─▶│ pooled-ColBERT ANN  →  MaxSim rerank   │──────┤      │
-             │  │ encoder     │  └─────────────────────────────────────────┘      │      │
-             │  └──────┬──────┘                                                   │      │
-             │         │         ┌──Pattern B: token-as-row────────────────┐      │      │
-             │         └────────▶│ multi_query fan-out  →  client MaxSim   │──────┘      │
-             │                   └──────────────────────────────────────────┘             │
-             └────────────────────────────────────────────────────────────────────────────┘
-                              ★ Pattern C is the production default</pre>
+      <div class="experience-item">
+        <div class="role-header">
+          <h4>Penserra — Data Engineer Intern</h4>
+          <span class="role-meta">Jun 2024 – May 2025</span>
+        </div>
+        <div class="role-meta">Orinda, CA • 12B AUM</div>
+        <ul class="bullets">
+          <li>Engineered a cloud-based NLP ingestion pipeline using Azure and Gemini API for real-time trade compliance (99% accuracy).</li>
+          <li>Transformed unstructured logs and OCR-scanned PDFs into structured formats, increasing throughput by 35%.</li>
+          <li>Automated operational metrics with Supabase, saving 15+ hours weekly in manual reporting.</li>
+        </ul>
+        <div class="tech-stack">PySpark, Azure, Gemini API, PostgreSQL, OCR</div>
+      </div>
+    </section>
 
-        <div class="rule"></div>
+    <section id="projects" class="card">
+      <h3>Featured Projects</h3>
+      
+      <div class="experience-item">
+        <h4>Panorama — Multi-Partisan News Search</h4>
+        <p style="font-size: 14.5px;">A search engine designed to surface balanced news coverage. Uses FastAPI, React, and MongoDB with semantic embeddings to deduplicate and rank articles from across the political spectrum.</p>
+        <div class="tech-stack">FastAPI, sentence-transformers, OpenAI API, Docker</div>
+      </div>
 
-        <section id="what-is-it">
-          <h2>What late interaction is</h2>
-          <p>Dense retrieval stores one vector per document and compares one query vector to one document vector. It is fast and robust, but a pooled vector can blur together multiple concepts or rare terms.</p>
-          <p>Cross-encoder reranking lets the model compare the whole query and the whole document jointly, which is usually stronger, but it is too expensive to use as a first-stage retriever.</p>
-          <p><strong>Late interaction is the middle ground.</strong> Documents are encoded offline into many vectors, usually one per token. Queries are also encoded into many vectors. At search time, the score is computed by letting each query token find its best-matching document token and then summing those best matches.</p>
-          <pre>                  M
-S(Q, D) =         Σ   max  q_i · d_j
-                 i=1   j</pre>
-          <p>That scoring function is <strong>MaxSim</strong>. It is the core primitive behind ColBERT-style retrieval.</p>
-        </section>
+      <div class="experience-item">
+        <h4>Automated Fault Detection</h4>
+        <p style="font-size: 14.5px;">Orchestrated an Airflow pipeline analyzing 100k+ GitHub commits daily for regressions using trained classifiers. Reduced processing time by 75%.</p>
+        <div class="tech-stack">Airflow, Redis, ML Classification, Python</div>
+      </div>
+    </section>
 
-        <section id="why-now">
-          <h2>Why it matters on turbopuffer today</h2>
-          <p>turbopuffer does not yet ship a native multi-vector column type or a server-side <code>MaxSim</code> operator. That is the product gap. The customer need already exists, and the current API surface is still enough to ship a credible answer.</p>
-          <ul>
-            <li>ANN vector retrieval gives a strong first-stage candidate set.</li>
-            <li><code>multi_query</code> supports the token fan-out needed for Pattern B.</li>
-            <li>Local reranking lets the client compute exact or approximate MaxSim today.</li>
-            <li>The dense namespace stays cheap enough that Pattern C keeps Dense economics.</li>
-          </ul>
-          <blockquote>
-            The practical question is not whether native support would be cleaner. It would. The practical question is what to recommend to customers before that lands.
-          </blockquote>
-        </section>
+    <section id="skills" class="card">
+      <h3>Skills</h3>
+      <div>
+        <div class="role-meta" style="margin-top:10px">LANGUAGES</div>
+        <div class="chips">
+          <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">R</span><span class="chip">C++</span><span class="chip">Java</span>
+        </div>
+        <div class="role-meta" style="margin-top:15px">MACHINE LEARNING & INFRA</div>
+        <div class="chips">
+          <span class="chip">PyTorch</span><span class="chip">Scikit-learn</span><span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">Airflow</span>
+        </div>
+      </div>
+    </section>
 
-        <section id="patterns">
-          <h2>Three patterns on turbopuffer today</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Pattern</th>
-                <th>Query path</th>
-                <th>Why you would use it</th>
-                <th>Main tradeoff</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Pattern A - ColBERT rerank</strong></td>
-                <td>pooled-ColBERT ANN first stage, local MaxSim rerank</td>
-                <td>Single-encoder setup; useful fallback on long-doc workloads</td>
-                <td>Candidate-set quality is limited by pooled-ColBERT</td>
-              </tr>
-              <tr>
-                <td><strong>Pattern B - token-as-row</strong></td>
-                <td>one ANN lookup per query token through <code>multi_query</code>, then client aggregation</td>
-                <td>When token matrices cannot live on local disk</td>
-                <td>Higher latency, two query calls, row-count blow-up</td>
-              </tr>
-              <tr>
-                <td><strong>Pattern C - Dense + MaxSim rerank</strong></td>
-                <td>existing dense ANN first stage, local MaxSim rerank</td>
-                <td>Recommended default; strongest first-stage retrieval plus token-level precision</td>
-                <td>Requires dense and ColBERT encoders at query time</td>
-              </tr>
-            </tbody>
-          </table>
-          <p><strong>Why Pattern C is the headline.</strong> It composes with an index customers often already have. There is no re-ingest of a new turbopuffer namespace, no extra turbopuffer storage, and the query still uses <strong>one ANN call</strong> before reranking locally.</p>
-        </section>
+    <section id="education" class="card">
+      <h3>Education</h3>
+      <div class="role-header">
+        <h4>University of California, Berkeley</h4>
+        <span class="role-meta">2022 – 2027</span>
+      </div>
+      <p><strong>BA Data Science</strong> (2026) | <strong>MA Statistics</strong> (2027)<br>
+      <span style="font-size: 14px; color: var(--muted);">Relevant Coursework: Applied Machine Learning (Grad), Deep Neural Networks, Computer Architecture, Probabilistic Modeling.</span></p>
+    </section>
 
-        <section id="benchmark">
-          <h2>Benchmark evidence</h2>
-          <p>The benchmark covers three intentionally different retrieval profiles:</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Dataset</th>
-                <th>Why it matters</th>
-                <th>Corpus / queries</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Quora Duplicates</strong></td>
-                <td>Paraphrase-heavy, dense-friendly anchor</td>
-                <td><code>149,596</code> docs / <code>5,000</code> queries</td>
-              </tr>
-              <tr>
-                <td><strong>Amazon Reviews 2023</strong></td>
-                <td>Vocabulary-leaning retrieval with long-tail product language</td>
-                <td><code>25,000</code> docs / <code>2,000</code> queries</td>
-              </tr>
-              <tr>
-                <td><strong>BEIR/SciFact</strong></td>
-                <td>Scientific claim to abstract retrieval with strong length asymmetry</td>
-                <td><code>5,183</code> docs / <code>300</code> queries</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="grid-2">
-            <figure class="figure">
-              <img src="results/charts/quality_by_pipeline.png" alt="Quality by pipeline across all three datasets, f32">
-              <figcaption>Quality by pipeline across all three datasets, f32.</figcaption>
-            </figure>
-            <figure class="figure">
-              <img src="results/charts/cost_quality_pareto.png" alt="Cost vs quality Pareto">
-              <figcaption>Cost vs quality Pareto, with marker area proportional to turbopuffer bytes.</figcaption>
-            </figure>
-          </div>
-
-          <h3>Amazon: Pattern C is the breakout winner</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Pipeline</th>
-                <th>Recall@10</th>
-                <th>MRR@10</th>
-                <th>nDCG@10</th>
-                <th>p50 latency (ms)</th>
-                <th>$ / M searches</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Dense baseline (MiniLM)</td>
-                <td>0.135</td>
-                <td>0.083</td>
-                <td>0.096</td>
-                <td>60.4</td>
-                <td>4.00</td>
-              </tr>
-              <tr>
-                <td>Pattern A - ColBERT rerank</td>
-                <td>0.046</td>
-                <td>0.039</td>
-                <td>0.040</td>
-                <td>62.1</td>
-                <td>4.00</td>
-              </tr>
-              <tr>
-                <td>Pattern B - token-as-row</td>
-                <td>0.140</td>
-                <td>0.097</td>
-                <td>0.107</td>
-                <td>135.4</td>
-                <td>8.00</td>
-              </tr>
-              <tr>
-                <td><strong>Pattern C - Dense + MaxSim rerank</strong></td>
-                <td><strong>0.198</strong></td>
-                <td><strong>0.149</strong></td>
-                <td><strong>0.161</strong></td>
-                <td><strong>65.2</strong></td>
-                <td><strong>4.00</strong></td>
-              </tr>
-            </tbody>
-          </table>
-          <ul>
-            <li><strong>Headline:</strong> Pattern C beats Dense by <strong>+46% R@10</strong>, <strong>+79% MRR@10</strong>, and <strong>+68% nDCG@10</strong>.</li>
-            <li><strong>Confidence:</strong> paired-delta confidence intervals exclude zero on all three quality metrics.</li>
-            <li><strong>Interpretation:</strong> Pattern A fails here because pooled-ColBERT is the weak link. Pattern C fixes the first stage by inheriting MiniLM recall and then using MaxSim for precision.</li>
-            <li><strong>Important nuance:</strong> Pattern B also beats Dense on Amazon and reaches <strong>0.503 R@10 vs 0.389 Dense</strong> on 10+ token queries. Pattern C is still the stronger operator recommendation.</li>
-          </ul>
-          <p class="mini-note">See <a href="results/amazon-benchmark.md">results/amazon-benchmark.md</a> for the full cell.</p>
-
-          <h3>SciFact: Pattern C wins on long-document retrieval too</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Pipeline</th>
-                <th>Recall@10</th>
-                <th>MRR@10</th>
-                <th>nDCG@10</th>
-                <th>p50 latency (ms)</th>
-                <th>$ / M searches</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Dense baseline (MiniLM)</td>
-                <td>0.777</td>
-                <td>0.583</td>
-                <td>0.630</td>
-                <td>52.2</td>
-                <td>4.00</td>
-              </tr>
-              <tr>
-                <td>Pattern A - ColBERT rerank</td>
-                <td>0.650</td>
-                <td>0.540</td>
-                <td>0.567</td>
-                <td>60.9</td>
-                <td>4.00</td>
-              </tr>
-              <tr>
-                <td>Pattern B - token-as-row</td>
-                <td>0.717</td>
-                <td>0.549</td>
-                <td>0.590</td>
-                <td>143.5</td>
-                <td>8.00</td>
-              </tr>
-              <tr>
-                <td><strong>Pattern C - Dense + MaxSim rerank</strong></td>
-                <td><strong>0.807</strong></td>
-                <td><strong>0.634</strong></td>
-                <td><strong>0.676</strong></td>
-                <td><strong>62.3</strong></td>
-                <td><strong>4.00</strong></td>
-              </tr>
-            </tbody>
-          </table>
-          <ul>
-            <li><strong>Headline:</strong> Pattern C beats Dense by <strong>+3.9% R@10</strong>, <strong>+8.8% MRR@10</strong>, and <strong>+7.4% nDCG@10</strong>.</li>
-            <li><strong>Operational read:</strong> this is the clearest long-document case for the default recipe.</li>
-            <li><strong>Fallback:</strong> if a customer cannot run two encoders, Pattern A at <code>ann_candidates=200</code> still reaches <strong>0.740 R@10</strong>.</li>
-            <li><strong>Why Pattern B saturates:</strong> top-32 document tokens cover too little of a roughly <code>258</code>-token abstract, so the PLAID-style approximation leaves quality on the table.</li>
-          </ul>
-          <p class="mini-note">See <a href="results/scifact-benchmark.md">results/scifact-benchmark.md</a> for the full cell.</p>
-
-          <h3>Quora: Pattern C ties Dense, but adds complementary recall</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Pipeline</th>
-                <th>Recall@10</th>
-                <th>MRR@10</th>
-                <th>nDCG@10</th>
-                <th>p50 latency (ms)</th>
-                <th>$ / M searches</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Dense baseline (MiniLM)</td>
-                <td>0.813</td>
-                <td>0.558</td>
-                <td>0.619</td>
-                <td>50.1</td>
-                <td>4.00</td>
-              </tr>
-              <tr>
-                <td>Pattern A - ColBERT rerank</td>
-                <td>0.806</td>
-                <td>0.557</td>
-                <td>0.617</td>
-                <td>54.6</td>
-                <td>4.00</td>
-              </tr>
-              <tr>
-                <td>Pattern B - token-as-row</td>
-                <td>0.786</td>
-                <td>0.538</td>
-                <td>0.598</td>
-                <td>141.6</td>
-                <td>8.00</td>
-              </tr>
-              <tr>
-                <td><strong>Pattern C - Dense + MaxSim rerank</strong></td>
-                <td><strong>0.814</strong></td>
-                <td><strong>0.561</strong></td>
-                <td><strong>0.621</strong></td>
-                <td><strong>52.2</strong></td>
-                <td><strong>4.00</strong></td>
-              </tr>
-            </tbody>
-          </table>
-          <ul>
-            <li><strong>Headline:</strong> Quora is paraphrase-heavy and already dense-friendly, so the top-line lift is statistically negligible.</li>
-            <li><strong>Important signal:</strong> the <strong>Dense union Pattern C oracle ceiling reaches <code>0.857</code></strong>, versus <code>0.813</code> for Dense alone.</li>
-            <li><strong>Interpretation:</strong> late interaction should not replace Dense on paraphrase-style tasks, but it does recover failures Dense misses, which makes it a meaningful complement.</li>
-          </ul>
-          <div class="grid-2">
-            <figure class="figure">
-              <img src="results/charts/complementarity.png" alt="Late interaction complementary recall ceiling">
-              <figcaption>Complementarity: where late interaction recovers Dense misses.</figcaption>
-            </figure>
-            <figure class="figure">
-              <img src="results/charts/query_length_segments.png" alt="Recall by query length">
-              <figcaption>Recall at 10 by query length.</figcaption>
-            </figure>
-          </div>
-          <p class="mini-note">See <a href="results/benchmark.md">results/benchmark.md</a> for the full Quora cell.</p>
-        </section>
-
-        <section id="cost">
-          <h2>Cost, latency, and storage tradeoffs</h2>
-          <p>The operator decision table from <a href="results/cost-analysis.md">results/cost-analysis.md</a> compresses to this:</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Mode</th>
-                <th>Query cost</th>
-                <th>Latency profile</th>
-                <th>Storage profile</th>
-                <th>Practical reading</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Dense baseline</td>
-                <td><code>$4.00</code> / M</td>
-                <td>Lowest</td>
-                <td>Lowest</td>
-                <td>Keep this on short-query, dense-friendly workloads</td>
-              </tr>
-              <tr>
-                <td>Pattern A</td>
-                <td><code>$4.00</code> / M</td>
-                <td>Moderate</td>
-                <td>Low in turbopuffer, local token store required</td>
-                <td>Use when only one encoder is feasible</td>
-              </tr>
-              <tr>
-                <td>Pattern B</td>
-                <td><code>$8.00</code> / M</td>
-                <td>Highest</td>
-                <td><code>30-100x</code> row count, best with <code>f16</code></td>
-                <td>Use when local token matrices are the bottleneck</td>
-              </tr>
-              <tr>
-                <td><strong>Pattern C</strong></td>
-                <td><strong><code>$4.00</code> / M</strong></td>
-                <td><strong>Near Dense</strong></td>
-                <td><strong>No extra turbopuffer storage</strong></td>
-                <td><strong>Default recommendation</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section id="guidance">
-          <h2>Recommended guidance</h2>
-          <ol>
-            <li><strong>Default:</strong> recommend <strong>Pattern C</strong> first when the customer can run a dense encoder and a ColBERT encoder.</li>
-            <li><strong>If token matrices cannot live locally:</strong> recommend <strong>Pattern B</strong>, ideally with <code>f16</code>.</li>
-            <li><strong>If only one encoder is feasible at query time:</strong> recommend <strong>Pattern A</strong> with a larger candidate set, especially for long-document retrieval.</li>
-            <li><strong>If the workload is short-query paraphrase search:</strong> keep Dense as the primary retriever and consider fusion with Pattern C for recall headroom.</li>
-          </ol>
-        </section>
-
-        <section id="live-demo">
-          <h2>Live demo plan</h2>
-          <p>The live demo should prove mechanics, not claim quality. The safest command is:</p>
-          <pre>make demo Q="why is the sky blue"</pre>
-          <p>That query is stable against the Quora token namespace and shows the full Pattern B flow clearly:</p>
-          <ol>
-            <li>encode the query with <code>jinaai/jina-colbert-v2</code></li>
-            <li>fan out one ANN lookup per query token through <code>multi_query</code></li>
-            <li>aggregate by <code>doc_id</code></li>
-            <li>rank by approximated MaxSim</li>
-          </ol>
-          <p>The exact presenter script lives in <a href="DEMO.md">DEMO.md</a>. The reason to keep the live demo on Pattern B while recommending Pattern C is simple: <strong>Pattern B is the clearest mechanics demo; Pattern C is the strongest production result.</strong></p>
-        </section>
-
-        <section id="roadmap">
-          <h2>Roadmap</h2>
-          <p>The internal roadmap in <a href="guide/ROADMAP.md">guide/ROADMAP.md</a> argues for a three-step ladder:</p>
-          <table>
-            <thead>
-              <tr>
-                <th>Priority</th>
-                <th>Proposal</th>
-                <th>Why it matters</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>P0</strong></td>
-                <td>Multi-vector attribute type: <code>[K,D]f16</code> / <code>[K,D]f32</code></td>
-                <td>Eliminates Pattern B's row-count explosion and Pattern A/C's external token-matrix store</td>
-              </tr>
-              <tr>
-                <td><strong>P1.5</strong></td>
-                <td>MUVERA-style single-vector summary</td>
-                <td>Fastest path to a customer-facing late-interaction surface using the existing ANN machinery</td>
-              </tr>
-              <tr>
-                <td><strong>P1</strong></td>
-                <td>Native exact <code>MaxSim</code> <code>rank_by</code> operator</td>
-                <td>Collapses client fan-out and local rerank into one server-side path</td>
-              </tr>
-            </tbody>
-          </table>
-          <ul>
-            <li><strong>P0 first</strong> removes the current storage-shape workaround.</li>
-            <li><strong>P1.5 next</strong> lands a credible customer-facing story quickly by reusing the existing ANN machinery.</li>
-            <li><strong>P1 after that</strong> becomes the exact long-term answer and composes naturally with MUVERA as a rerank stage.</li>
-          </ul>
-        </section>
-
-        <section id="appendix">
-          <h2>Appendix</h2>
-          <p><strong>Why this deliverable is defensible.</strong> It uses only turbopuffer features that exist today, it does not hide the weak cells, it distinguishes between live-demo mechanics and benchmark evidence, and it ends with a roadmap that is specific enough to hand to engineering.</p>
-          <div class="footer-links">
-            <a href="presentation.md">Canonical written walkthrough</a>
-            <a href="DEMO.md">Exact presenter script</a>
-            <a href="guide/LATE-INTERACTION.md">D1 user-facing guide</a>
-            <a href="guide/ROADMAP.md">D2 internal roadmap</a>
-            <a href="results/cost-analysis.md">Cost, latency, and storage appendix</a>
-            <a href="results/benchmark.md">Quora benchmark appendix</a>
-            <a href="results/amazon-benchmark.md">Amazon benchmark appendix</a>
-            <a href="results/scifact-benchmark.md">SciFact benchmark appendix</a>
-          </div>
-        </section>
-      </article>
-    </main>
+    <footer>
+      © 2025 Varmin Singh • Built with care.
+    </footer>
   </div>
+</main>
+
 </body>
 </html>
-
