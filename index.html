@@ -2,228 +2,582 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Varmin Singh — Portfolio</title>
-  <meta name="description" content="Varmin Singh — Data Science / Machine Learning / Data Engineering portfolio."/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Varmin Singh - Resume</title>
+  <meta
+    name="description"
+    content="Resume website for Varmin Singh, a software engineer and UC Berkeley Data Science graduate."
+  />
   <style>
     :root {
-      --bg: #f5f7f8;
-      --card: #ffffff;
-      --nav-bg: #0f3b44;
-      --nav-accent: #145b66;
-      --accent: #29a6a6;
-      --muted: #57666f;
-      --text: #0f1720;
-      --border: #e7edf0;
-      --shadow: 0 6px 20px rgba(16,24,32,0.06);
-      --radius: 16px;
-      --max-width: 1100px;
+      color-scheme: dark;
+      --bg: #07090d;
+      --panel: #0d1117;
+      --panel-soft: #101721;
+      --text: #f4f7fb;
+      --muted: #9aa7b4;
+      --line: #22303d;
+      --accent: #62f4ff;
+      --accent-2: #a7ffcf;
+      --max: 980px;
+      --radius: 8px;
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
+      background:
+        linear-gradient(90deg, rgba(98, 244, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(98, 244, 255, 0.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: 64px 64px;
       color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.6;
+      letter-spacing: 0;
     }
 
-    main {
-      display: flex;
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 40px 20px;
-      gap: 32px;
-    }
-
-    /* Sidebar */
-    nav.sidebar {
-      position: sticky;
-      top: 40px;
-      width: 280px;
-      height: fit-content;
-      background: linear-gradient(180deg, var(--nav-bg), var(--nav-accent));
-      color: #fff;
-      padding: 30px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      flex-shrink: 0;
-    }
-
-    .brand h1 { font-size: 22px; margin: 0; color: #eafffb; }
-    .brand p { font-size: 13px; color: rgba(230,250,250,0.8); margin: 8px 0 20px; }
-
-    .navlinks a {
-      display: block;
-      padding: 10px 12px;
-      color: #fff;
+    a {
+      color: inherit;
       text-decoration: none;
-      font-weight: 500;
-      border-radius: 8px;
-      transition: 0.2s;
+    }
+
+    a:hover {
+      color: var(--accent);
+    }
+
+    .page {
+      width: min(100% - 36px, var(--max));
+      margin: 0 auto;
+      padding: 44px 0 72px;
+    }
+
+    .topnav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 72px;
+      color: var(--muted);
       font-size: 14px;
     }
-    .navlinks a:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); }
 
-    .sidebar-contact { margin-top: 30px; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-    .sidebar-contact div { margin-bottom: 8px; }
-    .sidebar-contact a { color: #accent; color: #eafffb; text-decoration: underline; }
-
-    /* Content Area */
-    .content { flex-grow: 1; }
-
-    section.card {
-      background: var(--card);
-      padding: 32px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 24px;
-      border: 1px solid var(--border);
+    .topnav strong {
+      color: var(--text);
+      font-size: 15px;
     }
 
-    h2, h3 { color: var(--nav-bg); margin-top: 0; }
-    h4 { margin: 20px 0 8px; color: var(--nav-bg); font-size: 1.1rem; }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 16px;
+    }
 
-    .intro-grid { display: flex; gap: 24px; align-items: center; }
-    .profile-photo { width: 140px; height: 140px; border-radius: 20px; object-fit: cover; border: 4px solid var(--border); }
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 170px;
+      gap: 44px;
+      align-items: start;
+      margin-bottom: 76px;
+    }
 
-    .experience-item { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-    .experience-item:last-child { border-bottom: none; }
-    .role-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .role-meta { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
 
-    .bullets { padding-left: 20px; margin: 12px 0; }
-    .bullets li { margin-bottom: 8px; font-size: 14.5px; }
+    h1 {
+      margin-bottom: 14px;
+      font-size: 64px;
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
 
-    .tech-stack { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .role-line {
+      margin-bottom: 26px;
+      color: var(--accent);
+      font-size: 17px;
+      font-weight: 700;
+    }
 
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-    .chip { background: #eef6f6; padding: 6px 12px; border-radius: 20px; font-size: 13px; color: var(--nav-bg); font-weight: 600; }
+    .summary {
+      max-width: 740px;
+      margin-bottom: 28px;
+      color: #d7e1ea;
+      font-size: 19px;
+    }
 
-    footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 40px; }
+    .contact-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
 
-    @media (max-width: 900px) {
-      main { flex-direction: column; }
-      nav.sidebar { position: static; width: 100%; }
-      .intro-grid { flex-direction: column; text-align: center; }
+    .contact-list a,
+    .contact-list span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: rgba(13, 17, 23, 0.78);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .portrait {
+      width: 170px;
+      aspect-ratio: 1;
+      border: 1px solid rgba(98, 244, 255, 0.28);
+      border-radius: var(--radius);
+      object-fit: cover;
+      object-position: center 28%;
+      filter: grayscale(0.15) contrast(1.04);
+    }
+
+    section {
+      padding: 42px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 34px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .section-kicker {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .resume-list {
+      display: grid;
+      gap: 28px;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 34px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .meta strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    h3 {
+      margin-bottom: 6px;
+      font-size: 20px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .subline {
+      margin-bottom: 12px;
+      color: var(--accent-2);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #d7e1ea;
+    }
+
+    li {
+      margin-bottom: 8px;
+      padding-left: 4px;
+    }
+
+    li::marker {
+      color: var(--accent);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .project {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      background: rgba(13, 17, 23, 0.82);
+    }
+
+    .project p {
+      color: #d7e1ea;
+    }
+
+    .project p:last-child {
+      margin-bottom: 0;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 12px;
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .skills {
+      display: grid;
+      gap: 14px;
+    }
+
+    .skill-row {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 34px;
+      padding: 18px 0;
+      border-top: 1px solid rgba(34, 48, 61, 0.72);
+    }
+
+    .skill-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .skill-row h3 {
+      color: var(--accent-2);
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+
+    .skill-row p {
+      margin-bottom: 0;
+      color: #d7e1ea;
+    }
+
+    footer {
+      padding-top: 30px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 28px, var(--max));
+        padding-top: 28px;
+      }
+
+      .topnav {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 46px;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        margin-bottom: 52px;
+      }
+
+      .portrait {
+        width: 128px;
+      }
+
+      h1 {
+        font-size: 46px;
+      }
+
+      .summary {
+        font-size: 17px;
+      }
+
+      .section-heading,
+      .entry,
+      .skill-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .contact-list a,
+      .contact-list span {
+        width: 100%;
+        justify-content: center;
+        overflow-wrap: anywhere;
+      }
     }
   </style>
 </head>
 <body>
-
-<main>
-  <nav class="sidebar">
-    <div class="brand">
-      <h1>Varmin Singh</h1>
-      <p>Data Scientist • ML Engineer</p>
-    </div>
-    <div class="navlinks">
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#research">Research</a>
-      <a href="#education">Education</a>
-      <a href="#skills">Skills</a>
-    </div>
-    <div class="sidebar-contact">
-      <div>singh.varmindip@gmail.com</div>
-      <div>📞 (559) 903-2599</div>
-      <div><a href="https://linkedin.com/in/varmin">LinkedIn</a></div>
-      <div><a href="https://github.com/Varminn">GitHub</a></div>
-    </div>
-  </nav>
-
-  <div class="content">
-    <section id="about" class="card">
-      <div class="intro-grid">
-        <img src="IMG_4007.JPG" alt="Varmin Singh" class="profile-photo">
-        <div>
-          <h2>Hi — I'm Varmin.</h2>
-          <p>I’m a Data Scientist and Engineer at UC Berkeley. I specialize in building production-ready pipelines and ML systems that turn messy, real-world data into scalable solutions—particularly in finance and cloud reliability.</p>
-          <div style="font-size: 13px; color: var(--muted);">Berkeley, CA • Open to Data/ML Engineering Roles</div>
-        </div>
+  <main class="page">
+    <nav class="topnav" aria-label="Page navigation">
+      <strong>Varmin Singh</strong>
+      <div class="nav-links">
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#skills">Skills</a>
       </div>
-    </section>
+    </nav>
 
-    <section id="experience" class="card">
-      <h3>Experience</h3>
-      
-      <div class="experience-item">
-        <div class="role-header">
-          <h4>Boeing — Data Science Intern</h4>
-          <span class="role-meta">May 2025 – Present</span>
-        </div>
-        <div class="role-meta">BGS Commercial Modifications • Long Beach, CA</div>
-        <ul class="bullets">
-          <li>Led development of automated ETL pipelines processing millions of rows daily, reducing manual extraction time by 65%.</li>
-          <li>Built reusable data-standardization libraries to enforce consistent schemas across cross-functional dashboards.</li>
-          <li>Implemented data quality monitoring to proactively identify drift, reducing troubleshooting time by 30%.</li>
-        </ul>
-        <div class="tech-stack">Python, Pandas, SQL, Docker, Smartsheet API</div>
-      </div>
-
-      <div class="experience-item">
-        <div class="role-header">
-          <h4>Penserra — Data Engineer Intern</h4>
-          <span class="role-meta">Jun 2024 – May 2025</span>
-        </div>
-        <div class="role-meta">Orinda, CA • 12B AUM</div>
-        <ul class="bullets">
-          <li>Engineered a cloud-based NLP ingestion pipeline using Azure and Gemini API for real-time trade compliance (99% accuracy).</li>
-          <li>Transformed unstructured logs and OCR-scanned PDFs into structured formats, increasing throughput by 35%.</li>
-          <li>Automated operational metrics with Supabase, saving 15+ hours weekly in manual reporting.</li>
-        </ul>
-        <div class="tech-stack">PySpark, Azure, Gemini API, PostgreSQL, OCR</div>
-      </div>
-    </section>
-
-    <section id="projects" class="card">
-      <h3>Featured Projects</h3>
-      
-      <div class="experience-item">
-        <h4>Panorama — Multi-Partisan News Search</h4>
-        <p style="font-size: 14.5px;">A search engine designed to surface balanced news coverage. Uses FastAPI, React, and MongoDB with semantic embeddings to deduplicate and rank articles from across the political spectrum.</p>
-        <div class="tech-stack">FastAPI, sentence-transformers, OpenAI API, Docker</div>
-      </div>
-
-      <div class="experience-item">
-        <h4>Automated Fault Detection</h4>
-        <p style="font-size: 14.5px;">Orchestrated an Airflow pipeline analyzing 100k+ GitHub commits daily for regressions using trained classifiers. Reduced processing time by 75%.</p>
-        <div class="tech-stack">Airflow, Redis, ML Classification, Python</div>
-      </div>
-    </section>
-
-    <section id="skills" class="card">
-      <h3>Skills</h3>
+    <header class="hero">
       <div>
-        <div class="role-meta" style="margin-top:10px">LANGUAGES</div>
-        <div class="chips">
-          <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">R</span><span class="chip">C++</span><span class="chip">Java</span>
-        </div>
-        <div class="role-meta" style="margin-top:15px">MACHINE LEARNING & INFRA</div>
-        <div class="chips">
-          <span class="chip">PyTorch</span><span class="chip">Scikit-learn</span><span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">Airflow</span>
-        </div>
+        <h1>Varmin Singh</h1>
+        <p class="role-line">Software Engineer | Data Science | Applied AI</p>
+        <p class="summary">
+          I am a UC Berkeley Data Science graduate and software engineer focused on building practical
+          data systems, backend tools, and AI-powered workflows that help teams move faster with cleaner
+          information. Outside of work, I like building side projects, following new AI and product tools,
+          and turning hackathon-style ideas into usable software.
+        </p>
+        <ul class="contact-list" aria-label="Contact links">
+          <li><a href="mailto:singh.varmindip@gmail.com">singh.varmindip@gmail.com</a></li>
+          <li><a href="tel:+15599032599">(559) 903-2599</a></li>
+          <li><span>Long Beach, CA</span></li>
+          <li><a href="https://linkedin.com/in/varmin" target="_blank" rel="noreferrer">LinkedIn</a></li>
+          <li><a href="https://github.com/Varminn" target="_blank" rel="noreferrer">GitHub</a></li>
+        </ul>
+      </div>
+      <img class="portrait" src="IMG_4007.JPG" alt="Portrait of Varmin Singh" />
+    </header>
+
+    <section id="experience">
+      <div class="section-heading">
+        <div class="section-kicker">Experience</div>
+        <h2>Professional Experience</h2>
+      </div>
+
+      <div class="resume-list">
+        <article class="entry">
+          <div class="meta">
+            <strong>01/2026 - Present</strong>
+            Long Beach, CA
+          </div>
+          <div>
+            <h3>Boeing</h3>
+            <div class="subline">Software Engineer</div>
+            <ul>
+              <li>
+                Own and extend 20+ production Python applications and ETL services processing 500M+
+                rows across enterprise databases, aligning engineering and program management metrics
+                for VP and C-suite leadership.
+              </li>
+              <li>
+                Building an AI reporting platform on a shared FastAPI LLM gateway, shipping constrained
+                NL-to-SQL and schedule-health microservices that let program managers query enterprise
+                data in natural language.
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="meta">
+            <strong>05/2025 - 12/2025</strong>
+            Long Beach, CA
+          </div>
+          <div>
+            <h3>Boeing</h3>
+            <div class="subline">Software Engineer Intern</div>
+            <ul>
+              <li>
+                Designed and deployed a secure RAG microservice with FastAPI and LangChain on Tanzu,
+                enabling 400+ PMs to query 1M+ rows of Smartsheet schedule data via natural language,
+                cutting average data retrieval time by 40%.
+              </li>
+              <li>
+                Architected a reusable ingestion and indexing pipeline to extract, normalize, chunk,
+                and embed data from 2,500+ project schedules, cutting manual data processing time by 70%
+                and creating a scalable foundation for future initiatives.
+              </li>
+              <li>
+                Centralized the team's previous local execution into GitLab CI/CD orchestration using
+                Docker, reducing deployment errors by 50% with a continuous development toolchain
+                managed through JFrog Artifactory.
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="meta">
+            <strong>06/2024 - 05/2025</strong>
+            Orinda, CA
+          </div>
+          <div>
+            <h3>Penserra</h3>
+            <div class="subline">Software Engineer Intern</div>
+            <ul>
+              <li>
+                Developed a cloud-based data pipeline using AWS and Selenium to ingest streaming
+                transaction data from financial documents into PostgreSQL, achieving near real-time
+                compliance checks for trades with 98% accuracy.
+              </li>
+              <li>
+                Integrated a Python data pipeline supporting the launch of the Qualified Contingent
+                Transactions business line, reducing manual data reconciliation time by over 35% and
+                ensuring compliance with SEC regulations.
+              </li>
+              <li>
+                Designed and implemented a governance framework with the Bloomberg API to ensure data
+                quality and integrity for financial compliance logs, centralizing accessibility and
+                creating a single source of truth for the operations team.
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="meta">
+            <strong>08/2024 - 12/2024</strong>
+            Berkeley, CA
+          </div>
+          <div>
+            <h3>University of California, Berkeley</h3>
+            <div class="subline">Academic Intern</div>
+            <ul>
+              <li>
+                Mentored 100+ students during office hours, explaining complex technical concepts and
+                C++ implementations.
+              </li>
+              <li>
+                Collaborated on and led technical workshops with live-coding demonstrations on RISC-V
+                assembly, pipelining, parallel processing, multithreading, and CPU design to improve
+                student understanding and project success.
+              </li>
+            </ul>
+          </div>
+        </article>
       </div>
     </section>
 
-    <section id="education" class="card">
-      <h3>Education</h3>
-      <div class="role-header">
-        <h4>University of California, Berkeley</h4>
-        <span class="role-meta">2022 – 2027</span>
+    <section id="projects">
+      <div class="section-heading">
+        <div class="section-kicker">Projects</div>
+        <h2>Projects</h2>
       </div>
-      <p><strong>BA Data Science</strong> (2026) | <strong>MA Statistics</strong> (2027)<br>
-      <span style="font-size: 14px; color: var(--muted);">Relevant Coursework: Applied Machine Learning (Grad), Deep Neural Networks, Computer Architecture, Probabilistic Modeling.</span></p>
+
+      <div class="project-grid">
+        <article class="project">
+          <span class="tag">SF Hacks 2025 Winner</span>
+          <h3>Panorama - News Across the Political Spectrum</h3>
+          <p>
+            Built a full-stack news aggregation platform using Python, FastAPI, React, and MongoDB to
+            categorize articles across the political spectrum, providing balanced topic coverage.
+          </p>
+          <p>
+            Leveraged the Perplexity API for live news aggregation and the OpenAI API for AI-driven
+            article summarization and Q&amp;A; implemented user authentication, search history, and
+            bookmarking features through MongoDB.
+          </p>
+        </article>
+
+        <article class="project">
+          <span class="tag">Trade Processing</span>
+          <h3>TOPS Formatter</h3>
+          <p>
+            Implemented a full-stack trade processing system for automated end-of-day trade recaps,
+            ensuring 100% compliance with internal audit standards while accurately calculating
+            partner-broker commissions.
+          </p>
+          <p>
+            Engineered a real-time data pipeline from TOPS SEQ to Azure SQL Server with secure
+            authentication, saving the operations team 15+ hours weekly and providing traders with
+            instant activity updates.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="section-heading">
+        <div class="section-kicker">Education</div>
+        <h2>Education</h2>
+      </div>
+
+      <article class="entry">
+        <div class="meta">
+          <strong>05/2026</strong>
+          Berkeley, CA
+        </div>
+        <div>
+          <h3>University of California, Berkeley</h3>
+          <div class="subline">Bachelor of Arts: Data Science</div>
+          <p>
+            Relevant Coursework: Applied Machine Learning (Graduate), Big Data &amp; Development
+            (Graduate), Data Engineering/Databases, Computer Architecture, Backend Web Architecture,
+            Data Structures, AI, Operating Systems.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <section id="skills">
+      <div class="section-heading">
+        <div class="section-kicker">Skills</div>
+        <h2>Skills and Interests</h2>
+      </div>
+
+      <div class="skills">
+        <div class="skill-row">
+          <h3>Languages</h3>
+          <p>Python, SQL, Java, C, C++</p>
+        </div>
+        <div class="skill-row">
+          <h3>Frameworks</h3>
+          <p>FastAPI, React, LangChain, Codex, Scikit-learn, Selenium, NumPy, Pandas, OpenCV</p>
+        </div>
+        <div class="skill-row">
+          <h3>Platforms</h3>
+          <p>AWS, Docker, GitLab, CI/CD, PostgreSQL, MongoDB, ChromaDB, Git, REST APIs</p>
+        </div>
+      </div>
     </section>
 
     <footer>
-      © 2025 Varmin Singh • Built with care.
+      Varmin Singh | singh.varmindip@gmail.com | Long Beach, CA
     </footer>
-  </div>
-</main>
-
+  </main>
 </body>
 </html>
